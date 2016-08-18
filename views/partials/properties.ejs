@@ -1,0 +1,10 @@
+<% Object.keys(penData).forEach(function(key) { %>
+  <div class="row">
+    <div class="column left-column">
+      <%- key %>:
+    </div>
+    <div class="column">
+      <%- penData[key] %>
+    </div>
+  </div>
+<% }); %>

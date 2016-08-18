@@ -1,0 +1,70 @@
+/* Layout */
+body {
+  font-size: 16px;
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+}
+.container {
+  box-sizing: border-box;
+
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+}
+.column {
+  flex: 1 0 0;
+  -webkit-flex: 1 0 0;
+}
+.left-column {
+  max-width: 50px;
+  text-align: right;
+}
+/*
+
+/* Button */
+.button {
+  -webkit-border-radius: 10;
+  -moz-border-radius: 10;
+  border-radius: 10px;
+  font-family: Courier New;
+  color: #ffffff;
+  padding: 20px;
+  text-decoration: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
+  max-width: 100%;
+}
+.button:hover {
+  text-decoration: none;
+}
+.button.primary {
+  background: #3498db;
+  font-size: 28px;
+}
+.button.primary:hover {
+  background: #3cb0fd;
+}
+.button.secondary {
+  background: #3498db;
+}
+.button.secondary:hover {
+  background: #3cb0fd;
+}
+/* End button */

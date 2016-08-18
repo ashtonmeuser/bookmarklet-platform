@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %>
+</head>
+<body>
+  <main class="container">
+
+    <% include ../partials/header %>
+
+    <% if(penData !== null) { %>
+
+      <% include ../partials/properties %>
+      <% include ../partials/buttons %>
+
+    <% }else{ %>
+
+      <% include ../partials/error %>
+      
+    <% } %>
+
+  </main>
+</body>
+</html>
