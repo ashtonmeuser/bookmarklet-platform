@@ -1,6 +1,6 @@
 {
   "name": "bookmarklet-platform",
   "description": "A platform for distributing bookmarklets.",
-  "repository": "https://github.com/AshtonMeuser/bookmarklet-platform",
+  "repository": "https://github.com/ashtonmeuser/bookmarklet-platform",
   "image": "heroku/nodejs"
 }
