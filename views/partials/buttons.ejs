@@ -1,11 +1,14 @@
 <div class="row text-center">
-  <a href="javascript:<%- penCode %>" class="button primary"><%- penData['title'] %></a>
+  <a href="javascript:<%- penCode %>" class="button primary">
+    <div class="button-title"><%- penData['title'] %></div>
+    <div class="button-subtitle"></div>
+  </a>
 </div>
 
 <div class="row">
-  <a href="http://codepen.io/<%- penData['author'] %>/pen/<%- penData['id'] %>?editors=0010" target="_blank" class="button secondary">Codepen</a>
+  <a href="http://codepen.io/<%- penData['author'] %>/pen/<%- penData['id'] %>?editors=0010" target="_blank" class="link">view on codepen</a>
 </div>
 
 <div class="row">
-  <a href="/" class="button secondary">Generate</a>
+  <a href="/" class="link">generate bookmarklet</a>
 </div>

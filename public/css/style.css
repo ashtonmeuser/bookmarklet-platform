@@ -1,13 +1,27 @@
+/* Fonts */
+@font-face {
+  font-family: 'quigleywiggly';
+	src: url('/fonts/quigleywiggly.eot');
+	src: url('/fonts/quigleywiggly.eot?iefix') format('eot'),
+	     url('/fonts/quigleywiggly.woff') format('woff'),
+	     url('/fonts/quigleywiggly.ttf') format('truetype'),
+	     url('/fonts/quigleywiggly.svg#webfont') format('svg');
+}
+/* End fonts */
+
+
 /* Layout */
 body {
+  font-family: Courier New;
   font-size: 16px;
   padding: 0;
   margin: 0;
   min-height: 100vh;
+  text-align: center;
+  background-color: whitesmoke;
 }
-.container {
+main {
   box-sizing: border-box;
-
   display: -webkit-flex;
   display: flex;
   -webkit-flex-direction: column;
@@ -25,46 +39,89 @@ body {
   justify-content: center;
   width: 100%;
   max-width: 500px;
+  padding: 5px 0;
 }
 .column {
   flex: 1 0 0;
   -webkit-flex: 1 0 0;
 }
-.left-column {
-  max-width: 50px;
+.column.left {
+  max-width: 70px;
   text-align: right;
 }
-/*
+.column.right {
+  text-align: left;
+  padding-left: 10px;
+}
+/* End layout */
 
-/* Button */
+/* Buttons, links */
+.button-title {
+  font-size: 1.5em;
+}
+.button-title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 .button {
   -webkit-border-radius: 10;
   -moz-border-radius: 10;
   border-radius: 10px;
-  font-family: Courier New;
-  color: #ffffff;
+  color: white;
   padding: 20px;
   text-decoration: none;
+  display: block;
   white-space: nowrap;
   text-overflow: ellipsis;
-  display: block;
   overflow: hidden;
   max-width: 100%;
-}
-.button:hover {
-  text-decoration: none;
+  margin: 20px 0;
+  min-width: 100px;
 }
 .button.primary {
-  background: #3498db;
-  font-size: 28px;
-}
-.button.primary:hover {
-  background: #3cb0fd;
+  background: #5F9EA0;
 }
 .button.secondary {
-  background: #3498db;
+  background: #5F9EA0;
 }
-.button.secondary:hover {
-  background: #3cb0fd;
+.button-subtitle:after {
+  content: "long-press to save"
 }
-/* End button */
+.link {
+  color: black;
+  text-decoration: underline;
+}
+@media (any-hover: hover) {
+  .button:hover {
+    text-decoration: none;
+  }
+  .button.primary:hover {
+    background: #7EB1B3;
+  }
+  .button.secondary:hover {
+    background: #7EB1B3;
+  }
+  .button-subtitle:after {
+    content: "drag to bookmarks to save"
+  }
+}
+/* End buttons, links */
+
+/* Header */
+header {
+  margin-bottom: 20px;
+}
+header h1 {
+  font-family: quigleywiggly;
+  font-size: 4em;
+  line-height: 0.8;
+  font-weight: bold;
+  margin: 0;
+}
+header h2 {
+  font-weight: normal;
+  /*font-family: quigleywiggly;*/
+  margin: 0;
+}
+/* End header */

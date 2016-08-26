@@ -34,9 +34,9 @@ exports.get = function(penData, callback){
 };
 
 function getPenProperty(penCode, property) {
-  var regexpProperty = new RegExp(`//[\\s\\t]*bookmarklet_${property}[\\s\\t]*=[\\s\\t]*(.+)`, 'gi');
+  var regexpProperty = new RegExp(`//[\\s\\t]*bookmarklet_${property}[\\s\\t]*[:=][\\s\\t]*(.+)`, 'gi');
   var matches = regexpProperty.exec(penCode);
-  return (matches !== null) ? htmlEncode(matches[1]) : null;
+  return (matches !== null) ? htmlEncode(matches[1]) : `no ${property}`;
 }
 
 function minimizePenCode(penCode) {
