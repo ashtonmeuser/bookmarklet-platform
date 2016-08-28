@@ -9,7 +9,6 @@
 }
 /* End fonts */
 
-
 /* Layout */
 body {
   font-family: Courier New;
@@ -121,7 +120,21 @@ header h1 {
 }
 header h2 {
   font-weight: normal;
-  /*font-family: quigleywiggly;*/
+  font-size: 1.5em;
   margin: 0;
 }
 /* End header */
+
+/* Error */
+.error {
+  -webkit-border-radius: 10;
+  -moz-border-radius: 10;
+  border-radius: 10px;
+  color: white;
+  padding: 20px;
+  max-width: 100%;
+  margin: 20px 0;
+  min-width: 100px;
+  background: lightcoral;
+}
+/* End error */
