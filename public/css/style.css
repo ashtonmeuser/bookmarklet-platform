@@ -74,15 +74,18 @@ main {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  max-width: 100%;
-  margin: 20px 0;
+  width: 100%;
   min-width: 100px;
+  margin: 20px 0;
 }
 .button.primary {
   background: #5F9EA0;
 }
 .button.secondary {
   background: #5F9EA0;
+}
+.button.disabled {
+  background: #BBB;
 }
 .button-subtitle:after {
   content: "long-press to save"
@@ -101,11 +104,29 @@ main {
   .button.secondary:hover {
     background: #7EB1B3;
   }
+  .button.disabled:hover {
+    background: #BBB;
+    cursor: not-allowed;
+  }
   .button-subtitle:after {
     content: "drag to bookmarks to save"
   }
 }
 /* End buttons, links */
+
+/* Input */
+input {
+  text-align: center;
+  font-size: 1em;
+  -webkit-border-radius: 10;
+  -moz-border-radius: 10;
+  border-radius: 10px;
+  border: 0;
+  width: 100%;
+  min-width: 100px;
+  padding: 10px;
+}
+/* End input */
 
 /* Header */
 header {

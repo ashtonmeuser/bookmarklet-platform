@@ -8,6 +8,24 @@
 
     <% include ../partials/header %>
 
+    <div class="row">
+      <p>the bokmarklet bazaar can be used to create and share simple pieces of executable js, like <a class='link' target='_blank' href='http://google.com'>this</a>, or <a class='link' target='_blank' href='http://google.com'>this</a>.</p>
+    </div>
+
+    <div class="row">
+      <p>to generate your own custom bookmarket, write some js on <a class='link' target='_blank' href='http://codepen.com'>codepen</a>, copy the pen's url, paste it below, and hit generate.</p>
+    </div>
+
+    <div class="row">
+      <input type="text" id="codepen_url" placeholder="codepen url"/>
+    </div>
+
+    <div class="row">
+      <a href="javascript:alert('hi')" class="button primary disabled">
+        <div class="button-title">generate</div>
+      </a>
+    </div>
+
   </main>
 </body>
 </html>
