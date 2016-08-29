@@ -13,7 +13,7 @@ function input_handler(event){
 
 function generate_bookmarklet(url){
   var button = document.getElementById('generate_bookmarklet');
-  var regexpCodepen = new RegExp('codepen.io\/([a-zA-Z0-9]+)\/pen\/([a-zA-Z0-9]+).*', 'g');
+  var regexpCodepen = new RegExp('codepen.io\/([a-zA-Z0-9]+)\/pen\/([a-zA-Z0-9]+).*', 'gi');
   var matches = regexpCodepen.exec(url);
   if(matches != null && matches[1] != null && matches[2] != null){
     button.className = 'button primary';
