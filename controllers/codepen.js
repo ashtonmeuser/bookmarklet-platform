@@ -41,5 +41,10 @@ function getPenProperty(penCode, property) {
 
 function minimizePenCode(penCode) {
   var options = {fromString: true, mangle: false};
-  return htmlEncode(minify(penCode, options).code);
+  try{
+    var penCodeMinified = minify(penCode, options).code;
+  }catch(error){
+    var penCodeMinified = 'void(0)';
+  }
+  return htmlEncode(penCodeMinified);
 }

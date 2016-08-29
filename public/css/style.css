@@ -32,6 +32,9 @@ main {
   min-height: 100vh;
   padding: 20px;
 }
+p {
+  margin: 0;
+}
 .row {
   display: flex;
   flex-direction: row;
@@ -125,6 +128,7 @@ input {
   width: 100%;
   min-width: 100px;
   padding: 10px;
+  margin-top: 20px;
 }
 /* End input */
 
@@ -159,3 +163,9 @@ header h2 {
   background: lightcoral;
 }
 /* End error */
+
+/* Code */
+span.code {
+  background-color: #DDD;
+}
+/* End code */
