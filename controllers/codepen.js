@@ -10,7 +10,6 @@ exports.get = function(penData, callback){
     var penCode = '';
 
     if(response.statusCode !== 200) {
-      console.log(`Code ${response.statusCode} recieved. Destroying http request.`);
       response.destroy();
     };
 
@@ -28,7 +27,8 @@ exports.get = function(penData, callback){
       }else{
         penData['title'] = getPenProperty(penCode, 'title');
         penData['about'] = getPenProperty(penCode, 'about');
-        penCode = minimizePenCode(transpilePenCode(penCode));
+        // penCode = transpilePenCode(penCode);
+        penCode = minimizePenCode(penCode);
         callback(penData, penCode ? htmlEncode(penCode) : null);
       }
     });

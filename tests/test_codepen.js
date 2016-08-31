@@ -27,7 +27,6 @@ describe('codepen', function() {
   	.get(`/${penDataBad.author}/pen/${penDataBad.id}.js`).reply(404, "");
 
   it('codepen.get() should return pen info if pen is valid', function(done) {
-    console.log('before')
     codepen.get(penDataGood, function(penData, penCode){
       expect(penData).to.eql(expectedDataGood);
       expect(penCode).to.eql(expectedCodeGood);
