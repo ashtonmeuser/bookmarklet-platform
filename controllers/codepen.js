@@ -42,7 +42,7 @@ function getPenProperty(penCode, property) {
 }
 
 function transpilePenCode(penCode) {
-  var options = {presets: ["es2015"]};
+  var options = {presets: ["es2015-without-strict"]};
   try{
     var penCodeTranspiled = babel.transform(penCode, options).code;
   }catch(error){
