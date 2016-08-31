@@ -1,6 +1,7 @@
 var http = require('http');
 var htmlEncode = require('htmlencode').htmlEncode;
 var minify = require('uglify-js').minify;
+var babel = require("babel-core");
 
 exports.get = function(penData, callback){
   var url = `http://codepen.io/${penData.author}/pen/${penData.id}.js`;
@@ -27,7 +28,8 @@ exports.get = function(penData, callback){
       }else{
         penData['title'] = getPenProperty(penCode, 'title');
         penData['about'] = getPenProperty(penCode, 'about');
-        callback(penData, minimizePenCode(penCode));
+        penCode = minimizePenCode(transpilePenCode(penCode));
+        callback(penData, penCode ? htmlEncode(penCode) : null);
       }
     });
   }).end();
@@ -39,6 +41,16 @@ function getPenProperty(penCode, property) {
   return (matches !== null) ? htmlEncode(matches[1]) : `no ${property}`;
 }
 
+function transpilePenCode(penCode) {
+  var options = {presets: ["es2015"]};
+  try{
+    var penCodeTranspiled = babel.transform(penCode, options).code;
+  }catch(error){
+    var penCodeTranspiled = null;
+  }
+  return penCodeTranspiled;
+}
+
 function minimizePenCode(penCode) {
   var options = {fromString: true, mangle: false};
   try{
@@ -46,5 +58,5 @@ function minimizePenCode(penCode) {
   }catch(error){
     var penCodeMinified = null;
   }
-  return penCodeMinified === null ? null : htmlEncode(penCodeMinified);
+  return penCodeMinified;
 }

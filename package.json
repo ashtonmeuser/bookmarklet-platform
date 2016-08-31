@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "angular-ui-bootstrap": "2.0.1",
+    "babel-core": "^6.14.0",
+    "babel-preset-es2015": "^6.14.0",
     "ejs": "^2.5.1",
     "express": "^4.13.3",
     "htmlencode": "^0.0.4",
