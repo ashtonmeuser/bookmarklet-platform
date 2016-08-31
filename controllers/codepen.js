@@ -44,7 +44,7 @@ function minimizePenCode(penCode) {
   try{
     var penCodeMinified = minify(penCode, options).code;
   }catch(error){
-    var penCodeMinified = 'void(0)';
+    var penCodeMinified = null;
   }
-  return htmlEncode(penCodeMinified);
+  return penCodeMinified === null ? null : htmlEncode(penCodeMinified);
 }
