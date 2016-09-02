@@ -161,7 +161,7 @@ header a {
   border-radius: 10px;
   color: white;
   padding: 20px;
-  max-width: 100%;
+  width: 100%;
   margin: 20px 0;
   min-width: 100px;
   background: lightcoral;
