@@ -57,8 +57,6 @@ describe('codepen', function() {
     nock('http://codepen.io')
       .get(`/${penData.author}/pen/${penData.id}.js`).reply(200, penRaw);
     codepen.get(penData, function(penData, penCode){
-      console.log(penData);
-      console.log(expectedData);
       expect(penData).to.eql(expectedData);
       expect(penCode).to.eql(expectedCode);
       done();
