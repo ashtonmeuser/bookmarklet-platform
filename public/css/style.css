@@ -148,6 +148,10 @@ header h2 {
   font-size: 1.5em;
   margin: 0;
 }
+header a {
+  text-decoration: none;
+  color: inherit;
+}
 /* End header */
 
 /* Error */
