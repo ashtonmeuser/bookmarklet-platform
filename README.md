@@ -7,7 +7,7 @@ A platform for distributing bookmarklets. Observable in the wild [here](http://b
 
 The Bookmarklet Bazaar can be used to create and share simple pieces of executable Javascript, like [this](http://bookmarklet-platform.herokuapp.com/ashtonmeuser/JKgvxK), or [this](http://bookmarklet-platform.herokuapp.com/ashtonmeuser/NAQrwr).
 
-To generate your own custom bookmarket, write some Javascript on [CodePen](http://codepen.io/pen), copy the pen's url, paste it in the input field, and hit generate.
+To generate your own custom bookmarklet, write some Javascript on [CodePen](http://codepen.io/pen), copy the pen's url, paste it in the input field, and hit generate.
 
 You can assign a title and description to your bookmarklet by including `//bookmarklet_title: <your title>` and `//bookmarklet_about: <your details>` in your code, respectively.
 

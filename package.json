@@ -1,6 +1,7 @@
 {
   "name": "bookmarklet-platform",
   "version": "0.0.0",
+  "author": "Ashton Meuser",
   "description": "A platform for distributing bookmarklets.",
   "main": "server.js",
   "scripts": {
