@@ -5,15 +5,15 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.set('port', (process.env.PORT || 5000));
 
-app.get('/', function(req, res) {
-  res.render('pages/index');
+app.get('/', function(request, response) {
+  response.render('pages/index');
 });
 
-app.get('/:author/:id', function(req, res) {
-  var penData = {author: req.param('author'), id: req.param('id')};
+app.get('/:author/:id', function(request, response) {
+  var penData = {author: request.param('author'), id: request.param('id')};
 
   codepen.get(penData, function(penData, penCode){
-    res.render('pages/bookmarklet', {penData: penData, penCode: penCode});
+    response.render('pages/bookmarklet', {penData: penData, penCode: penCode});
   });
 });
 

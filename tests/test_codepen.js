@@ -5,7 +5,7 @@ var htmlEncode = require('htmlencode').htmlEncode;
 var codepen = require('../controllers/codepen');
 
 describe('codepen', function() {
-  it('codepen.get() should return pen info if pen is valid', function(done) {
+  it('should return pen info if pen is valid', function(done) {
     var penRaw = '\
       //bookmarklet_title: test_good_title\n\
       //bookmarklet_about: test_good_about\n\
@@ -28,7 +28,7 @@ describe('codepen', function() {
     });
   });
 
-  it('codepen.get() should return null if pen is invalid', function(done) {
+  it('should return null if pen is invalid', function(done) {
     var penData = {author: 'test_bad_author', id: 'test_bad_id'};
     nock('http://codepen.io')
     	.get(`/${penData.author}/pen/${penData.id}.js`).reply(404, "");
@@ -39,7 +39,7 @@ describe('codepen', function() {
     });
   });
 
-  it('codepen.get() should return pen info if pen contains valid ES6 code', function(done) {
+  it('should get and return pen info if pen contains valid ES6 code', function(done) {
     var penRaw = '\
       //bookmarklet_title: test_es6_title\n\
       //bookmarklet_about: test_es6_about\n\
