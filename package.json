@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "mocha tests --recursive"
+    "test": "mocha --recursive --reporter mocha-junit-reporter"
   },
   "dependencies": {
     "buble": "^0.13.1",
@@ -23,6 +23,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^3.0.2",
+    "mocha-junit-reporter": "^1.13.0",
     "nock": "^8.0.0"
   }
 }
