@@ -19,7 +19,7 @@ describe('codepen', function() {
       about: 'test_good_about'
     };
     var expectedCode = htmlEncode('alert("test");');
-    nock('http://codepen.io')
+    nock('https://codepen.io')
       .get('/'+penData.author+'/pen/'+penData.id+'.js').reply(200, penRaw);
     codepen.get(penData, function(penData, penCode){
       expect(penData).to.eql(expectedData);
@@ -30,7 +30,7 @@ describe('codepen', function() {
 
   it('should return null if pen is invalid', function(done) {
     var penData = {author: 'test_bad_author', id: 'test_bad_id'};
-    nock('http://codepen.io')
+    nock('https://codepen.io')
     	.get('/'+penData.author+'/pen/'+penData.id+'.js').reply(404, "");
     codepen.get(penData, function(penData, penCode){
       expect(penData).to.equal(null);
@@ -54,7 +54,7 @@ describe('codepen', function() {
       about: 'test_es6_about'
     };
     var expectedCode = htmlEncode('var name=["TT","EE","SS","TT"].map(function(s){return s[0]}).join("");alert("HELLO, "+name);');
-    nock('http://codepen.io')
+    nock('https://codepen.io')
       .get('/'+penData.author+'/pen/'+penData.id+'.js').reply(200, penRaw);
     codepen.get(penData, function(penData, penCode){
       expect(penData).to.eql(expectedData);
