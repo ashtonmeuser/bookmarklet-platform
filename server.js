@@ -10,7 +10,7 @@ app.get('/', function(request, response) {
 });
 
 app.get('/:author/:id', function(request, response) {
-  var penData = {author: request.param('author'), id: request.param('id')};
+  var penData = {author: request.params.author, id: request.params.id};
 
   codepen.get(penData, function(penData, penCode){
     response.render('pages/bookmarklet', {penData: penData, penCode: penCode});

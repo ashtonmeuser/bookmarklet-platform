@@ -17,7 +17,7 @@ function generate_bookmarklet(url){
   var matches = regexpCodepen.exec(url);
   if(matches != null && matches[1] != null && matches[2] != null){
     button.className = 'button primary';
-    button.setAttribute('href', `/${matches[1]}/${matches[2]}`);
+    button.setAttribute('href', '/'+matches[1]+'/'+matches[2]);
   }else{
     button.className = 'button primary disabled';
     button.removeAttribute('href');
