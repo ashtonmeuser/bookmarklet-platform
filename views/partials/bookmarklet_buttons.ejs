@@ -1,19 +1,6 @@
-<% if(penCode !== null) { %>
-
-  <div class="row">
-    <a href="javascript:<%- penCode %>" class="button primary">
-      <div class="button-title"><%- penData['title'] %></div>
-      <div class="button-subtitle"></div>
-    </a>
-  </div>
-
-<% }else{ %>
-
-  <% var error = 'encountered error when processing codepen js' %>
-  <% include ../partials/error %>
-
-<% } %>
-
 <div class="row">
-  <a href="http://codepen.io/<%- penData['author'] %>/pen/<%- penData['id'] %>?editors=0010" target="_blank" class="link">view on codepen</a>
+  <a href="javascript:<%- pen['code'] %>" class="button primary">
+    <div class="button-title"><%- pen['title'] %></div>
+    <div class="button-subtitle"></div>
+  </a>
 </div>

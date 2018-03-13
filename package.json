@@ -10,11 +10,14 @@
   },
   "dependencies": {
     "buble": "^0.13.1",
-    "ejs": "^2.5.1",
-    "express": "^4.13.3",
+    "ejs": "^2.5.7",
+    "express": "^4.16.3",
     "htmlencode": "^0.0.4",
-    "https": "^1.0.0",
-    "uglify-js": "^2.7.3"
+    "mocha": "^3.5.3",
+    "nock": "^8.2.2",
+    "request": "^2.85.0",
+    "request-promise-native": "^1.0.5",
+    "uglify-js": "^2.8.29"
   },
   "repository": {
     "type": "git",
@@ -23,6 +26,7 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^3.5.0",
+    "chai-as-promised": "^7.1.1",
     "mocha": "^3.0.2",
     "nock": "^8.0.0"
   }

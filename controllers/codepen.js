@@ -1,59 +1,51 @@
-var https = require('https');
-var htmlEncode = require('htmlencode').htmlEncode;
-var minify = require('uglify-js').minify;
-var buble = require('buble');
+const rp = require('request-promise-native');
+const htmlEncode = require('htmlencode').htmlEncode;
+const minify = require('uglify-js').minify;
+const buble = require('buble');
 
-exports.get = function(penData, callback){
-  var url = 'https://codepen.io/'+penData.author+'/pen/'+penData.id+'.js';
+exports.get = (penData, callback) => {
+  let url = 'https://codepen.io/'+penData.author+'/pen/'+penData.id+'.js';
 
-  https.request(url, function(response){
-    var penCode = '';
+  return rp(url)
+    .then(response => {
+      let code = parsePenCode(response);
+      let pen = {
+        author: penData.author,
+        id: penData.id,
+        title: getPenProperty(response, 'title'),
+        about: getPenProperty(response, 'about'),
+        code: code,
+      };
 
-    if(response.statusCode !== 200) {
-      response.destroy();
-    }
-
-    response.on('timeout', function () {
-      response.destroy();
+      return pen;
     });
-
-    response.on('data', function(chunk) {
-      penCode += String(chunk);
-    });
-
-    response.on('end', function() {
-      if(response.statusCode !== 200) {
-        callback(null, null);
-      }else{
-        penData.title = getPenProperty(penCode, 'title');
-        penData.about = getPenProperty(penCode, 'about');
-        penCode = transpilePenCode(penCode);
-        penCode = minimizePenCode(penCode);
-        callback(penData, penCode ? htmlEncode(penCode) : null);
-      }
-    });
-  }).end();
 };
 
 function getPenProperty(penCode, property) {
-  var regexpProperty = new RegExp('//[\\s\\t]*bookmarklet_'+property+'[\\s\\t]*[:=][\\s\\t]*(.+)', 'gi');
-  var matches = regexpProperty.exec(penCode);
+  let regexpProperty = new RegExp('//[\\s\\t]*bookmarklet_'+property+'[\\s\\t]*[:=][\\s\\t]*(.+)', 'gi');
+  let matches = regexpProperty.exec(penCode);
+
   return (matches !== null) ? htmlEncode(matches[1]) : 'no '+property;
 }
 
+function parsePenCode(response) {
+  let code = null;
+  try {
+    code = transpilePenCode(response);
+    code = minimizePenCode(code);
+  } catch(error) {
+    return null;
+  }
+
+  return htmlEncode(code);
+}
+
 function transpilePenCode(penCode) {
-  var penCodeTranspiled = null;
-  try{
-    penCodeTranspiled = buble.transform(penCode).code;
-  }catch(error){ }
-  return penCodeTranspiled;
+  return buble.transform(penCode).code;
 }
 
 function minimizePenCode(penCode) {
-  var options = {fromString: true, mangle: false};
-  var penCodeMinified = null;
-  try{
-    penCodeMinified = minify(penCode, options).code;
-  }catch(error){ }
-  return penCodeMinified;
+  let options = {fromString: true, mangle: false};
+
+  return minify(penCode, options).code;
 }
