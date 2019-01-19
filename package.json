@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "parcel src/index.pug src/b/index.pug",
     "clean": "rm -r dist/*",
-    "build": "parcel build src/index.pug src/b/index.pug --no-source-maps",
+    "build": "parcel build src/index.pug src/b/index.pug --no-source-maps"
   },
   "dependencies": {},
   "repository": {
