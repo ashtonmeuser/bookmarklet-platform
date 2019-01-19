@@ -1,33 +1,29 @@
 {
   "name": "bookmarklet-platform",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "author": "Ashton Meuser",
   "description": "A platform for distributing bookmarklets.",
-  "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "test": "mocha --recursive"
+    "dev": "parcel src/index.pug src/b/index.pug",
+    "clean": "rm -r dist/*",
+    "build": "parcel build src/index.pug src/b/index.pug --no-source-maps",
   },
-  "dependencies": {
-    "buble": "^0.13.1",
-    "ejs": "^2.5.7",
-    "express": "^4.16.3",
-    "htmlencode": "^0.0.4",
-    "mocha": "^3.5.3",
-    "nock": "^8.2.2",
-    "request": "^2.85.0",
-    "request-promise-native": "^1.0.5",
-    "uglify-js": "^2.8.29"
-  },
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/ashtonmeuser/bookmarklet-platform"
   },
   "license": "MIT",
   "devDependencies": {
-    "chai": "^3.5.0",
-    "chai-as-promised": "^7.1.1",
-    "mocha": "^3.0.2",
-    "nock": "^8.0.0"
-  }
+    "babel": "^6.23.0",
+    "eslint": "^5.12.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "less": "^3.9.0",
+    "parcel-bundler": "^1.11.0",
+    "pug": "^2.0.3"
+  },
+  "browserslist": [
+    "since 2017-06"
+  ]
 }

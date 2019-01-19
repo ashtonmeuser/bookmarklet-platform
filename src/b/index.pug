@@ -1,0 +1,12 @@
+extends ../layout
+
+block head
+  script(src='https://unpkg.com/@babel/standalone/babel.min.js')
+  script(src='/js/bookmarklet.js')
+
+block main
+  div(class='bookmarklet-container')
+    include ../partials/modal.pug
+    include ../partials/properties.pug
+    include ../partials/bookmarkletButton.pug
+  include ../partials/bookmarkletLinks.pug

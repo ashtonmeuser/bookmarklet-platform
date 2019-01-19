@@ -1,0 +1,192 @@
+// Variables
+@max-row-width: 500px;
+@body-background-color: #F5F5F5;
+@button-color: #FFF;
+@error-background-color: #F08080;
+@primary-button-background-color: #5F9EA0;
+@primary-button-hover-background-color: #7EB1B3;
+@disabled-button-color: #BBB;
+@link-color: #000;
+@link-hover-color: #666;
+@code-background-color: #DDD;
+@transition-duration: 0.2s;
+@has-mouse: ~'(any-hover: hover)';
+@mobile-screen: ~'only screen and (max-width: 420px)';
+
+// Mixins
+.animated(@property: all; @easing: ease) {
+  transition-property: @property;
+  transition-duration: @transition-duration;
+  transition-timing-function: @easing;
+}
+
+// Layout
+body {
+  font-family: Courier New;
+  font-size: 16px;
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+  text-align: center;
+  background-color: @body-background-color;
+}
+main {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+p {
+  margin: 0;
+}
+.row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: @max-row-width;
+  padding: 5px 0;
+}
+.column {
+  flex: 1 0 0;
+  &.left {
+    max-width: 70px;
+    text-align: right;
+  }
+  &.right {
+    text-align: left;
+    padding-left: 10px;
+  }
+}
+
+// Buttons, links
+.button-title {
+  font-size: 1.5em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.button {
+  .animated(background-color);
+  border-radius: 10px;
+  color: @button-color;
+  padding: 20px;
+  text-decoration: none;
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
+  min-width: 100px;
+  margin: 20px 0;
+  &.primary {
+    background: @primary-button-background-color;
+  }
+  &.disabled {
+    background: @disabled-button-color;
+  }
+}
+.button-subtitle:after {
+  content: 'long-press to save'
+}
+.link {
+  .animated(color);
+  color: @link-color;
+  text-decoration: underline;
+  &:hover {
+    color: @link-hover-color;
+  }
+}
+@media (any-hover: hover) {
+  .button:hover {
+    text-decoration: none;
+  }
+  .button.primary:hover {
+    background: @primary-button-hover-background-color;
+  }
+  .button.disabled:hover {
+    background: @disabled-button-color;
+    cursor: not-allowed;
+  }
+  .button-subtitle:after {
+    content: 'drag to bookmarks to save'
+  }
+}
+
+// Input
+input {
+  text-align: center;
+  font-size: 1em;
+  border-radius: 10px;
+  border: 0;
+  width: 100%;
+  min-width: 100px;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+// Header
+header {
+  margin-bottom: 20px;
+  & h1 {
+    .animated(color);
+    @media @mobile-screen {
+      font-size: 3em;
+    }
+    font-family: 'Damion', cursive;
+    font-size: 4em;
+    line-height: 0.8;
+    font-weight: bold;
+    margin: 0;
+  }
+  & h2 {
+    font-weight: normal;
+    font-size: 1.5em;
+    margin: 0;
+    line-height: 1em;
+  }
+  & a {
+    text-decoration: none;
+    color: inherit;
+    &:hover {
+      color: @link-hover-color;
+    }
+  }
+}
+
+// Bookmarklet
+.bookmarklet-container {
+  .animated(opacity);
+  position: relative;
+  max-width: @max-row-width;
+  width: 100%;
+}
+.modal {
+  transition: visibility 0s linear @transition-duration, opacity @transition-duration ease;
+  background-color: @body-background-color;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  & .icon {
+    margin-bottom: 10px;
+  }
+}
+#row-codepen-link {
+  display: none;
+}
+
+// Error
+.error {
+  color: @error-background-color;
+}
+
+// Code
+span.code {
+  background-color: @code-background-color;
+}
