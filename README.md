@@ -5,7 +5,7 @@ A platform for distributing bookmarklets. Observable in the wild [here](http://b
 
 ### Usage
 
-The Bookmarklet Bazaar can be used to create and share simple pieces of executable JavaScript, like [an emoji generator](http://bookmarklet-platform.herokuapp.com/ashtonmeuser/JKgvxK) or [a word counter](http://bookmarklet-platform.herokuapp.com/ashtonmeuser/vJEOBJ).
+This site can be used to create and share simple pieces of executable JavaScript, like [an emoji generator](http://bookmarklet-platform.herokuapp.com/ashtonmeuser/JKgvxK) or [a word counter](http://bookmarklet-platform.herokuapp.com/ashtonmeuser/vJEOBJ).
 
 To generate your own custom bookmarklet, write some JavaScript on [CodePen](http://codepen.io/pen), copy the pen's url, paste it in the input field, and hit generate.
 

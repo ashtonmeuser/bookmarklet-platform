@@ -77,6 +77,7 @@ window.onload = async () => {
     revealCodepenLink(author, id);
     document.getElementById('span-modal-message').innerText = 'downloading pen...';
     const response = await getRequest(`https://codepen.io/${author}/pen/${id}.js`);
+    document.getElementById('span-modal-message').innerText = 'transpiling js...';
     const pen = new Pen(author, id, response);
     populatePenProperties(pen);
     const button = document.getElementById('anchor-bookmarklet');
