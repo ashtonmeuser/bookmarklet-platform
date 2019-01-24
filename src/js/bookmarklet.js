@@ -1,9 +1,4 @@
-const getPenProperty = (penCode, property) => {
-  const propertyRegex = new RegExp(`//[\\s\\t]*bookmarklet_${property}[\\s\\t]*[:=][\\s\\t]*(.+)`, 'i');
-  const matches = penCode.match(propertyRegex);
-
-  return matches !== null ? matches[1] : `no ${property}`;
-};
+import Pen from './Pen';
 
 const getRequest = url => new Promise((resolve, reject) => {
   const xhr = new XMLHttpRequest();
@@ -19,15 +14,6 @@ const getRequest = url => new Promise((resolve, reject) => {
   };
   xhr.send();
 });
-
-const parsePenCode = (response) => {
-  try {
-    const { code } = Babel.transform(response, { presets: ['es2015'], minified: true });
-    return encodeURIComponent(code);
-  } catch (error) {
-    throw new Error('could not parse codepen javascript');
-  }
-};
 
 const revealCodepenLink = (author, id) => {
   const row = document.getElementById('row-codepen-link');
@@ -64,16 +50,6 @@ const revealBookmarkletHidden = () => {
     element.classList.remove('bookmarklet-hidden');
   });
 };
-
-class Pen {
-  constructor(author, id, raw) {
-    this.author = author;
-    this.id = id;
-    this.title = getPenProperty(raw, 'title');
-    this.about = getPenProperty(raw, 'about');
-    this.code = parsePenCode(raw);
-  }
-}
 
 window.onhashchange = () => { window.location.reload(); };
 
