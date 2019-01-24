@@ -2,7 +2,7 @@
 @max-row-width: 500px;
 @body-background-color: #F5F5F5;
 @button-color: #FFF;
-@error-background-color: #F08080;
+@error-color: #EA4848;
 @primary-button-background-color: #5F9EA0;
 @primary-button-hover-background-color: #7EB1B3;
 @disabled-button-color: #BBB;
@@ -38,6 +38,18 @@ main {
   justify-content: center;
   min-height: 100vh;
   padding: 20px;
+}
+section {
+  width: 100%;
+  position: relative;
+  max-width: @max-row-width;
+  min-height: 100px;
+  margin: 20px 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 p {
   margin: 0;
@@ -80,7 +92,7 @@ p {
   overflow: hidden;
   width: 100%;
   min-width: 100px;
-  margin: 20px 0;
+  margin-top: 20px;
   &.primary {
     background: @primary-button-background-color;
   }
@@ -129,7 +141,6 @@ input {
 
 // Header
 header {
-  margin-bottom: 20px;
   & h1 {
     .animated(color);
     @media @mobile-screen {
@@ -157,11 +168,8 @@ header {
 }
 
 // Bookmarklet
-.bookmarklet-container {
-  .animated(opacity);
-  position: relative;
-  max-width: @max-row-width;
-  width: 100%;
+.bookmarklet-hidden {
+  display: none;
 }
 .modal {
   transition: visibility 0s linear @transition-duration, opacity @transition-duration ease;
@@ -183,7 +191,7 @@ header {
 
 // Error
 .error {
-  color: @error-background-color;
+  color: @error-color;
 }
 
 // Code

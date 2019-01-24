@@ -59,6 +59,12 @@ const populatePenProperties = (pen) => {
   }
 };
 
+const revealBookmarkletHidden = () => {
+  Array.from(document.getElementsByClassName('bookmarklet-hidden')).forEach((element) => {
+    element.classList.remove('bookmarklet-hidden');
+  });
+};
+
 class Pen {
   constructor(author, id, raw) {
     this.author = author;
@@ -74,19 +80,23 @@ window.onhashchange = () => { window.location.reload(); };
 window.onload = async () => {
   try {
     const { author, id } = parseHash();
-    revealCodepenLink(author, id);
-    document.getElementById('span-modal-message').innerText = 'downloading pen...';
-    const response = await getRequest(`https://codepen.io/${author}/pen/${id}.js`);
-    document.getElementById('span-modal-message').innerText = 'transpiling js...';
-    const pen = new Pen(author, id, response);
-    populatePenProperties(pen);
-    const button = document.getElementById('anchor-bookmarklet');
-    button.setAttribute('href', `javascript:${pen.code}`);
-    button.classList.remove('disabled');
-    document.getElementById('div-bookmarklet-title').innerText = pen.title;
-    const modal = document.getElementById('div-modal');
-    modal.style.opacity = 0;
-    modal.style.visibility = 'hidden';
+    try {
+      document.getElementById('span-modal-message').innerText = 'downloading pen...';
+      const response = await getRequest(`https://codepen.io/${author}/pen/${id}.js`);
+      document.getElementById('span-modal-message').innerText = 'transpiling js...';
+      const pen = new Pen(author, id, response);
+      populatePenProperties(pen);
+      const button = document.getElementById('anchor-bookmarklet');
+      button.setAttribute('href', `javascript:${pen.code}`);
+      button.classList.remove('disabled');
+      document.getElementById('div-bookmarklet-title').innerText = pen.title;
+      const modal = document.getElementById('div-modal');
+      modal.style.opacity = 0;
+      modal.style.visibility = 'hidden';
+      revealBookmarkletHidden();
+    } finally {
+      revealCodepenLink(author, id);
+    }
   } catch (error) {
     const message = document.getElementById('span-modal-message');
     message.innerText = error.message;
