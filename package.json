@@ -4,9 +4,9 @@
   "author": "Ashton Meuser",
   "description": "A platform for distributing bookmarklets.",
   "scripts": {
-    "dev": "parcel src/*/index.pug",
-    "clean": "rm -r dist/*",
-    "build": "parcel build src/*/index.pug --no-source-maps"
+    "dev": "parcel 'src/**/index.pug'",
+    "clean": "rm -rf dist/*",
+    "build": "parcel build 'src/**/index.pug' --no-source-maps"
   },
   "dependencies": {},
   "repository": {
