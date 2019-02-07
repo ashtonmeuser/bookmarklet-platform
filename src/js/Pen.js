@@ -1,5 +1,5 @@
 const getPenProperty = (penCode, property) => {
-  const propertyRegex = new RegExp(`//[\\s\\t]*bookmarklet_${property}[\\s\\t]*[:=][\\s\\t]*(.+)`, 'i');
+  const propertyRegex = new RegExp(`//[\\s\\t]*bookmarklet[-_]${property}[\\s\\t]*[:=][\\s\\t]*(.+)`, 'i');
   const matches = penCode.match(propertyRegex);
 
   return matches !== null ? matches[1] : `no ${property}`;
