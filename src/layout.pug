@@ -1,0 +1,18 @@
+doctype html
+html(lang='en')
+  head
+    include partials/googleAnalytics.pug
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    title bookmarkl.ink
+    link(rel='shortcut icon' href='/assets/favicon.ico')
+    link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Damion')
+    link(rel='stylesheet' href='/style.less')
+    block head
+  body
+    main
+      include partials/header.pug
+      section
+        block section
+      footer
+        block footer

@@ -1,0 +1,11 @@
+extends layout
+
+block head
+  script(src='/js/home.js')
+  
+block section
+  include partials/about.pug
+  include partials/generateForm.pug
+
+block footer
+  include partials/githubLink.pug
