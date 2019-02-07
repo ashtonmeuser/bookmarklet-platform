@@ -1,19 +1,5 @@
 import Pen from './Pen';
-
-const getRequest = url => new Promise((resolve, reject) => {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', url);
-  xhr.onload = () => {
-    if (xhr.status === 200) {
-      return resolve(xhr.response);
-    }
-    return reject(new Error(`failed to fetch javascript with code ${xhr.status}`));
-  };
-  xhr.onerror = () => {
-    reject(new Error(`failed to fetch javascript with code ${xhr.status}`));
-  };
-  xhr.send();
-});
+import getRequest from './getRequest';
 
 const revealCodepenLink = (author, id) => {
   const row = document.getElementById('row-codepen-link');
@@ -51,31 +37,67 @@ const revealBookmarkletHidden = () => {
   });
 };
 
+const copyToClipboard = (string) => {
+  const textArea = document.createElement('textarea');
+  textArea.value = string;
+  document.body.appendChild(textArea);
+  textArea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textArea);
+};
+
+const displayModal = (message = null, error = false) => {
+  const modal = document.getElementById('div-modal');
+  if (message === null) {
+    modal.classList.remove('modal-hidden');
+    modal.style.opacity = 0;
+    modal.style.visibility = 'hidden';
+  } else {
+    modal.classList.add('modal-hidden');
+    document.getElementById('span-modal-message').innerText = message;
+    if (error) modal.classList.add('error');
+    else modal.classList.remove('error');
+    modal.style.opacity = 1;
+    modal.style.visibility = 'visible';
+  }
+};
+
+const handleContextMenu = (event) => {
+  const button = document.getElementById('anchor-bookmarklet');
+  copyToClipboard(button.href);
+  displayModal('copied to clipboard');
+  window.setTimeout(displayModal, 1500);
+  event.preventDefault();
+  event.stopPropagation();
+  return false;
+};
+
+const displayBookmarkletButton = (pen) => {
+  const button = document.getElementById('anchor-bookmarklet');
+  button.oncontextmenu = handleContextMenu;
+  button.setAttribute('href', `javascript:${pen.code}`);
+  button.classList.remove('disabled');
+  document.getElementById('div-bookmarklet-title').innerText = pen.title;
+};
+
 window.onhashchange = () => { window.location.reload(); };
 
 window.onload = async () => {
   try {
     const { author, id } = parseHash();
     try {
-      document.getElementById('span-modal-message').innerText = 'downloading pen...';
+      displayModal('downloading pen...');
       const response = await getRequest(`https://codepen.io/${author}/pen/${id}.js`);
-      document.getElementById('span-modal-message').innerText = 'transpiling js...';
+      displayModal('transpiling js...');
       const pen = new Pen(author, id, response);
       populatePenProperties(pen);
-      const button = document.getElementById('anchor-bookmarklet');
-      button.setAttribute('href', `javascript:${pen.code}`);
-      button.classList.remove('disabled');
-      document.getElementById('div-bookmarklet-title').innerText = pen.title;
-      const modal = document.getElementById('div-modal');
-      modal.style.opacity = 0;
-      modal.style.visibility = 'hidden';
+      displayBookmarkletButton(pen);
+      displayModal();
       revealBookmarkletHidden();
     } finally {
       revealCodepenLink(author, id);
     }
   } catch (error) {
-    const message = document.getElementById('span-modal-message');
-    message.innerText = error.message;
-    message.classList.add('error');
+    displayModal(error.message, true);
   }
 };

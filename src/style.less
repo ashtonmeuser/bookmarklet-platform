@@ -101,7 +101,7 @@ p {
   }
 }
 .button-subtitle:after {
-  content: 'long-press to save'
+  content: 'long-press to copy js'
 }
 .link {
   .animated(color);
@@ -181,6 +181,9 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  &.modal-hidden {
+    transition: visibility 0s linear, opacity @transition-duration ease;
+  }
   & .icon {
     margin-bottom: 10px;
   }
