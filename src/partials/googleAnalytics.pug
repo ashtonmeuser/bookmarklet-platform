@@ -3,4 +3,6 @@ script.
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'UA-83318900-1');
+  gtag('config', 'UA-83318900-1', {
+    'page_path': location.pathname + location.search + location.hash,
+  });
