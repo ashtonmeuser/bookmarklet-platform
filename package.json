@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "parcel 'src/**/index.pug'",
     "clean": "rm -rf dist/*",
-    "build": "parcel build 'src/**/index.pug' --no-source-maps"
+    "build": "npm run clean && parcel build 'src/**/index.pug' --no-source-maps",
+    "test": "jest --silent",
+    "coverage": "jest --silent --coverage"
   },
   "dependencies": {},
   "repository": {
@@ -20,11 +22,17 @@
     "eslint": "^5.12.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
+    "jest": "^24.1.0",
     "less": "^3.9.0",
     "parcel-bundler": "^1.11.0",
     "pug": "^2.0.3"
   },
   "browserslist": [
     "since 2017-06"
-  ]
+  ],
+  "jest": {
+    "collectCoverageFrom": [
+      "src/js/*.js"
+    ]
+  }
 }

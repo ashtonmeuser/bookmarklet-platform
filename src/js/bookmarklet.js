@@ -1,5 +1,5 @@
-import Pen from './Pen';
-import getRequest from './getRequest';
+const Pen = require('./Pen');
+const getRequest = require('./getRequest');
 
 const revealCodepenLink = (author, id) => {
   const row = document.getElementById('row-codepen-link');

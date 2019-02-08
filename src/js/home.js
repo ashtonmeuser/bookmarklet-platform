@@ -1,6 +1,6 @@
 const parseBookmarklet = (url) => {
   const button = document.getElementById('anchor-generate-bookmarklet');
-  const codepenRegex = new RegExp('codepen.io/([-_a-z0-9]+)/pen/([a-z0-9]+).*', 'i');
+  const codepenRegex = new RegExp('codepen.io/([-_a-z0-9]+)/pen/([-_a-z0-9]+).*', 'i');
   const matches = url.match(codepenRegex);
   if (matches !== null && matches[1] !== null && matches[2] !== null) {
     button.classList.remove('disabled');
