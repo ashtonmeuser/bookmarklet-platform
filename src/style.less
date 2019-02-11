@@ -3,15 +3,15 @@
 @body-background-color: #F5F5F5;
 @button-color: #FFF;
 @error-color: #EA4848;
-@primary-button-background-color: #5F9EA0;
-@primary-button-hover-background-color: #7EB1B3;
+@button-background-color: #5F9EA0;
+@button-hover-background-color: #7EB1B3;
 @disabled-button-color: #BBB;
 @link-color: #000;
 @link-hover-color: #666;
 @code-background-color: #DDD;
 @transition-duration: 0.2s;
-@has-mouse: ~'(any-hover: hover)';
 @mobile-screen: ~'only screen and (max-width: 420px)';
+@has-mouse: ~'(any-hover: hover)';
 
 // Mixins
 .animated(@property: all; @easing: ease) {
@@ -82,6 +82,7 @@ p {
 }
 .button {
   .animated(background-color);
+  background-color: @button-background-color;
   border-radius: 10px;
   color: @button-color;
   padding: 20px;
@@ -93,15 +94,18 @@ p {
   width: 100%;
   min-width: 100px;
   margin-top: 20px;
-  &.primary {
-    background: @primary-button-background-color;
+  &:hover {
+    @media @has-mouse {
+      background-color: @button-hover-background-color;
+    }
   }
   &.disabled {
-    background: @disabled-button-color;
+    background-color: @disabled-button-color;
+    &:hover {
+      background-color: @disabled-button-color;
+      cursor: not-allowed;
+    }
   }
-}
-.button-subtitle:after {
-  content: 'long-press to copy js'
 }
 .link {
   .animated(color);
@@ -109,21 +113,6 @@ p {
   text-decoration: underline;
   &:hover {
     color: @link-hover-color;
-  }
-}
-@media @has-mouse {
-  .button:hover {
-    text-decoration: none;
-  }
-  .button.primary:hover {
-    background: @primary-button-hover-background-color;
-  }
-  .button.disabled:hover {
-    background: @disabled-button-color;
-    cursor: not-allowed;
-  }
-  .button-subtitle:after {
-    content: 'drag to bookmarks to save'
   }
 }
 
@@ -188,8 +177,12 @@ header {
     margin-bottom: 10px;
   }
 }
-#row-codepen-link {
+#div-codepen-link,
+#div-bookmarklet-copy {
   display: none;
+}
+#anchor-bookmarklet-copy {
+  margin-top: 0;
 }
 
 // Error
