@@ -1,5 +1,5 @@
 global.Babel = require('./__mock__/Babel');
-const Pen = require('../src/js/Pen.js');
+const Pen = require('../src/js/Pen');
 
 it('should create pen', () => {
   const author = 'testAuthor';

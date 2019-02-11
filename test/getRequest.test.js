@@ -1,5 +1,5 @@
 global.XMLHttpRequest = require('./__mock__/XMLHttpRequest');
-const getRequest = require('../src/js/getRequest.js');
+const getRequest = require('../src/js/getRequest');
 
 it('should send successful GET request', async () => {
   const response = await getRequest(null);

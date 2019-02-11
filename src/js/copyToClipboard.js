@@ -1,9 +1,6 @@
 const selectTextArea = (element) => {
-  const isReadOnly = element.hasAttribute('readonly');
-  if (!isReadOnly) element.setAttribute('readonly', '');
   element.select();
   element.setSelectionRange(0, element.value.length);
-  if (!isReadOnly) element.removeAttribute('readonly');
   return element.value;
 };
 
@@ -21,7 +18,7 @@ const copyToClipboard = (string) => {
   // Move element to the same position vertically
   const yPosition = window.pageYOffset || document.documentElement.scrollTop;
   fakeElem.style.top = `${yPosition}px`;
-  fakeElem.setAttribute('readonly', '');
+  fakeElem.readOnly = true;
   fakeElem.value = string;
   document.body.appendChild(fakeElem);
   selectTextArea(fakeElem);
@@ -29,7 +26,7 @@ const copyToClipboard = (string) => {
     if (!document.execCommand('copy')) {
       throw new Error();
     }
-  } catch (err) {
+  } catch (error) {
     throw new Error('failed to copy to clipboard');
   } finally {
     document.body.removeChild(fakeElem);
