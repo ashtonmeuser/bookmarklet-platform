@@ -27,9 +27,6 @@
     "parcel-bundler": "^1.11.0",
     "pug": "^2.0.3"
   },
-  "browserslist": [
-    "since 2017-06"
-  ],
   "jest": {
     "collectCoverageFrom": [
       "src/js/*.js"

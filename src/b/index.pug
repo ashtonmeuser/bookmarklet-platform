@@ -1,7 +1,8 @@
 extends ../layout
 
 block head
-  script(src='https://unpkg.com/@babel/standalone/babel.min.js')
+  script(src='https://unpkg.com/@babel/polyfill@7/dist/polyfill.min.js')
+  script(src='https://unpkg.com/@babel/standalone@7/babel.min.js')
   script(src='/js/bookmarklet.js')
 
 block section

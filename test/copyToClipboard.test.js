@@ -22,7 +22,12 @@ it('should successfully execute copy command', () => {
 });
 
 it('should error if unable to execute command', () => {
-  const call = () => { copyToClipboard('failValue'); };
-  expect(call).toThrowError('failed to copy to clipboard');
+  expect(() => copyToClipboard('failValue')).toThrowError('failed to copy to clipboard');
   expect(document.execCommand).toBeCalledWith('copy');
+});
+
+it('should set up and tear down element', () => {
+  expect(copyToClipboard).not.toThrow();
+  expect(document.body.appendChild).toBeCalled();
+  expect(document.body.removeChild).toBeCalled();
 });
