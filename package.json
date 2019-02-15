@@ -8,7 +8,8 @@
     "clean": "rm -rf dist/*",
     "build": "npm run clean && parcel build 'src/**/index.pug' --no-source-maps",
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "sync": "aws s3 sync dist s3://bookmarkl.ink --delete"
   },
   "dependencies": {},
   "repository": {

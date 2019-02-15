@@ -27,6 +27,7 @@ const populatePenProperties = (pen) => {
     ['author', 'id', 'title', 'about'].forEach((property) => {
       document.getElementById(`div-property-${property}`).innerText = pen[property];
     });
+    document.title = pen.title;
   } catch (error) {
     throw new Error('failed to list bookmarklet properties');
   }
@@ -67,7 +68,7 @@ const displayBookmarkletButton = (pen) => {
   if (isMobileOrTablet()) {
     const copyButton = document.getElementById('anchor-bookmarklet-copy');
     copyButton.classList.remove('disabled');
-    document.getElementById('div-bookmarklet-subtitle').innerText = 'bookmark js to save';
+    document.getElementById('div-bookmarklet-subtitle').classList.add('mobile');
     document.getElementById('div-bookmarklet-copy').style.display = 'flex';
     copyButton.onclick = () => {
       try {

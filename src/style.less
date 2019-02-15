@@ -177,6 +177,15 @@ header {
     margin-bottom: 10px;
   }
 }
+#div-bookmarklet-subtitle {
+  // Use pseudo-elements to avoid anchor title including subtitle
+  &:after {
+    content: 'drag to bookmarks to save'
+  }
+  &.mobile:after {
+    content: 'paste js in bookmark'
+  }
+}
 #div-codepen-link,
 #div-bookmarklet-copy {
   display: none;
