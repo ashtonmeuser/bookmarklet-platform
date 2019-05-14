@@ -62,7 +62,7 @@ const isMobileOrTablet = () => {
 
 const displayBookmarkletButton = (pen) => {
   const button = document.getElementById('anchor-bookmarklet');
-  button.setAttribute('href', `javascript:${pen.code}`);
+  button.setAttribute('href', `javascript:(()=>{${pen.code}})();`);
   button.classList.remove('disabled');
   document.getElementById('div-bookmarklet-title').innerText = pen.title;
   if (isMobileOrTablet()) {
