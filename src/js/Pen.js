@@ -14,7 +14,7 @@ const parsePenCode = (response) => {
   }
 };
 
-class Pen {
+export default class Pen {
   constructor(author, id, raw) {
     this.author = author;
     this.id = id;
@@ -23,5 +23,3 @@ class Pen {
     this.code = parsePenCode(raw);
   }
 }
-
-module.exports = Pen;

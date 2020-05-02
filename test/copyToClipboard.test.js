@@ -1,4 +1,4 @@
-const copyToClipboard = require('../src/js/copyToClipboard');
+import copyToClipboard from '../src/js/copyToClipboard';
 
 beforeAll(() => {
   Object.defineProperties(document, {

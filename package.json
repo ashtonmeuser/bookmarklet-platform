@@ -1,36 +1,35 @@
 {
   "name": "bookmarklet-platform",
-  "version": "0.2.0",
-  "author": "Ashton Meuser",
+  "version": "0.2.1",
   "description": "A platform for distributing bookmarklets.",
+  "repository": "github:ashtonmeuser/bookmarklet-platform",
+  "author": "Ashton Meuser <ashtonmeuser@gmail.com>",
+  "license": "MIT",
   "scripts": {
-    "dev": "parcel 'src/**/index.pug'",
-    "clean": "rm -rf dist/*",
-    "build": "npm run clean && parcel build 'src/**/index.pug' --no-source-maps",
-    "test": "jest",
-    "coverage": "jest --coverage",
+    "dev": "concurrently -k 'parcel watch src/**/index.pug' 'serve dist'",
+    "prebuild": "rm -rf dist/*",
+    "build": "parcel build 'src/**/index.pug' --no-source-maps",
+    "test": "jest --coverage",
+    "presync": "yarn run build",
     "sync": "aws s3 sync dist s3://bookmarkl.ink --delete"
   },
-  "dependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ashtonmeuser/bookmarklet-platform"
-  },
-  "license": "MIT",
   "devDependencies": {
-    "autoprefixer": "^9.4.7",
-    "babel": "^6.23.0",
-    "eslint": "^5.13.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.16.0",
-    "jest": "^24.1.0",
-    "less": "^3.9.0",
-    "parcel-bundler": "^1.11.0",
-    "pug": "^2.0.3"
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-transform-modules-commonjs": "^7.9.6",
+    "autoprefixer": "^9.7.6",
+    "concurrently": "^5.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "jest": "^25.5.3",
+    "less": "^3.11.1",
+    "parcel-bundler": "^1.12.4",
+    "pug": "^2.0.4",
+    "serve": "^11.3.0"
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/js/*.js"
+      "src/**/*.js"
     ]
   }
 }

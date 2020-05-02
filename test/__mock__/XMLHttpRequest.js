@@ -1,12 +1,4 @@
-class mockXhr {
-  constructor() {
-    this.url = null;
-    this.status = null;
-    this.response = null;
-    this.onerror = () => { };
-    this.onload = () => { };
-  }
-
+export default class mockXhr {
   open(_, url) {
     this.url = url;
   }
@@ -28,5 +20,3 @@ class mockXhr {
     }
   }
 }
-
-module.exports = mockXhr;

@@ -4,7 +4,7 @@ const selectTextArea = (element) => {
   return element.value;
 };
 
-const copyToClipboard = (string) => {
+export default (string) => {
   const fakeElem = document.createElement('textarea');
   // Prevent zooming on iOS
   fakeElem.style.fontSize = '12pt';
@@ -32,5 +32,3 @@ const copyToClipboard = (string) => {
     document.body.removeChild(fakeElem);
   }
 };
-
-module.exports = copyToClipboard;

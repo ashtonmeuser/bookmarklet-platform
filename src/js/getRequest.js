@@ -1,4 +1,4 @@
-const getRequest = url => new Promise((resolve, reject) => {
+export default (url) => new Promise((resolve, reject) => {
   const xhr = new XMLHttpRequest();
   xhr.open('GET', url);
   xhr.onload = () => {
@@ -12,5 +12,3 @@ const getRequest = url => new Promise((resolve, reject) => {
   };
   xhr.send();
 });
-
-module.exports = getRequest;

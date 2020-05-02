@@ -1,6 +1,6 @@
-const Pen = require('./Pen');
-const getRequest = require('./getRequest');
-const copyToClipboard = require('./copyToClipboard');
+import Pen from './Pen';
+import getRequest from './getRequest';
+import copyToClipboard from './copyToClipboard';
 
 const revealCodepenLink = (author, id) => {
   const row = document.getElementById('div-codepen-link');
