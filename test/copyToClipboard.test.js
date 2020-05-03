@@ -1,19 +1,9 @@
 import copyToClipboard from '../src/js/copyToClipboard';
 
 beforeAll(() => {
-  Object.defineProperties(document, {
-    execCommand: {
-      value: jest.fn(() => document.mockElementValue !== 'failValue'),
-    },
-  });
-  Object.defineProperties(document.body, {
-    appendChild: {
-      value: jest.fn((element) => {
-        document.mockElementValue = element.value;
-      }),
-    },
-    removeChild: { value: jest.fn() },
-  });
+  document.execCommand = jest.fn(() => document.mockElementValue !== 'failValue');
+  document.body.appendChild = jest.fn((e) => { document.mockElementValue = e.value; });
+  document.body.removeChild = jest.fn();
 });
 
 it('should successfully execute copy command', () => {

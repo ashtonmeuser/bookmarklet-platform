@@ -83,9 +83,7 @@ const displayBookmarkletButton = (pen) => {
   }
 };
 
-window.onhashchange = () => { window.location.reload(); };
-
-window.onload = async () => {
+const onload = async () => {
   try {
     const { author, id } = parseHash();
     try {
@@ -104,3 +102,8 @@ window.onload = async () => {
     displayModal(error.message, true);
   }
 };
+
+window.onhashchange = () => { window.location.reload(); };
+window.onload = onload;
+
+export default onload;

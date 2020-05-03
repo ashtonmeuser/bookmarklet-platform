@@ -1,4 +1,4 @@
-export default class mockXhr {
+export default class XMLHttpRequest {
   open(_, url) {
     this.url = url;
   }
