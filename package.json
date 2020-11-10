@@ -6,9 +6,9 @@
   "author": "Ashton Meuser <ashtonmeuser@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "concurrently -k 'parcel watch src/**/index.pug' 'serve dist'",
+    "dev": "concurrently -k 'parcel watch src/*.pug' 'serve -d -c serve.json'",
     "prebuild": "rm -rf dist/*",
-    "build": "parcel build 'src/**/index.pug' --no-source-maps",
+    "build": "parcel build 'src/*.pug' --no-source-maps",
     "test": "jest --coverage",
     "presync": "yarn run build",
     "sync": "aws s3 sync dist s3://bookmarkl.ink --delete"
