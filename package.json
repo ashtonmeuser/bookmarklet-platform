@@ -6,7 +6,7 @@
   "author": "Ashton Meuser <ashtonmeuser@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "concurrently -k 'parcel watch src/*.pug' 'serve -d -c serve.json'",
+    "dev": "concurrently -k 'parcel watch src/**.pug' 'serve -d -c serve.json'",
     "prebuild": "rm -rf dist/*",
     "build": "parcel build 'src/*.pug' --no-source-maps",
     "test": "jest --coverage",
@@ -22,9 +22,9 @@
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
     "jest": "^25.5.3",
-    "less": "^3.11.1",
+    "less": "^3.12.2",
     "parcel-bundler": "^1.12.4",
-    "pug": "^2.0.4",
+    "pug": "^3.0.0",
     "serve": "^11.3.0"
   },
   "jest": {

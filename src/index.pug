@@ -3,9 +3,10 @@ extends partials/layout
 block head
   script(src='/js/home.js')
 
-block section
-  include partials/about.pug
-  include partials/generateForm.pug
+block content
+  section(x-data='data()')
+    include partials/about.pug
+    include partials/generateForm.pug
 
 block footer
   include partials/githubLink.pug

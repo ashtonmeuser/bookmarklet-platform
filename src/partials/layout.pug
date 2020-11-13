@@ -8,11 +8,11 @@ html(lang='en')
     link(rel='shortcut icon' href='/assets/favicon.ico')
     link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Damion')
     link(rel='stylesheet' href='/style.less')
+    script(defer='true' src='https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js')
     block head
   body
     main
       include header.pug
-      section
-        block section
+      block content
       footer
         block footer

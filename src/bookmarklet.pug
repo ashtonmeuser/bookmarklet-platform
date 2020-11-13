@@ -5,10 +5,11 @@ block head
   script(src='https://cdn.jsdelivr.net/npm/@babel/standalone@7.12.6/babel.min.js' defer)
   script(src='/js/bookmarklet.js' defer)
 
-block section
-  include partials/modal.pug
-  include partials/properties.pug
-  include partials/bookmarkletButton.pug
+block content
+  section
+    include partials/modal.pug
+    include partials/properties.pug
+    include partials/bookmarkletButton.pug
 
 block footer
   include partials/codepenLink.pug

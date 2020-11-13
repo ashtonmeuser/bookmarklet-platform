@@ -1,6 +1,6 @@
 div(class='row')
-  input(type='text' id='input-codepen-url' placeholder='codepen url')
+  input(type='text' placeholder='codepen url' x-model='gistUrl')
 
 div(class='row')
-  a(id='anchor-generate-bookmarklet' class='button primary disabled')
+  a(class='button primary disabled' x-bind:href='bookmarkletUrl' x-bind:class='{disabled: !valid}')
     div(class='button-title') generate
