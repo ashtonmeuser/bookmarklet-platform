@@ -14,18 +14,16 @@
     "sync": "aws s3 sync dist s3://bookmarkl.ink --delete"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/plugin-transform-modules-commonjs": "^7.9.6",
-    "autoprefixer": "^9.7.6",
-    "concurrently": "^5.2.0",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2",
-    "jest": "^25.5.3",
+    "autoprefixer": "^10.0.2",
+    "concurrently": "^5.3.0",
+    "eslint": "^7.13.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "jest": "^26.6.3",
     "less": "^3.12.2",
-    "parcel-bundler": "^1.12.4",
+    "parcel": "^2.0.0-nightly.445",
     "pug": "^3.0.0",
-    "serve": "^11.3.0"
+    "serve": "^11.3.2"
   },
   "jest": {
     "collectCoverageFrom": [
