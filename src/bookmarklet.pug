@@ -5,7 +5,7 @@ block head
   script(src='./js/bookmarklet.js')
 
 block content
-  section
+  section(x-data='data()' x-init='init')
     include partials/modal.pug
     include partials/properties.pug
     include partials/bookmarkletButton.pug
