@@ -5,10 +5,9 @@ block head
   script(src='./js/bookmarklet.js')
 
 block content
-  section(x-data='data()' x-init='init')
-    include partials/modal.pug
-    include partials/properties.pug
-    include partials/bookmarkletButton.pug
+  include partials/modal.pug
+  include partials/properties.pug
+  include partials/bookmarkletButton.pug
 
 block footer
   include partials/codepenLink.pug

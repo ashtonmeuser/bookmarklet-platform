@@ -1,8 +1,16 @@
+const safeUrl = (urlString) => {
+  try {
+    return new URL(urlString);
+  } catch (error) {
+    throw new Error('invalid url');
+  }
+};
+
 const parseUrl = (urlString, pathPattern, hostPattern) => {
-  const url = new URL(urlString);
-  if (hostPattern && !hostPattern.test(url.hostname)) throw Error('Invalid hostname');
+  const url = safeUrl(urlString);
+  if (hostPattern && !hostPattern.test(url.hostname)) throw new Error('invalid hostname');
   const matches = url.pathname.match(pathPattern);
-  if (!matches) throw Error('Invalid URL');
+  if (!matches) throw new Error('invalid bookmarklet path');
   const [author, id, commit, file] = matches.slice(1);
   return {
     author,

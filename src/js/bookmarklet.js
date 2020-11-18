@@ -4,9 +4,11 @@ import { parseBookmarkletUrl } from './parseUrl';
 
 window.data = () => ({
   message: 'loading bookmarklet...',
+  error: false,
   author: null,
   id: null,
   commit: null,
+  gistUrl: null,
   about: null,
   title: null,
   code: null,
@@ -15,19 +17,22 @@ window.data = () => ({
   },
   async init() {
     try {
-      const props = parseBookmarkletUrl(new URL(window.location.href));
+      const props = parseBookmarkletUrl(window.location.href);
       this.author = props.author;
       this.id = props.id;
       this.commit = props.commit;
+      this.gistUrl = `https://gist.github.com/${this.author}/${this.id}`;
       this.message = 'downloading js...';
       const response = await getRequest(`https://gist.githubusercontent.com/${this.author}/${this.id}/raw`);
       this.message = 'transpiling js...';
       const pen = new Pen(this.author, this.id, response);
       this.about = pen.about;
       this.title = pen.title;
+      document.title = pen.title;
       this.code = `javascript:(()=>{${pen.code}})();`;
     } catch (error) {
-      console.log(error);
+      this.error = true;
+      this.message = error.message;
     }
   },
 });

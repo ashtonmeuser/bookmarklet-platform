@@ -10,7 +10,7 @@ const parsePenCode = (response) => {
     const { code } = Babel.transform(response, { presets: ['es2015'], minified: true });
     return encodeURIComponent(code);
   } catch (error) {
-    throw new Error('could not parse codepen javascript');
+    throw new Error('could not parse javascript');
   }
 };
 

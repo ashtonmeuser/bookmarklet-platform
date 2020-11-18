@@ -12,8 +12,9 @@ html(lang='en')
     script(src='https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js' defer)
     block head
   body
-    main
+    main(x-data='data()' x-init='init')
       include header.pug
-      block content
+      section
+        block content
       footer
         block footer

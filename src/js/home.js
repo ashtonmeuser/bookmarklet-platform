@@ -1,6 +1,7 @@
 import { parseGistUrl } from './parseUrl';
 
 window.data = () => ({
+  init() {},
   gistUrl: '',
   get bookmarkletUrl() {
     try {

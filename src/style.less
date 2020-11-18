@@ -73,6 +73,9 @@ p {
     padding-left: 10px;
   }
 }
+.hidden {
+  display: none;
+}
 
 // Buttons, links
 .button-title {
@@ -103,7 +106,6 @@ p {
   &.disabled {
     background-color: @disabled-button-color;
     &:hover {
-      background-color: @disabled-button-color;
       cursor: not-allowed;
     }
   }
@@ -158,42 +160,14 @@ header {
 }
 
 // Bookmarklet
-.bookmarklet-hidden {
-  display: none;
-}
-.modal {
-  transition: visibility 0s linear @transition-duration, opacity @transition-duration ease;
-  background-color: @body-background-color;
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  &.modal-hidden {
-    transition: visibility 0s linear, opacity @transition-duration ease;
-  }
-  & .icon {
-    margin-bottom: 10px;
-  }
-}
 #div-bookmarklet-subtitle:after { // Use pseudo-elements to avoid anchor title including subtitle
   content: 'drag to bookmarks to save'
 }
-#div-codepen-link {
-  display: none;
-}
-#anchor-bookmarklet-copy {
-  margin-top: 0;
-}
 
-// Error
+// Text styles
 .error {
   color: @error-color;
 }
-
-// Code
 span.code {
   background-color: @code-background-color;
 }

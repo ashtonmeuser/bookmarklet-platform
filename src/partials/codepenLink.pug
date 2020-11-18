@@ -1,1 +1,2 @@
-div(class='row' id='div-codepen-link')
+div(class='row hidden' x-bind:class='{hidden: !code}')
+  a(target='_blank' class='link' x-bind:href='gistUrl') view gist

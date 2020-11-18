@@ -1,2 +1,2 @@
-div(class='modal' id='div-modal')
-  span(id='span-modal-message') loading bookmarklet...
+div(class='modal' x-bind:class='{hidden: code}')
+  span(x-text='message' x-bind:class='{error: error}')
