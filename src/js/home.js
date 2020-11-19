@@ -6,7 +6,7 @@ window.data = () => ({
   get bookmarkletUrl() {
     try {
       const props = parseGistUrl(this.gistUrl);
-      return `/${props.author}/${props.id}/${props.commit || ''}/${props.file || ''}`.replace(/\/+$/, '');
+      return `/${props.author}/${props.id}/${props.version || ''}/${props.file || ''}`.replace(/\/+$/, '');
     } catch (error) {
       return null;
     }

@@ -1,4 +1,6 @@
-each val in ['author', 'id', 'title', 'about']
-  div(class='row hidden' x-bind:class='{hidden: !code}')
-    div(class='column left')= val
-    div(class='column right' x-text=val)
+div(class='row hidden' x-bind:class='{hidden: !code}')
+  table
+    each val in ['author', 'id', 'version', 'file', 'title', 'about']
+      tr
+        td= val
+        td(x-text=val)

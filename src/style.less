@@ -54,24 +54,24 @@ section {
 p {
   margin: 0;
 }
+tr {
+  td {
+    padding: 5px 0;
+    vertical-align: top;
+    text-align: right;
+    &:nth-child(2) {
+      text-align: left;
+      word-break: break-word;
+      padding-left: 10px;
+    }
+  }
+}
 .row {
   display: flex;
   justify-content: center;
   width: 100%;
   max-width: @max-row-width;
   padding: 5px 0;
-}
-.column {
-  flex: 1 0 0;
-  word-break: break-word;
-  &.left {
-    max-width: 70px;
-    text-align: right;
-  }
-  &.right {
-    text-align: left;
-    padding-left: 10px;
-  }
 }
 .hidden {
   display: none;

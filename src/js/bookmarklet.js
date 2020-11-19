@@ -7,7 +7,8 @@ window.data = () => ({
   error: false,
   author: null,
   id: null,
-  commit: null,
+  version: null,
+  file: null,
   gistUrl: null,
   about: null,
   title: null,
@@ -20,7 +21,8 @@ window.data = () => ({
       const props = parseBookmarkletUrl(window.location.href);
       this.author = props.author;
       this.id = props.id;
-      this.commit = props.commit;
+      this.version = props.version || 'latest';
+      this.file = props.file || 'default';
       this.gistUrl = `https://gist.github.com/${this.author}/${this.id}`;
       this.message = 'downloading js...';
       const response = await getRequest(`https://gist.githubusercontent.com/${this.author}/${this.id}/raw`);
