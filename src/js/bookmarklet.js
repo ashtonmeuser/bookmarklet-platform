@@ -1,5 +1,4 @@
-import Pen from './Pen';
-import getRequest from './getRequest';
+import Gist from './Gist';
 import { parseBookmarkletUrl } from './parseUrl';
 
 window.data = () => ({
@@ -12,26 +11,27 @@ window.data = () => ({
   gistUrl: null,
   about: null,
   title: null,
-  code: null,
+  href: null,
   get valid() {
     return this.author && this.id;
   },
   async init() {
     try {
-      const props = parseBookmarkletUrl(window.location.href);
-      this.author = props.author;
-      this.id = props.id;
-      this.version = props.version || 'latest';
-      this.file = props.file || 'default';
-      this.gistUrl = `https://gist.github.com/${this.author}/${this.id}`;
+      const params = parseBookmarkletUrl(window.location.href);
+      const gist = new Gist(params.author, params.id, params.version, params.file);
+      this.author = gist.author;
+      this.id = gist.id;
+      this.version = gist.version;
+      this.file = gist.file;
+      this.gistUrl = gist.url;
       this.message = 'downloading js...';
-      const response = await getRequest(`https://gist.githubusercontent.com/${this.author}/${this.id}/raw`);
+      await gist.fetchCode();
+      this.about = gist.about;
+      this.title = gist.title || 'no title';
+      document.title = gist.title || document.title;
       this.message = 'transpiling js...';
-      const pen = new Pen(this.author, this.id, response);
-      this.about = pen.about;
-      this.title = pen.title;
-      document.title = pen.title;
-      this.code = `javascript:(()=>{${pen.code}})();`;
+      await gist.transpileCode();
+      this.href = gist.href;
     } catch (error) {
       this.error = true;
       this.message = error.message;

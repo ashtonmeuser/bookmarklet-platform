@@ -1,4 +1,4 @@
-div(class='row hidden' x-bind:class='{hidden: !code}')
-  a(class='button disabled' x-bind:href='code' x-bind:class='{disabled: !valid}')
+div(class='row hidden' x-bind:class='{hidden: !href}')
+  a(class='button disabled' x-bind:href='href' x-bind:class='{disabled: !valid}')
     div(class='button-title' x-text='title') no title
     div(id='div-bookmarklet-subtitle')
