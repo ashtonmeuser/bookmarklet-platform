@@ -12,9 +12,6 @@ window.data = () => ({
   about: null,
   title: null,
   href: null,
-  get valid() {
-    return this.author && this.id;
-  },
   async init() {
     try {
       const params = parseBookmarkletUrl(window.location.href);
