@@ -10,7 +10,7 @@ const parseUrl = (urlString, pathPattern, hostPattern) => {
   const url = safeUrl(urlString);
   if (hostPattern && !hostPattern.test(url.hostname)) throw new Error('invalid hostname');
   const matches = url.pathname.match(pathPattern);
-  if (!matches) throw new Error('invalid bookmarklet path');
+  if (!matches) throw new Error('invalid path');
   const [author, id, version, file] = matches.slice(1);
   return {
     author,
