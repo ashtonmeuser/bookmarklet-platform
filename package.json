@@ -10,7 +10,7 @@
     "prebuild": "rm -rf dist/*",
     "build": "parcel build 'src/*.pug' --no-source-maps",
     "test": "jest --coverage",
-    "presync": "yarn run build",
+    "presync": "npm run build",
     "sync": "aws s3 sync dist s3://bookmarkl.ink --delete"
   },
   "devDependencies": {
