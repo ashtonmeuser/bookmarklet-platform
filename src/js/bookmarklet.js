@@ -1,7 +1,7 @@
 import Gist from './Gist';
 import { parseBookmarkletUrl } from './parseUrl';
 
-window.data = () => ({
+const data = () => ({
   message: 'loading bookmarklet...',
   error: false,
   author: null,
@@ -35,3 +35,6 @@ window.data = () => ({
     }
   },
 });
+
+window.data = data;
+export default data;

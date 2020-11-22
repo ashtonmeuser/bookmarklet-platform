@@ -1,6 +1,6 @@
 import { parseGistUrl, parseBookmarkletUrl } from '../src/js/parseUrl';
 
-it('should parse bookmarklet URL', async () => {
+it('should parse bookmarklet URL', () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
   const url = `https://bookmarkl.ink/${author}/${id}`;
@@ -9,7 +9,7 @@ it('should parse bookmarklet URL', async () => {
   expect(parsed.id).toBe(id);
 });
 
-it('should parse bookmarklet version', async () => {
+it('should parse bookmarklet version', () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
   const version = '0123456789012345678901234567890123456789';
@@ -18,7 +18,7 @@ it('should parse bookmarklet version', async () => {
   expect(parsed.version).toBe(version);
 });
 
-it('should parse bookmarklet file', async () => {
+it('should parse bookmarklet file', () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
   const file = 'test.js';
@@ -27,7 +27,7 @@ it('should parse bookmarklet file', async () => {
   expect(parsed.file).toBe(file);
 });
 
-it('should parse github.com URL', async () => {
+it('should parse github.com URL', () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
   const url = `https://gist.github.com/${author}/${id}`;
@@ -36,7 +36,7 @@ it('should parse github.com URL', async () => {
   expect(parsed.id).toBe(id);
 });
 
-it('should parse githubusercontent.com URL', async () => {
+it('should parse githubusercontent.com URL', () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
   const url = `https://gist.githubusercontent.com/${author}/${id}`;
@@ -45,7 +45,7 @@ it('should parse githubusercontent.com URL', async () => {
   expect(parsed.id).toBe(id);
 });
 
-it('should parse gist version and file', async () => {
+it('should parse gist version and file', () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
   const version = '0123456789012345678901234567890123456789';
@@ -56,7 +56,7 @@ it('should parse gist version and file', async () => {
   expect(parsed.file).toBe(file);
 });
 
-it('should fail invalid bookmarklet ID', async () => {
+it('should fail invalid bookmarklet ID', () => {
   const author = 'testAuthor';
   const id = 'testId';
   const url = `https://bookmarkl.ink/${author}/${id}`;
@@ -65,21 +65,21 @@ it('should fail invalid bookmarklet ID', async () => {
   }).toThrowError('invalid path');
 });
 
-it('should fail to parse invalid URL', async () => {
+it('should fail to parse invalid URL', () => {
   const url = '';
   expect(() => {
     parseGistUrl(url);
   }).toThrowError('invalid url');
 });
 
-it('should fail to parse invalid hostname', async () => {
+it('should fail to parse invalid hostname', () => {
   const url = 'https://example.com';
   expect(() => {
     parseGistUrl(url);
   }).toThrowError('invalid hostname');
 });
 
-it('should fail to parse invalid path', async () => {
+it('should fail to parse invalid path', () => {
   const url = 'https://gist.github.com';
   expect(() => {
     parseGistUrl(url);

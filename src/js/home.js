@@ -1,6 +1,6 @@
 import { parseGistUrl } from './parseUrl';
 
-window.data = () => ({
+const data = () => ({
   init() {},
   gistUrl: '',
   get bookmarkletUrl() {
@@ -15,3 +15,6 @@ window.data = () => ({
     return this.bookmarkletUrl !== null;
   },
 });
+
+window.data = data;
+export default data;
