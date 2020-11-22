@@ -3,7 +3,7 @@ import getRequest from './getRequest';
 const formatBytes = (bytes) => {
   const sizes = ['B', 'kB', 'MB', 'GB', 'TB', 'PB'];
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  return `${(bytes / 1024 ** i).toFixed(i > 0 ? 3 : 0)} ${sizes[i]}`;
+  return `${(bytes / 1024 ** i).toFixed(i > 0 ? 1 : 0)} ${sizes[i]}`;
 };
 
 export default class Gist {
@@ -28,7 +28,7 @@ export default class Gist {
     this.about = this.extractProperty('about');
   }
 
-  async transpileCode() {
+  transpileCode() {
     this.code = Babel.transform(this.code, { presets: ['env'], minified: true }).code;
     this.href = `javascript:(()=>{${encodeURIComponent(`${this.code}`)}})();`;
     this.size = formatBytes(this.href.length);

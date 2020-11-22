@@ -27,7 +27,7 @@ window.data = () => ({
       this.title = gist.title || 'no title';
       document.title = gist.title || document.title;
       this.message = 'transpiling js...';
-      await gist.transpileCode();
+      gist.transpileCode();
       this.href = gist.href;
     } catch (error) {
       this.error = true;
