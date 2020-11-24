@@ -20,6 +20,14 @@
   transition-timing-function: @easing;
 }
 
+// Fonts
+@font-face {
+  font-family: 'Damion';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''), url('assets/damion-v10.woff2') format('woff2'), url('assets/damion-v10.woff') format('woff');
+}
+
 // Layout
 body {
   font-family: Courier New;
@@ -55,18 +63,6 @@ p {
   margin: 0;
   width: 100%;
   text-align: left;
-}
-tr {
-  td {
-    padding: 5px 0;
-    vertical-align: top;
-    text-align: right;
-    &:nth-child(2) {
-      text-align: left;
-      word-break: break-word;
-      padding-left: 10px;
-    }
-  }
 }
 .row {
   display: flex;
@@ -141,6 +137,7 @@ header {
       font-size: 3em;
     }
     font-family: 'Damion', cursive;
+    font-display: block;
     font-size: 4em;
     line-height: 0.8;
     font-weight: bold;
@@ -164,6 +161,18 @@ header {
 // Bookmarklet
 #div-bookmarklet-subtitle:after { // Use pseudo-elements to avoid anchor title including subtitle
   content: 'drag to bookmarks to save'
+}
+tr {
+  td {
+    padding: 5px 0;
+    vertical-align: top;
+    text-align: right;
+    &:nth-child(2) {
+      text-align: left;
+      word-break: break-word;
+      padding-left: 10px;
+    }
+  }
 }
 
 // Text styles
