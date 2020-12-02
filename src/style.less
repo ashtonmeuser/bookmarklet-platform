@@ -1,5 +1,5 @@
 // Variables
-@max-row-width: 530px;
+@max-width: 530px;
 @body-background-color: #F5F5F5;
 @button-color: #FFF;
 @error-color: #EA4848;
@@ -29,6 +29,12 @@
 }
 
 // Layout
+html {
+  box-sizing: border-box;
+  * {
+    box-sizing: inherit;
+  }
+}
 body {
   font-family: Courier New;
   font-size: 16px;
@@ -39,40 +45,35 @@ body {
   background-color: @body-background-color;
 }
 main {
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   padding: 20px;
-}
-section {
-  width: 100%;
-  position: relative;
-  max-width: @max-row-width;
-  min-height: 100px;
-  margin: 20px 0;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  & > * {
+    width: 100%;
+    max-width: @max-width;
+  }
 }
 p {
-  margin: 0;
-  width: 100%;
   text-align: left;
+  margin: 0 0 10px 0;
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 }
 .row {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  max-width: @max-row-width;
-  padding: 5px 0;
+  margin-bottom: 10px;
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 }
 .hidden {
-  display: none;
+  display: none !important;
+}
+.space-top {
+  padding-top: 10px;
 }
 
 // Buttons, links
@@ -93,9 +94,6 @@ p {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  width: 100%;
-  min-width: 100px;
-  margin-top: 20px;
   &:hover {
     @media @has-mouse {
       background-color: @button-hover-background-color;
@@ -124,14 +122,13 @@ input {
   border-radius: 10px;
   border: 0;
   width: 100%;
-  min-width: 100px;
   padding: 10px;
-  margin-top: 20px;
 }
 
-// Header
+// Header, footer
 header {
-  & h1 {
+  margin-bottom: 30px;
+  h1 {
     .animated(color);
     @media @mobile-screen {
       font-size: 3em;
@@ -143,19 +140,22 @@ header {
     font-weight: bold;
     margin: 0;
   }
-  & h2 {
+  h2 {
     font-weight: normal;
     font-size: 1.5em;
     margin: 0;
     line-height: 1em;
   }
-  & a {
+  a {
     text-decoration: none;
     color: inherit;
     &:hover {
       color: @link-hover-color;
     }
   }
+}
+footer {
+  margin-top: 30px;
 }
 
 // Bookmarklet
@@ -164,7 +164,7 @@ header {
 }
 tr {
   td {
-    padding: 5px 0;
+    padding: 0 0 10px 0;
     vertical-align: top;
     text-align: right;
     &:nth-child(2) {
@@ -173,12 +173,25 @@ tr {
       padding-left: 10px;
     }
   }
+  &:last-of-type {
+    td {
+      padding-bottom: 0;
+    }
+  }
+}
+
+// Modal message
+.modal {
+  display: flex;
+  min-height: 100px;
+  align-items: center;
+  justify-content: center;
 }
 
 // Text styles
 .error {
   color: @error-color;
 }
-span.code {
+.code {
   background-color: @code-background-color;
 }

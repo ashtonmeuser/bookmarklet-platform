@@ -1,2 +1,1 @@
-div(class='modal' x-bind:class='{hidden: href}')
-  span(x-text='message' x-bind:class='{error: error}')
+div(class='modal' x-bind:class='{hidden: href, error: error}' x-text='message')
