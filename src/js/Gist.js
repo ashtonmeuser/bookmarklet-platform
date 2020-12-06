@@ -30,7 +30,7 @@ export default class Gist {
 
   transpileCode() {
     this.code = Babel.transform(this.code, { presets: ['env'], minified: true }).code;
-    this.href = `javascript:(()=>{${encodeURIComponent(`${this.code}`)}})();`;
+    this.href = `javascript:(function(){${encodeURIComponent(`${this.code}`)}})();`;
     this.size = formatBytes(this.href.length);
   }
 }
