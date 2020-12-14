@@ -1,4 +1,6 @@
-each val in ['author', 'id', 'title', 'about']
-  div(class='row bookmarklet-hidden')
-    div(class='column left')= val
-    div(class='column right' id='div-property-' + val)
+div(class='row hidden' x-bind:class='{hidden: !href}')
+  table
+    each val in ['author', 'id', 'version', 'file', 'title', 'about']
+      tr(x-show=val)
+        td= val
+        td(x-text=val)

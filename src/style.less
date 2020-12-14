@@ -1,5 +1,5 @@
 // Variables
-@max-row-width: 500px;
+@max-width: 530px;
 @body-background-color: #F5F5F5;
 @button-color: #FFF;
 @error-color: #EA4848;
@@ -20,7 +20,21 @@
   transition-timing-function: @easing;
 }
 
+// Fonts
+@font-face {
+  font-family: 'Damion';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''), url('assets/damion-v10.woff2') format('woff2'), url('assets/damion-v10.woff') format('woff');
+}
+
 // Layout
+html {
+  box-sizing: border-box;
+  * {
+    box-sizing: inherit;
+  }
+}
 body {
   font-family: Courier New;
   font-size: 16px;
@@ -31,47 +45,35 @@ body {
   background-color: @body-background-color;
 }
 main {
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   padding: 20px;
-}
-section {
-  width: 100%;
-  position: relative;
-  max-width: @max-row-width;
-  min-height: 100px;
-  margin: 20px 0;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  & > * {
+    width: 100%;
+    max-width: @max-width;
+  }
 }
 p {
-  margin: 0;
+  text-align: justify;
+  margin: 0 0 10px 0;
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 }
 .row {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  max-width: @max-row-width;
-  padding: 5px 0;
+  margin-bottom: 10px;
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 }
-.column {
-  flex: 1 0 0;
-  word-break: break-word;
-  &.left {
-    max-width: 70px;
-    text-align: right;
-  }
-  &.right {
-    text-align: left;
-    padding-left: 10px;
-  }
+.hidden {
+  display: none !important;
+}
+.space-top {
+  padding-top: 10px;
 }
 
 // Buttons, links
@@ -92,9 +94,6 @@ p {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  width: 100%;
-  min-width: 100px;
-  margin-top: 20px;
   &:hover {
     @media @has-mouse {
       background-color: @button-hover-background-color;
@@ -103,7 +102,6 @@ p {
   &.disabled {
     background-color: @disabled-button-color;
     &:hover {
-      background-color: @disabled-button-color;
       cursor: not-allowed;
     }
   }
@@ -124,31 +122,31 @@ input {
   border-radius: 10px;
   border: 0;
   width: 100%;
-  min-width: 100px;
   padding: 10px;
-  margin-top: 20px;
 }
 
-// Header
+// Header, footer
 header {
-  & h1 {
+  margin-bottom: 30px;
+  h1 {
     .animated(color);
     @media @mobile-screen {
       font-size: 3em;
     }
     font-family: 'Damion', cursive;
+    font-display: block;
     font-size: 4em;
     line-height: 0.8;
     font-weight: bold;
     margin: 0;
   }
-  & h2 {
+  h2 {
     font-weight: normal;
     font-size: 1.5em;
     margin: 0;
     line-height: 1em;
   }
-  & a {
+  a {
     text-decoration: none;
     color: inherit;
     &:hover {
@@ -156,51 +154,44 @@ header {
     }
   }
 }
+footer {
+  margin-top: 30px;
+}
 
 // Bookmarklet
-.bookmarklet-hidden {
-  display: none;
+#div-bookmarklet-subtitle:after { // Use pseudo-elements to avoid anchor title including subtitle
+  content: 'drag to bookmarks to save'
 }
-.modal {
-  transition: visibility 0s linear @transition-duration, opacity @transition-duration ease;
-  background-color: @body-background-color;
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  &.modal-hidden {
-    transition: visibility 0s linear, opacity @transition-duration ease;
+tr {
+  td {
+    padding: 0 0 10px 0;
+    vertical-align: top;
+    text-align: right;
+    &:nth-child(2) {
+      text-align: justify;
+      word-break: break-word;
+      padding-left: 10px;
+    }
   }
-  & .icon {
-    margin-bottom: 10px;
+  &:last-of-type {
+    td {
+      padding-bottom: 0;
+    }
   }
-}
-#div-bookmarklet-subtitle {
-  // Use pseudo-elements to avoid anchor title including subtitle
-  &:after {
-    content: 'drag to bookmarks to save'
-  }
-  &.mobile:after {
-    content: 'paste js in bookmark'
-  }
-}
-#div-codepen-link,
-#div-bookmarklet-copy {
-  display: none;
-}
-#anchor-bookmarklet-copy {
-  margin-top: 0;
 }
 
-// Error
+// Modal message
+.modal {
+  display: flex;
+  min-height: 100px;
+  align-items: center;
+  justify-content: center;
+}
+
+// Text styles
 .error {
   color: @error-color;
 }
-
-// Code
-span.code {
+.code {
   background-color: @code-background-color;
 }

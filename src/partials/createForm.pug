@@ -1,0 +1,6 @@
+div(class='row space-top')
+  input(type='text' placeholder='gist url' x-model='gistUrl')
+
+div(class='row')
+  a(class='button disabled' x-bind:href='bookmarkletUrl' x-bind:class='{disabled: !valid}')
+    div(class='button-title') create
