@@ -8,7 +8,8 @@ A platform for distributing JavaScript gists as bookmarklets. Observable in the 
 
 According to [Wikipedia](https://en.wikipedia.org/wiki/Bookmarklet), bookmarklets are described as follows.
 
-> A bookmarklet is a bookmark stored in a web browser that contains JavaScript commands that add new features to the browser.
+> A bookmarklet is a bookmark stored in a web browser that contains [JavaScript commands](
+https://www.scaler.com/topics/javascript/javascript-statements/) that add new features to the browser.
 
 Bookmarklets are saved in the same way as standard website bookmarks. However, rather than navigating to a new website when the bookmark is clicked, a bookmarklet runs JavaScript code. This code is executed on the current website displayed by the browser and can have any number of effects. Examples might include sharing the current site to a social media platform, shortening a URL, or translating the language of the current website's text.
 
