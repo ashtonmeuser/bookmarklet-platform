@@ -28,7 +28,7 @@ Before beginning, note that a GitHub account is required. If you don't have an a
 
 To create a bookmarklet, first [create a GitHub gist](https://gist.github.com) containing the intended source code for your bookmarklet. Once saved, copy the URL of your gist. If you'd like to simply test the application, you can create a gist with the following content.
 
-```
+```js
 window.alert("Hello, World!");
 ```
 
