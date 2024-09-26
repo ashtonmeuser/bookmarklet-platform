@@ -28,6 +28,6 @@ export const parseGistUrl = (urlString) => {
 };
 
 export const parseBookmarkletUrl = (urlString) => {
-  const pathPattern = /^\/(\w+)\/([a-f0-9]{32})(?:\/([a-f0-9]{40})?(?:\/(.+))?)?$/;
+  const pathPattern = /^\/(\w+(?:[\w-]*\w)?)\/([a-f0-9]{32})(?:\/([a-f0-9]{40})?(?:\/(.+))?)?$/;
   return parseUrl(urlString, pathPattern);
 };
