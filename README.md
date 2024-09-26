@@ -120,6 +120,17 @@ Deployment is as simple as pushing the generated static site files to S3 using `
 
 If hosted behind a CloudFront distribution, an [invalidation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Invalidation.html) may be required to see the changes immediately. Configuring a CloudFront distribution is beyond the scope of this document.
 
+Further, a simple routing rule must be applied to catch all requests to bookmarklet URIs. For example, the following simple [AWS Lambda@Edge](https://aws.amazon.com/lambda/edge/) function can be used to map all HTML requests (besides root) to the bookmarklets page.
+
+```js
+export const handler = async (event, context, callback) => {
+  const request = event?.Records?.[0]?.cf?.request;
+  if (request?.uri === '/' || request?.uri === '') return callback(null, request);
+  if (request?.headers?.accept?.[0]?.value?.includes('text/html')) request.uri = '/bookmarklet.html';
+  callback(null, request);
+};
+```
+
 ## Forewarning
 
 Bookmarklets can be used maliciously. Be aware of the function being performed by a bookmarklet before using or saving it. The author denies any responsibility for harm caused by a malicious bookmarklet.
