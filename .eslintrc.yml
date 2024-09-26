@@ -1,7 +1,0 @@
-env:
-  browser: true
-  jest: true
-extends:
-  - airbnb-base
-globals:
-  Babel: false

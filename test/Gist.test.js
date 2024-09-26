@@ -16,7 +16,7 @@ it('should create gist', () => {
 
 it('should fail to create gist', () => {
   expect(() => {
-    new Gist(null, null); // eslint-disable-line no-new
+    new Gist(null, null);
   }).toThrowError('invalid author or id');
 });
 
