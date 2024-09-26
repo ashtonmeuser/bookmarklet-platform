@@ -1,3 +1,4 @@
+import Alpine from 'alpinejs';
 import Gist from './Gist';
 import { parseBookmarkletUrl } from './parseUrl';
 
@@ -38,3 +39,5 @@ const data = () => ({
 
 window.data = data;
 export default data;
+
+Alpine.start();

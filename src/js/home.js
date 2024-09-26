@@ -1,3 +1,4 @@
+import Alpine from 'alpinejs';
 import { parseGistUrl } from './parseUrl';
 
 const data = () => ({
@@ -18,3 +19,5 @@ const data = () => ({
 
 window.data = data;
 export default data;
+
+Alpine.start();
