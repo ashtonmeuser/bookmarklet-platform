@@ -21,8 +21,8 @@ const parseUrl = (urlString, pathPattern, hostPattern) => {
 };
 
 export const parseGistUrl = (urlString) => {
-  // Should match raw and GitHub URLs; see regexr.com/5gc68
-  const pathPattern = /^\/(\w+)\/([a-f0-9]{32})(?:\/raw)?(?:\/([a-f0-9]{40}))?(?:\/(.+))?$/;
+  // Should match raw and GitHub URLs; see https://regexr.com/86bok
+  const pathPattern = /^\/(\w+(?:[\w-]*\w)?)\/([a-f0-9]{32})(?:\/raw)?(?:\/([a-f0-9]{40}))?(?:\/(.+))?$/;
   const hostPattern = /^gist\.github(?:usercontent)?\.com$/;
   return parseUrl(urlString, pathPattern, hostPattern);
 };
