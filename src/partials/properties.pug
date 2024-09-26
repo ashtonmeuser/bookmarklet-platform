@@ -1,6 +1,6 @@
 div(class='row hidden' x-bind:class='{hidden: !href}')
   table
-    each val in ['author', 'id', 'version', 'file', 'title', 'about']
+    each val in ['author', 'id', 'version', 'file', 'title', 'about', 'size']
       tr(x-show=val)
         td= val
         td(x-text=val)

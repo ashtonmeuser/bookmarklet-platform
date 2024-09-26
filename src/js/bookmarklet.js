@@ -13,6 +13,7 @@ const data = () => ({
   about: null,
   title: null,
   href: null,
+  size: null,
   async init() {
     try {
       const params = parseBookmarkletUrl(window.location.href);
@@ -30,6 +31,7 @@ const data = () => ({
       this.message = 'transpiling js...';
       gist.transpileCode();
       this.href = gist.href;
+      this.size = gist.size;
     } catch (error) {
       this.error = true;
       this.message = error.message;
