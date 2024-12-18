@@ -59,7 +59,6 @@ export default class Gist {
     if (!this.code) return; // Code has not yet been fetched
     this.status = Status.TRANSPILING;
     let code = this.replaceVariables();
-    console.log(code);
     code = Babel.transform(code, { presets: ['env'], minified: true }).code;
     this.href = `javascript:(function(){${encodeURIComponent(`${code}`)}})();`;
     this.size = stringSize(this.href);

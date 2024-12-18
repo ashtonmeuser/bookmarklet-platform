@@ -9,7 +9,7 @@ const data = () => ({
     try {
       const params = parseBookmarkletUrl(window.location.href);
       this.gist = new Gist(params.author, params.id, params.version, params.file);
-      $watch('gist.variables', () => {
+      this.$watch('gist.variables', () => {
         try {
           this.gist.transpile();
         } catch(e) {
