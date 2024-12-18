@@ -8,7 +8,7 @@ export default {
     watchers.forEach(f => f());
   },
 
-  fireWatchers: (data) => {
+  fireWatchers: () => {
     watchers.forEach(f => f());
   },
 };
