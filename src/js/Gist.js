@@ -18,7 +18,7 @@ export default class Gist {
   }
 
   extractProperty(property) {
-    const propertyRegex = new RegExp(`//[\\s\\t]*bookmarklet[-_]${property}[\\s\\t]*[:=][\\s\\t]*(.+)`, 'i');
+    const propertyRegex = new RegExp(`^[\\s\\t]*//[\\s\\t]*bookmarklet[-_]${property}[\\s\\t]*[:=][\\s\\t]*(.+)`, 'im');
     const matches = this.code.match(propertyRegex);
     return matches === null ? null : matches[1];
   }
