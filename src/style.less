@@ -114,6 +114,9 @@ p {
     color: @link-hover-color;
   }
 }
+.v-center {
+  vertical-align: middle;
+}
 
 // Input
 input {
@@ -162,20 +165,34 @@ footer {
 #div-bookmarklet-subtitle:after { // Use pseudo-elements to avoid anchor title including subtitle
   content: 'drag to bookmarks to save'
 }
-tr {
-  td {
-    padding: 0 0 10px 0;
-    vertical-align: top;
-    text-align: right;
-    &:nth-child(2) {
-      text-align: justify;
-      word-break: break-word;
-      padding-left: 10px;
-    }
-  }
-  &:last-of-type {
+h3 {
+  font-size: 1em;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+table {
+  width: 100%;
+  tr {
     td {
-      padding-bottom: 0;
+      padding: 0 0 10px 0;
+      vertical-align: top;
+      text-align: right;
+      &:nth-child(1) {
+        max-width: 10em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      &:nth-child(2) {
+        text-align: justify;
+        word-break: break-word;
+        padding-left: 10px;
+        width: 100%;
+      }
+    }
+    &:last-of-type {
+      td {
+        padding-bottom: 0;
+      }
     }
   }
 }

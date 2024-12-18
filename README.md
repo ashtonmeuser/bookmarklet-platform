@@ -44,11 +44,17 @@ To link to a specific version of the GitHub gist source code, you'll first need 
 
 If you've created a multi-file gist, you can ensure your bookmarklet pulls its source code from a specific file by modifying the bookmarklet URL to the format `bookmarkl.ink/[USERNAME]/[ID]/[FILE]`, replacing the `[USERNAME]`, `[ID]`, and `[FILE]` placeholders with yours. The optional version commit hash can be excluded entirely (`bookmarkl.ink/[USERNAME]/[ID]/[FILE]`), included (`bookmarkl.ink/[USERNAME]/[ID]/[COMMIT]/[FILE]`), or left blank (`bookmarkl.ink/[USERNAME]/[ID]//[FILE]`).
 
+### Including Variables
+
+If your bookmarklet requires further customization by the end user, you may include variables to be manually entered and compiled into the bookmarklet code. These can be included via comment in your gist in the format `// bookmarklet-var: [VARIABLE_NAME]`. On text input at Bookmarkl.ink, variables are hard-coded into the compiled bookmarklet which can then be saved to your bookmarks.
+
 ## Design
 
 ### Technology Stack
 
 Bookmarkl.ink is hosted as a [static site](https://en.wikipedia.org/wiki/Static_web_page) i.e. files are served unaltered to all viewers. The static site is hosted in an [AWS S3](https://aws.amazon.com/s3/) bucket. To enable caching, the bucket is behind an [AWS CloudFront](https://aws.amazon.com/cloudfront/) distribution.
+
+Bookmarkl.ink uses [AlpineJS](https://alpinejs.dev) as a frontend framework.
 
 In order to reuse parts of markup, [Pug](https://pugjs.org/api/getting-started.html) is used. This allows writing small, reusable templates that are translated into HTML. [SASS](https://sass-lang.com), a CSS extension language, is used to write more sensible styles. In order to enable the transformation of Pug templates and SASS, a web application bundler called [Parcel](https://parceljs.org/getting_started.html) is used.
 

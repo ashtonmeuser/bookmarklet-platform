@@ -1,0 +1,8 @@
+div(class='row hidden' x-bind:class='{hidden: gist.status !== "success" || !Object.keys(gist.variables).length}')
+  h3 variables
+  table
+    template(x-for='variable in Object.keys(gist.variables)')
+      tr
+        td(class='v-center' x-text='variable')
+        td
+          input(type='text' x-model.debounce.150ms='gist.variables[variable]')

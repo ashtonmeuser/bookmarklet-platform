@@ -1,6 +1,7 @@
-div(class='row hidden' x-bind:class='{hidden: !href}')
+div(class='row hidden' x-bind:class='{hidden: gist.status !== "success"}')
+  h3 properties
   table
-    each val in ['author', 'id', 'version', 'file', 'title', 'about', 'size']
-      tr(x-show=val)
-        td= val
-        td(x-text=val)
+    template(x-for='key in ["author", "id", "version", "file", "title", "about", "size"]')
+      tr(x-show='gist[key]')
+        td(x-text='key')
+        td(x-text='gist[key]')

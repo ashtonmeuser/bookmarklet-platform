@@ -1,1 +1,2 @@
-div(class='modal' x-bind:class='{hidden: href, error: error}' x-text='message')
+div(class='modal' x-bind:class='{hidden: !error && gist.status === "success", error: error}' x-text='error?.message || `${gist.status}...`')
+  | loading...
