@@ -48,6 +48,18 @@ If you've created a multi-file gist, you can ensure your bookmarklet pulls its s
 
 If your bookmarklet requires further customization by the end user, you may include variables to be manually entered and compiled into the bookmarklet code. These can be included via comment in your gist in the format `// bookmarklet-var: [VARIABLE_NAME]`. On text input at Bookmarkl.ink, variables are hard-coded into the compiled bookmarklet which can then be saved to your bookmarks.
 
+## Examples
+
+Several example gists can be found [here](https://gist.github.com/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/). For the sake of completeness, these examples are highlighted bellow.
+
+Gist | Bookmarkl.ink | Description
+--|--|--
+[count.js](https://gist.github.com/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/#file-count-js) | [Word Frequency](https://bookmarkl.ink/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/count.js) | A simple example showing a bookmarklet reading the content of whatever page it was called on. In this case, basic word frequency is shown.
+[emoji.js](https://gist.github.com/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/#file-emoji-js) | [Emoji!](https://bookmarkl.ink/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/emoji.js) | Adds a random emoji at a random position within the current website.
+[focus.js](https://gist.github.com/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/#file-focus-js) | [img--](https://bookmarkl.ink/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/focus.js) | Dims images until mouse hover.
+[qr.js](https://gist.github.com/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/#file-qr-js) | [QR Code](https://bookmarkl.ink/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/qr.js) | Creates a QR that links to the web page currently being viewed.
+[variables.js](https://gist.github.com/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/#file-variables-js) | [Test Variables](https://bookmarkl.ink/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/variables.js) | Showcases a bookmarklet requiring variables. These variables can be edited directly in Bookmarkl.ink and are then compiled into the bookmarklet code.
+
 ## Design
 
 ### Technology Stack
