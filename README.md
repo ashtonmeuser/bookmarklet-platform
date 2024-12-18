@@ -42,7 +42,7 @@ To add a title to the bookmarklet, include `// bookmarklet-title: [TITLE]` in yo
 
 To link to a specific version of the GitHub gist source code, you'll first need to get the commit hash from GitHub. One way to accomplish this is to view the raw source of your gist using the "•••" button in GitHub. In the URL, you should find a commit hash of 40 hexadecimal characters. A bookmarklet can be locked to this version of the source code by modifying the bookmarklet URL to the format `bookmarkl.ink/[USERNAME]/[ID]/[COMMIT]`, replacing the `[USERNAME]`, `[ID]`, and `[COMMIT]` placeholders with your gist's values.
 
-If you've created a multi-file gist, you can ensure your bookmarklet pulls its source code from a specific file by modifying the bookmarklet URL to the format `bookmarkl.ink/[USERNAME]/[ID]/[COMMIT]/[FILE]`, replacing the `[USERNAME]`, `[ID]`, and `[FILE]` placeholders with yours. To avoid locking to a specific version, the `[COMMIT]` property can be omitted (the two consecutive forward slashes should be kept).
+If you've created a multi-file gist, you can ensure your bookmarklet pulls its source code from a specific file by modifying the bookmarklet URL to the format `bookmarkl.ink/[USERNAME]/[ID]/[FILE]`, replacing the `[USERNAME]`, `[ID]`, and `[FILE]` placeholders with yours. The optional version commit hash can be excluded entirely (`bookmarkl.ink/[USERNAME]/[ID]/[FILE]`), included (`bookmarkl.ink/[USERNAME]/[ID]/[COMMIT]/[FILE]`), or left blank (`bookmarkl.ink/[USERNAME]/[ID]//[FILE]`).
 
 ## Design
 
