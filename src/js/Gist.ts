@@ -63,7 +63,6 @@ export default class Gist {
   about: string | undefined;
   version: string | undefined;
   file: string | undefined;
-  url: string;
   variables: VariableMap;
   status: Status;
   code: string | undefined;
@@ -75,7 +74,6 @@ export default class Gist {
     this.id = id;
     this.version = version;
     this.file = file;
-    this.url = `https://gist.github.com/${this.author}/${this.id}/${this.version || ''}`;
     this.variables = {};
     this.status = Status.LOADING;
   }
@@ -86,6 +84,10 @@ export default class Gist {
     const size = new Blob([this.href]).size;
     const i = Math.floor(Math.log(size) / Math.log(1024));
     return `${(size / 1024 ** i).toFixed(i > 0 ? 1 : 0)} ${suffixes[i]}`;
+  }
+
+  get url(): string {
+    return `https://gist.github.com/${this.author}/${this.id}/${this.version || ''}`;
   }
 
   async load(): Promise<void> {

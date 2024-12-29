@@ -46,7 +46,9 @@ If you've created a multi-file gist, you can ensure your bookmarklet pulls its s
 
 ### Including Variables
 
-If your bookmarklet requires further customization by the end user, you may include variables to be manually entered and compiled into the bookmarklet code. These can be included via comment in your gist in the format `// bookmarklet-var: [VARIABLE_NAME]`. On text input at Bookmarkl.ink, variables are hard-coded into the compiled bookmarklet which can then be saved to your bookmarks.
+If your bookmarklet requires further customization by the end user, you may include variables to be manually entered and compiled into the bookmarklet code. These can be included via comment in your gist in the format `// bookmarklet-var: [VARIABLE_NAME]`. Upon modifying variables at Bookmarkl.ink, variables are hard-coded into the compiled bookmarklet which can then be saved to your bookmarks.
+
+By default, variables are all strings, i.e. text inputs. You can force the input to be numeric or censored using `// bookmarklet-var(number): [VARIABLE_NAME]` and `// bookmarklet-var(password): [VARIABLE_NAME]`, respectively. Numeric variables are injected into the script as numbers while passwords are injected as strings.
 
 ## Examples
 
