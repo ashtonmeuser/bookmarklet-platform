@@ -1,7 +1,14 @@
 import Alpine from 'alpinejs';
 import { parseGistUrl } from './parseUrl';
 
-const data = () => ({
+type Data = {
+  gistUrl: string;
+  bookmarkletUrl: string | null;
+  valid: boolean,
+  init: () => void;
+}
+
+const data = (): Data => ({
   init() {},
   gistUrl: '',
   get bookmarkletUrl() {
@@ -17,7 +24,7 @@ const data = () => ({
   },
 });
 
-window.data = data;
+globalThis.data = data;
 export default data;
 
 Alpine.start();

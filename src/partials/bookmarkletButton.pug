@@ -1,4 +1,5 @@
-div(class='row hidden space-top' x-bind:class='{hidden: gist.status !== "success"}')
-  a(class='button disabled' x-bind:href='gist.href' x-bind:class='{disabled: !gist.href}')
-    div(class='button-title' x-text='gist.title') no title
-    div(id='div-bookmarklet-subtitle')
+template(x-if='gist?.status === "success"')
+  div(class='row space-top')
+    a(class='button disabled' x-bind:href='gist.href' x-bind:class='{disabled: !gist.href}')
+      div(class='button-title' x-text='gist.title') no title
+      div(id='div-bookmarklet-subtitle')
