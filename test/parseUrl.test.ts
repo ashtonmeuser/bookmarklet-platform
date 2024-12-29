@@ -1,3 +1,4 @@
+import { it, expect } from 'vitest';
 import { parseGistUrl, parseBookmarkletUrl } from '../src/js/parseUrl';
 
 it('should parse bookmarklet URL', () => {
@@ -138,26 +139,26 @@ it('should fail invalid bookmarklet ID', () => {
   const url = `https://bookmarkl.ink/${author}/${id}`;
   expect(() => {
     parseBookmarkletUrl(url);
-  }).toThrowError('invalid path');
+  }).toThrow('invalid path');
 });
 
 it('should fail to parse invalid URL', () => {
   const url = '';
   expect(() => {
     parseGistUrl(url);
-  }).toThrowError('invalid url');
+  }).toThrow('invalid url');
 });
 
 it('should fail to parse invalid hostname', () => {
   const url = 'https://example.com';
   expect(() => {
     parseGistUrl(url);
-  }).toThrowError('invalid hostname');
+  }).toThrow('invalid hostname');
 });
 
 it('should fail to parse invalid path', () => {
   const url = 'https://gist.github.com';
   expect(() => {
     parseGistUrl(url);
-  }).toThrowError('invalid path');
+  }).toThrow('invalid path');
 });
