@@ -106,7 +106,7 @@ export default class Gist {
     this.error = undefined;
     let code = replaceVariables(this.code, this.variables);
     try {
-      code = Babel.transform(code, { presets: ['env'], minified: true }).code;
+      code = Babel.transform(code, { presets: ['env'], minified: true, comments: false }).code;
       this.href = `javascript:(function(){${encodeURIComponent(`${code}`)}})();`;
     } catch(e) {
       this.href = null;
