@@ -1,0 +1,3 @@
+div(x-show='gist.code !== undefined' class='row')
+  button(x-on:click='edit = !edit' x-text='edit ? "hide editor" : "show editor"')
+  div(x-ref='editor' x-show='edit' class='editor space-top')

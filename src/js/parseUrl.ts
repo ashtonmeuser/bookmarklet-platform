@@ -1,3 +1,5 @@
+import BookmarkletError from "./error";
+
 type UrlProperties = {
   author: string;
   id: string;
@@ -5,20 +7,19 @@ type UrlProperties = {
   file?: string;
 }
 
-
 const safeUrl = (url: string): URL => {
   try {
     return new URL(url);
   } catch (error) {
-    throw new Error('invalid url');
+    throw new BookmarkletError(400, 'invalid url');
   }
 };
 
 const parseUrl = (urlString: string, pathPattern: RegExp, hostPattern?: RegExp): UrlProperties => {
   const url = safeUrl(urlString);
-  if (hostPattern && !hostPattern.test(url.hostname)) throw new Error('invalid hostname');
+  if (hostPattern && !hostPattern.test(url.hostname)) throw new BookmarkletError(400, 'invalid hostname');
   const matches = url.pathname.match(pathPattern);
-  if (!matches) throw new Error('invalid path');
+  if (!matches) throw new BookmarkletError(400, 'invalid path');
   const [author, id, version, file] = matches.slice(1);
   return {
     author,

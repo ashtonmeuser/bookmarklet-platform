@@ -1,3 +1,2 @@
-template(x-if='["success", "transpiling", "downloading"].includes(gist?.status)')
-  div(class='row')
-    a(target='_blank' class='link' x-bind:href='gist.url') view gist
+div(x-show='gist.url' class='row')
+  a(target='_blank' class='link' x-bind:href='gist.url') view gist

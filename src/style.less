@@ -63,6 +63,9 @@ p {
     margin-bottom: 0;
   }
 }
+.contents {
+  display: contents;
+}
 .row {
   margin-bottom: 10px;
   &:last-of-type {
@@ -96,12 +99,21 @@ p {
       background-color: @button-hover-background-color;
     }
   }
-  &.disabled {
+  &:not([href]) {
     background-color: @disabled-button-color;
     &:hover {
       cursor: not-allowed;
     }
   }
+}
+button {
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+  font-family: inherit;
+  font-size: inherit;
+  text-decoration: underline;
+  cursor: pointer;
 }
 .link {
   .animated(color);
@@ -194,18 +206,27 @@ table {
   }
 }
 
-// Modal message
-.modal {
-  display: flex;
-  min-height: 100px;
-  align-items: center;
-  justify-content: center;
+// Errors
+pre {
+  text-align: justify;
+  margin-top: 0;
+  font-family: inherit;
+  font-size: 0.9em;
+  background-color: #ffaeae;
+  padding: 1em;
+  border-radius: 1em;
+  overflow-x: scroll;
+}
+.error{
+  margin: 3em 0;
+  .error-code {
+    font-size: 10em;
+    margin-bottom: 0;
+    line-height: 0.8em;
+  }
 }
 
 // Text styles
-.error {
-  color: @error-color;
-}
 .code {
   background-color: @code-background-color;
 }

@@ -18,6 +18,7 @@ vi.spyOn(global, 'fetch').mockImplementation(
     const text = mockResponse.body || '';
     return Promise.resolve({
       ok: mockResponse.code === undefined || (mockResponse.code >= 200 && mockResponse.code < 300),
+      status: mockResponse.code,
       text: () => Promise.resolve(text),
     }).finally(reset);
   }) as Mock

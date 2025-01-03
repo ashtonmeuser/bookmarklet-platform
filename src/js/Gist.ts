@@ -1,11 +1,5 @@
+import BookmarkletError from "./error";
 const Babel = require('@babel/standalone');
-
-enum Status {
-  LOADING = 'loading',
-  DOWNLOADING = 'downloading',
-  TRANSPILING = 'transpiling',
-  SUCCESS = 'success',
-};
 
 enum VariableType {
   TEXT = 'text',
@@ -19,10 +13,11 @@ type VariableMap = { [key: string]: Variable };
 async function fetch(url: string): Promise<string> {
   try {
     const response = await globalThis.fetch(url);
-    if (!response.ok) throw response;
+    if (!response.ok) throw new BookmarkletError(response.status, 'failed to fetch javascript code');
     return response.text();
-  } catch {
-    throw new Error('failed to fetch javascript code');
+  } catch(e) {
+    if (e instanceof BookmarkletError) throw e;
+    else throw new BookmarkletError(500, 'failed to fetch javascript code');
   }
 }
 
@@ -64,9 +59,9 @@ export default class Gist {
   version: string | undefined;
   file: string | undefined;
   variables: VariableMap;
-  status: Status;
-  code: string | undefined;
-  href: string | undefined;
+  _code: string | undefined; // Can't be private due to Alpine's Proxy usage
+  href: string | null;
+  error: Error | undefined;
 
   constructor(author: string, id: string, version?: string, file?: string) {
     if (!author || !id) throw new Error('invalid author or id');
@@ -74,8 +69,8 @@ export default class Gist {
     this.id = id;
     this.version = version;
     this.file = file;
+    this.title = 'bookmarklet'
     this.variables = {};
-    this.status = Status.LOADING;
   }
 
   get size(): string {
@@ -90,14 +85,49 @@ export default class Gist {
     return `https://gist.github.com/${this.author}/${this.id}/${this.version || ''}`;
   }
 
+  get code(): string | undefined {
+    return this._code;
+  }
+
+  set code(code: string) {
+    this._code = code;
+    this.title = extractProperty(code, 'title') || 'bookmarklet';
+    this.about = extractProperty(code, 'about');
+    this.syncVariables();
+    this.transpile();
+  }
+
   async load(): Promise<void> {
-    this.status = Status.DOWNLOADING;
     this.code = await fetch(`https://gist.githubusercontent.com/${this.author}/${this.id}/raw/${this.version || ''}/${this.file || ''}`);
-    this.title = extractProperty(this.code, 'title') || 'no title';
-    this.about = extractProperty(this.code, 'about');
-    this.variables = Object.fromEntries(Object.entries(extractVariables(this.code)).map(([key, variable]) => [
-      key,
-      new Proxy(variable, {
+  }
+
+  transpile(): void {
+    if (this.code === undefined) return; // Code has not yet been fetched
+    this.error = undefined;
+    let code = replaceVariables(this.code, this.variables);
+    try {
+      code = Babel.transform(code, { presets: ['env'], minified: true }).code;
+      this.href = `javascript:(function(){${encodeURIComponent(`${code}`)}})();`;
+    } catch(e) {
+      this.href = null;
+      this.error = e;
+    }
+  }
+
+  syncVariables(): void {
+    if (this.code === undefined) return;
+
+    const update = extractVariables(this.code);
+
+    for (const key of Object.keys(this.variables)) {
+      if (!(key in update)) delete this.variables[key]; // Remove variable
+    }
+
+    for (const [key, variableUpdated] of Object.entries(update)) {
+      if (this.variables[key]?.type === variableUpdated.type) continue; // Variable exists
+
+      // Insert or overwrite variable proxy
+      this.variables[key] = new Proxy(variableUpdated, {
         set: (target, key: string, value: string | number) => {
           if (key !== 'value') return false;
           if (target.type === VariableType.NUMBER) target.value = value === '' ? null : Number.isNaN(Number(value)) ? null : Number(value);
@@ -105,21 +135,7 @@ export default class Gist {
           this.transpile(); // Kick off transpilation when variables change
           return true;
         },
-      }),
-    ]));
-  }
-
-  transpile(): void {
-    if (!this.code) return; // Code has not yet been fetched
-    this.status = Status.TRANSPILING;
-    let code = replaceVariables(this.code, this.variables);
-    try {
-      code = Babel.transform(code, { presets: ['env'], minified: true }).code;
-      this.href = `javascript:(function(){${encodeURIComponent(`${code}`)}})();`;
-      this.status = Status.SUCCESS;
-    } catch(e) {
-      console.error(e);
-      throw new Error('failed to transpile javascript code');
+      });
     }
   }
 }

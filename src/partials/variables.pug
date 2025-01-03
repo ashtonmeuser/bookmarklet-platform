@@ -1,9 +1,8 @@
-template(x-if='gist?.status === "success" && Object.keys(gist.variables).length')
-  div(class='row')
-    h3 variables
-    table
-      template(x-for='variable in Object.keys(gist.variables)')
-        tr
-          td(class='v-center' x-text='variable')
-          td
-            input(x-bind:type='gist.variables[variable].type' x-model.unintrusive.debounce.150ms='gist.variables[variable].value' autocomplete="off")
+div(x-show='Object.keys(gist.variables).length' class='row')
+  h3 variables
+  table
+    template(x-for='[key, variable] in Object.entries(gist.variables)')
+      tr
+        td(class='v-center' x-text='key')
+        td
+          input(x-bind:type='variable.type' x-model.unintrusive.debounce.150ms='variable.value' autocomplete="off")

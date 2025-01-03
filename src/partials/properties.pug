@@ -1,8 +1,7 @@
-template(x-if='gist?.status === "success"')
-  div(class='row')
-    h3 properties
-    table
-      template(x-for='key in ["author", "id", "version", "file", "title", "about", "size"]')
-        tr(x-show='gist[key]')
-          td(x-text='key')
-          td(x-text='gist[key]')
+div(class='row')
+  h3 properties
+  table
+    template(x-for='key in ["author", "id", "version", "file", "title", "about", "size"]')
+      tr(x-show='gist[key]')
+        td(x-text='key')
+        td(x-text='gist[key]')

@@ -4,10 +4,14 @@ block head
   script(type='module' src='./js/bookmarklet.ts')
 
 block content
-  include partials/modal.pug
-  include partials/properties.pug
-  include partials/variables.pug
-  include partials/bookmarkletButton.pug
+  template(x-if='error')
+    include partials/error.pug
+  template(x-if='!error && gist')
+    .contents
+      include partials/editor.pug
+      include partials/properties.pug
+      include partials/variables.pug
+      include partials/bookmarkletButton.pug
 
 block footer
   include partials/gistLink.pug

@@ -1,5 +1,8 @@
-template(x-if='gist?.status === "success"')
-  div(class='row space-top')
-    a(class='button disabled' x-bind:href='gist.href' x-bind:class='{disabled: !gist.href}')
-      div(class='button-title' x-text='gist.title') no title
-      div(id='div-bookmarklet-subtitle')
+div(class='row space-top')
+  template(x-if='gist.error')
+    .contents
+      h3 transpilation error
+      pre(x-text='gist.error.message')
+  a(class='button' x-bind:href='gist.href')
+    div(class='button-title' x-text='gist.title')
+    div(id='div-bookmarklet-subtitle')

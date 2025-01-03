@@ -4,6 +4,7 @@ import './__mock__/location';
 import Alpine from './__mock__/Alpine';
 import bookmarklet from '../src/js/bookmarklet';
 import Gist from '../src/js/Gist';
+import BookmarkletError from '../src/js/error';
 
 it('should start with defaults', async () => {
   const data = await Alpine.init(bookmarklet);
@@ -94,7 +95,8 @@ it('should fail to load bookmarklet', async () => {
   const id = '01234567890123456789012345678901';
   window.location.href = `https://bookmarkl.ink/${author}/${id}`;
   const data = await Alpine.init(bookmarklet);
-  expect(data.error).toBeInstanceOf(Error);
+  expect(data.error).toBeInstanceOf(BookmarkletError);
+  expect(data.error?.code).toBe(500);
   expect(data.error?.message).toBe('failed to fetch javascript code');
 });
 
@@ -104,7 +106,7 @@ it('should fail to transpile bookmarklet', async () => {
   window.location.href = `https://bookmarkl.ink/${author}/${id}`;
   const code = 'const test = "';
   mockResponse.body = code;
-  const data = await Alpine.init(bookmarklet);
-  expect(data.error).toBeInstanceOf(Error);
-  expect(data.error?.message).toBe('failed to transpile javascript code');
+  const data = await Alpine.init(bookmarklet, { $refs: {} });
+  expect(data.error).toBeNull();
+  expect(data.gist?.error).toBeInstanceOf(Error);
 });

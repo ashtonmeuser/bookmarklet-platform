@@ -30,7 +30,6 @@ it('should URI encode gist code', async () => {
   mockResponse.body = code;
   const gist = new Gist('testAuthor', 'testId');
   await gist.load();
-  gist.transpile();
   expect(gist.href).toMatch(/%40%23%24/);
 });
 
@@ -103,6 +102,26 @@ it('should parse gist number variables', async () => {
   expect(gist.variables[key0].value).toBe(null);
 });
 
+it('should update gist variables', async () => {
+  const key0 = 'test_key_0';
+  const code = `//bookmarklet_var: ${key0}`;
+  mockResponse.body = code;
+  const gist = new Gist('testAuthor', 'testId');
+  await gist.load();
+  gist.variables[key0].value = 'test_value_0'
+  gist.code = `//bookmarklet_var: ${key0}\n//more`;
+  expect(gist.variables[key0].value).toBe('test_value_0');
+  gist.code = `//bookmarklet_var(password): ${key0}\n//more`;
+  expect(gist.variables[key0].value).toBeNull();
+  gist.code = `//empty`;
+  expect(gist.variables).not.haveOwnProperty(key0);
+});
+
+it('should skip syncing variables', async () => {
+  const gist = new Gist('testAuthor', 'testId');
+  gist.syncVariables();
+});
+
 it('should skip transpilation', async () => {
   mockResponse.code = 500;
   const gist = new Gist('testAuthor', 'testId');
@@ -123,22 +142,19 @@ it('should set size of gist', async () => {
   let code = `let a = "";\n${'a = "test test test";\n'.repeat(10)}`;
   mockResponse.body = code;
   const gist = new Gist('testAuthor', 'testId');
-  await gist.load();
   expect(gist.size).toBe('0 B');
-  gist.transpile();
+  await gist.load();
   expect(gist.size).toBe('378 B');
   code = `let a = "";\n${'a = "test test test";\n'.repeat(100)}`;
   mockResponse.body = code;
   await gist.load();
-  gist.transpile();
   expect(gist.size).toBe('3.1 kB');
 });
 
 it('should fail transpilation', async () => {
   mockResponse.body = 'const test = "';
   const gist = new Gist('testAuthor', 'testId');
-  await gist.load();
-  expect(gist.transpile.bind(gist)).toThrow(); // Change if transpile becomes async
+  await expect(gist.load).rejects.toThrow();
 });
 
 it('should fail to set type of gist variable', async () => {
@@ -147,7 +163,6 @@ it('should fail to set type of gist variable', async () => {
   mockResponse.body = code;
   const gist = new Gist('testAuthor', 'testId');
   await gist.load();
-  gist.transpile();
   expect(() => {
     // @ts-expect-error
     gist.variables[key0].type = 'number';

@@ -5,8 +5,9 @@ vi.mock('alpinejs', () => ({
 }));
 
 export default {
-  init: async <T extends { init: () => void }>(dataFn: () => T): Promise<T> => {
+  init: async <T extends { init: () => void }>(dataFn: () => T, assign?: object): Promise<T> => {
     const data = dataFn();
+    Object.assign(data, assign);
     await data.init();
     return data;
   },
