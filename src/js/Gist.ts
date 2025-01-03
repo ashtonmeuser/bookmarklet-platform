@@ -37,7 +37,7 @@ function extractProperty(code: string, property: string): string | undefined {
 }
 
 function extractVariables(code: string): VariableMap {
-  const matches = code.matchAll(/^[\s\t]*\/\/[\s\t]*bookmarklet[-_]var(?:\((\w+)\))?[\s\t]*[:=][\s\t]*([a-z_$][\w$]*)[\s\t]*$/gim);
+  const matches = code.matchAll(/\/\/[\s\t]*bookmarklet[-_]var(?:\((\w+)\))?[\s\t]*[:=][\s\t]*([a-z_$][\w$]*)[\s\t]*$/gim);
   return Array.from(matches).reduce((acc: VariableMap, match: RegExpExecArray): VariableMap => ({
     ...acc,
     [match[2]]: {
@@ -50,7 +50,7 @@ function extractVariables(code: string): VariableMap {
 function replaceVariables(code: string, variables: VariableMap) {
   const escape = (s) => s.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
   for (const [key, variable] of Object.entries(variables)) {
-    const r = new RegExp(`^[\\s\\t]*//[\\s\\t]*bookmarklet[-_]var(?:\\((\\w+)\\))?[\\s\\t]*[:=][\\s\\t]*${escape(key)}[\\s\\t]*$`, 'im');
+    const r = new RegExp(`^.*//[\\s\\t]*bookmarklet[-_]var(?:\\((\\w+)\\))?[\\s\\t]*[:=][\\s\\t]*${escape(key)}[\\s\\t]*$`, 'im');
     code = code.replace(r, `const ${key} = ${JSON.stringify(variable.value)};\n`);
   }
   return code;

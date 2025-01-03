@@ -49,7 +49,7 @@ it('should parse gist variables', async () => {
   const key0 = 'test_key_0';
   const key1 = 'test_key_1';
   const key2 = 'test_key_2';
-  const code = `//bookmarklet_var: ${key0}\n// bookmarklet-var :   ${key1}\n//bookmarklet_var = ${key2}`;
+  const code = `//bookmarklet_var: ${key0}\n// bookmarklet-var :   ${key1}\nconst ${key2} = 'value'; //bookmarklet_var = ${key2}`;
   mockResponse.body = code;
   const gist = new Gist('testAuthor', 'testId');
   await gist.load();
