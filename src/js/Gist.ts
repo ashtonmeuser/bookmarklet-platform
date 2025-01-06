@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid';
 import BookmarkletError from "./error";
 const Babel = require('@babel/standalone');
 
@@ -5,6 +6,9 @@ enum VariableType {
   TEXT = 'text',
   PASSWORD = 'password',
   NUMBER = 'number',
+  AUTHOR = 'author',
+  ID = 'id',
+  UUID = 'uuid',
 };
 
 type Variable = { type: VariableType, value: string | number| null };
@@ -127,11 +131,16 @@ export default class Gist {
       if (!(key in update)) delete this.variables[key]; // Remove variable
     }
 
-    for (const [key, variableUpdated] of Object.entries(update)) {
-      if (this.variables[key]?.type === variableUpdated.type) continue; // Variable exists
+    for (const [key, variable] of Object.entries(update)) {
+      if (this.variables[key]?.type === variable.type) continue; // Variable exists
+
+      // Apply some defaults
+      if (variable.type === VariableType.AUTHOR) variable.value = this.author;
+      else if (variable.type === VariableType.ID) variable.value = this.id;
+      else if (variable.type === VariableType.UUID) variable.value = uuid();
 
       // Insert or overwrite variable proxy
-      this.variables[key] = new Proxy(variableUpdated, {
+      this.variables[key] = new Proxy(variable, {
         set: (target, key: string, value: string | number) => {
           if (key !== 'value') return false;
           if (target.type === VariableType.NUMBER) target.value = value === '' ? null : Number.isNaN(Number(value)) ? null : Number(value);

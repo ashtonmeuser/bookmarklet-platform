@@ -50,6 +50,8 @@ If your bookmarklet requires further customization by the end user, you may incl
 
 By default, variables are all strings, i.e. text inputs. You can force the input to be numeric or censored using `// bookmarklet-var(number): [VARIABLE_NAME]` and `// bookmarklet-var(password): [VARIABLE_NAME]`, respectively. Numeric variables are injected into the script as numbers while passwords are injected as strings.
 
+There also exist special values that can be injected into a bookmarklet. You can access the gist author and ID via `// bookmarklet-var(author): [VARIABLE_NAME]` and `// bookmarklet-var(id): [VARIABLE_NAME]`, respectively. You can access a Universally Unique Identifier (UUID v4) via `// bookmarklet-var(uuid): [VARIABLE_NAME]`.
+
 ## Examples
 
 Several example gists can be found [here](https://gist.github.com/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/). For the sake of completeness, these examples are highlighted bellow.

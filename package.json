@@ -29,6 +29,7 @@
     "@codemirror/lang-javascript": "^6.2.2",
     "@lezer/highlight": "^1.2.1",
     "alpinejs": "^3.14.8",
-    "codemirror": "^6.0.1"
+    "codemirror": "^6.0.1",
+    "uuid": "^11.0.4"
   }
 }

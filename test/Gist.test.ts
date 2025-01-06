@@ -102,6 +102,24 @@ it('should parse gist number variables', async () => {
   expect(gist.variables[key0].value).toBe(null);
 });
 
+it('should parse gist special variables', async () => {
+  const author = 'testAuthor';
+  const id = 'testId';
+  const keyAuthor = 'test_key_author';
+  const keyId = 'test_key_id';
+  const keyUuid = 'test_key_uuid';
+  const code = `//bookmarklet_var(author): ${keyAuthor}\n//bookmarklet_var(id): ${keyId}\n//bookmarklet_var(uuid): ${keyUuid}\n`;
+  mockResponse.body = code;
+  const gist = new Gist(author, id);
+  await gist.load();
+  expect(gist.variables[keyAuthor].type).toBe('author');
+  expect(gist.variables[keyAuthor].value).toBe(author);
+  expect(gist.variables[keyId].type).toBe('id');
+  expect(gist.variables[keyId].value).toBe(id);
+  expect(gist.variables[keyUuid].type).toBe('uuid');
+  expect(gist.variables[keyUuid].value).toMatch(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/);
+});
+
 it('should parse gist variables types regardless of casing', async () => {
   const key0 = 'test_key_0';
   const key1 = 'test_key_1';
