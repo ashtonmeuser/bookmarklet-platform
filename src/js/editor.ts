@@ -33,7 +33,7 @@ const highlight = HighlightStyle.define([
   { tag: t.invalid, color: '#e45649' },
 ]);
 
-export default function insertEditor(element: Element, code: string, callback?: (code: string) => void): EditorView {
+export default function insertEditor(element: Element, code?: string, callback?: (code: string) => void): EditorView {
   const extension = [
     EditorView.theme(theme),
     syntaxHighlighting(highlight),

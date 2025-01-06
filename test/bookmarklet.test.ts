@@ -1,6 +1,7 @@
 import { it, expect } from 'vitest';
 import { mockResponse } from './__mock__/fetch';
 import './__mock__/location';
+import './__mock__/clipboard';
 import Alpine from './__mock__/Alpine';
 import bookmarklet from '../src/js/bookmarklet';
 import Gist from '../src/js/Gist';
@@ -70,6 +71,17 @@ it('should set javascript href', async () => {
   const data = await Alpine.init(bookmarklet);
   expect(data.gist?.author).toBe(author);
   expect(data.gist?.href).toMatch(/javascript:/);
+});
+
+it('should copy javascript href', async () => {
+  const author = 'testAuthor';
+  const id = '01234567890123456789012345678901';
+  window.location.href = `https://bookmarkl.ink/${author}/${id}`;
+  const code = 'const test = 1234;';
+  mockResponse.body = code;
+  const data = await Alpine.init(bookmarklet);
+  data.copy();
+  expect(global.navigator.clipboard.writeText).toHaveBeenCalled();
 });
 
 it('should vary href based on variables', async () => {
