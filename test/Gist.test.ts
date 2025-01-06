@@ -46,7 +46,7 @@ it('should parse gist properties', async () => {
 
 it('should parse gist variables', async () => {
   const key0 = 'test_key_0';
-  const key1 = 'test_key_1';
+  const key1 = '$$test_key_1$';
   const key2 = 'test_key_2';
   const code = `//bookmarklet_var: ${key0}\n// bookmarklet-var :   ${key1}\nconst ${key2} = 'value'; //bookmarklet_var = ${key2}`;
   mockResponse.body = code;
@@ -68,21 +68,21 @@ it('should parse gist text variables', async () => {
   expect(gist.variables[key0].value).toBe(null);
   expect(gist.variables[key1].type).toBe('text');
   expect(gist.variables[key1].value).toBe(null);
-  gist.variables[key0].value = 'test_value_0'
-  gist.variables[key1].value = 'test_value_1'
+  gist.variables[key0].value = 'test_value_0';
+  gist.variables[key1].value = 'test_value_1';
   expect(gist.variables[key0].value).toBe('test_value_0');
   expect(gist.variables[key1].value).toBe('test_value_1');
 });
 
 it('should parse gist password variables', async () => {
   const key0 = 'test_key_0';
-  const code = `//bookmarklet_var(password): test_key_0`;
+  const code = `//bookmarklet_var(password): ${key0}`;
   mockResponse.body = code;
   const gist = new Gist('testAuthor', 'testId');
   await gist.load();
   expect(gist.variables[key0].type).toBe('password');
   expect(gist.variables[key0].value).toBe(null);
-  gist.variables[key0].value = 'test_value_0'
+  gist.variables[key0].value = 'test_value_0';
   expect(gist.variables[key0].value).toBe('test_value_0');
 });
 
@@ -94,12 +94,25 @@ it('should parse gist number variables', async () => {
   await gist.load();
   expect(gist.variables[key0].type).toBe('number');
   expect(gist.variables[key0].value).toBe(null);
-  gist.variables[key0].value = '1.234'
+  gist.variables[key0].value = '1.234';
   expect(gist.variables[key0].value).toBe(1.234);
-  gist.variables[key0].value = ''
+  gist.variables[key0].value = '';
   expect(gist.variables[key0].value).toBe(null);
-  gist.variables[key0].value = 'invalid'
+  gist.variables[key0].value = 'invalid';
   expect(gist.variables[key0].value).toBe(null);
+});
+
+it('should parse gist variables types regardless of casing', async () => {
+  const key0 = 'test_key_0';
+  const key1 = 'test_key_1';
+  const key2 = 'test_key_2';
+  const code = `//bookmarklet_var(TeXt): ${key0}\n//bookmarklet_var(NUMBER): ${key1}\n//bookmarklet_var(PASSword): ${key2}`;
+  mockResponse.body = code;
+  const gist = new Gist('testAuthor', 'testId');
+  await gist.load();
+  expect(gist.variables[key0].type).toBe('text');
+  expect(gist.variables[key1].type).toBe('number');
+  expect(gist.variables[key2].type).toBe('password');
 });
 
 it('should update gist variables', async () => {
