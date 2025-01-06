@@ -83,7 +83,7 @@ p {
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.button {
+a.button { // Anchors styled as buttons (required for bookmarklet)
   .animated(background-color);
   background-color: @button-background-color;
   border-radius: 10px;
@@ -106,7 +106,15 @@ p {
     }
   }
 }
-button {
+a:not(.button) { // Typical anchors
+  .animated(color);
+  color: @link-color;
+  text-decoration: underline;
+  &:hover {
+    color: @link-hover-color;
+  }
+}
+button { // Buttons styled as anchors (toggle code editor)
   background: none !important;
   border: none;
   padding: 0 !important;
@@ -115,17 +123,6 @@ button {
   text-decoration: underline;
   cursor: pointer;
   color: inherit;
-}
-.link {
-  .animated(color);
-  color: @link-color;
-  text-decoration: underline;
-  &:hover {
-    color: @link-hover-color;
-  }
-}
-.v-center {
-  vertical-align: middle;
 }
 
 // Input
@@ -210,7 +207,7 @@ table {
 // Errors
 pre {
   text-align: justify;
-  margin-top: 0;
+  margin: 0;
   font-family: inherit;
   font-size: 0.9em;
   background-color: #ffaeae;
@@ -230,4 +227,7 @@ pre {
 // Text styles
 .code {
   background-color: @code-background-color;
+}
+.v-center {
+  vertical-align: middle;
 }

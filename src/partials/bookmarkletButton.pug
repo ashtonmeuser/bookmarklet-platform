@@ -1,8 +1,4 @@
-div(class='row space-top')
-  template(x-if='gist.error')
-    .contents
-      h3 transpilation error
-      pre(x-text='gist.error.message')
-  a(class='button' x-bind:href='gist.href')
-    div(class='button-title' x-text='gist.title')
-    div(id='div-bookmarklet-subtitle')
+.row.space-top
+  a.button(x-bind:href='gist.href')
+    .button-title(x-text='gist.title')
+    #div-bookmarklet-subtitle
