@@ -1,4 +1,4 @@
-import BookmarkletError from "./error";
+import BookmarkletError from './error';
 
 type UrlProperties = {
   author: string;

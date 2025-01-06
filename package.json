@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "concurrently -k 'parcel watch src/**.pug' 'serve -d -c serve.json'",
-    "prebuild": "rm -rf dist/*",
+    "prebuild": "rm -rf dist/* .parcel-cache",
     "build": "parcel build 'src/*.pug' --no-source-maps",
     "test": "vitest run --environment jsdom --coverage",
     "presync": "npm run build",
