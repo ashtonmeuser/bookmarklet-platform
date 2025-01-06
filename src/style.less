@@ -123,6 +123,9 @@ button { // Buttons styled as anchors (toggle code editor)
   text-decoration: underline;
   cursor: pointer;
   color: inherit;
+  &:hover {
+    color: @link-hover-color;
+  }
 }
 
 // Input
@@ -139,12 +142,10 @@ input {
 header {
   margin-bottom: 30px;
   h1 {
-    .animated(color);
     @media @mobile-screen {
       font-size: 3em;
     }
     font-family: 'Damion', cursive;
-    font-display: block;
     font-size: 4em;
     line-height: 0.8;
     font-weight: bold;
@@ -157,11 +158,7 @@ header {
     line-height: 1em;
   }
   a {
-    text-decoration: none;
-    color: inherit;
-    &:hover {
-      color: @link-hover-color;
-    }
+    text-decoration: none !important;
   }
 }
 footer {
