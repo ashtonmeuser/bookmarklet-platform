@@ -44,7 +44,7 @@ export default function insertEditor(element: Element, code?: string, callback?:
   ];
   return new EditorView({
     doc: code,
-    extensions: [minimalSetup, lineNumbers(), highlightActiveLine(), highlightActiveLineGutter(), highlightSelectionMatches(), javascript(), extension],
+    extensions: [minimalSetup, lineNumbers(), highlightActiveLine(), highlightActiveLineGutter(), highlightSelectionMatches(), javascript({ typescript: true }), extension],
     parent: element,
   });
 }
