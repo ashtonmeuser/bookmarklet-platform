@@ -117,6 +117,15 @@ it('should update gist variables', async () => {
   expect(gist.variables).not.haveOwnProperty(key0);
 });
 
+it('should use first gist variable definition', async () => {
+  const key0 = 'test_key_0';
+  const code = `//bookmarklet_var: ${key0}\n//bookmarklet_var(number): ${key0}`;
+  mockResponse.body = code;
+  const gist = new Gist('testAuthor', 'testId');
+  await gist.load();
+  expect(gist.variables[key0].type).toBe('text');
+});
+
 it('should skip syncing variables', async () => {
   const gist = new Gist('testAuthor', 'testId');
   gist.syncVariables();

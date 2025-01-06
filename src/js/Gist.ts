@@ -33,13 +33,17 @@ function extractProperty(code: string, property: string): string | undefined {
 
 function extractVariables(code: string): VariableMap {
   const matches = code.matchAll(/\/\/[\s\t]*bookmarklet[-_]var(?:\((\w+)\))?[\s\t]*[:=][\s\t]*([a-z_$][\w$]*)[\s\t]*$/gim);
-  return Array.from(matches).reduce((acc: VariableMap, match: RegExpExecArray): VariableMap => ({
-    ...acc,
-    [match[2]]: {
-      type: isVariableType(match[1]) ? match[1] : VariableType.TEXT,
-      value: null,
-    },
-  }), {});
+  return Array.from(matches).reduce((acc: VariableMap, match: RegExpExecArray): VariableMap => {
+    const key = match[2];
+    const type = match[1]?.toLowerCase();
+    if (!(key in acc)) {
+      acc[key] = {
+        type: isVariableType(type) ? type : VariableType.TEXT,
+        value: null,
+      }
+    }
+    return acc;
+  }, {});
 }
 
 function replaceVariables(code: string, variables: VariableMap) {
@@ -69,7 +73,7 @@ export default class Gist {
     this.id = id;
     this.version = version;
     this.file = file;
-    this.title = 'bookmarklet'
+    this.title = 'bookmarklet';
     this.variables = {};
   }
 
