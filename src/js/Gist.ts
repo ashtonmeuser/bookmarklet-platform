@@ -2,8 +2,6 @@ import { v4 as uuid } from 'uuid';
 import BookmarkletError from './error';
 const Babel = require('@babel/standalone');
 
-Babel.registerPreset('@babel/preset-typescript', require('@babel/preset-typescript'));
-
 enum VariableType {
   TEXT = 'text',
   PASSWORD = 'password',
@@ -114,9 +112,10 @@ export default class Gist {
   transpile(): void {
     if (this.code === undefined) return; // Code has not yet been fetched
     this.error = undefined;
+    const presets = ['typescript', ['env', { targets: { browsers: '> 0.25%, not dead' } }]];
     let code = replaceVariables(this.code, this.variables);
     try {
-      code = Babel.transform(code, { presets: ['env', '@babel/preset-typescript'], filename: 'bookmarklet.ts', minified: true, comments: false }).code;
+      code = Babel.transform(code, { presets, filename: 'bookmarklet.ts', minified: true, comments: false }).code;
       this.href = `javascript:(function(){${encodeURIComponent(code)}})();`;
     } catch(e) {
       this.href = null;
