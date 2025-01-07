@@ -2,6 +2,8 @@ import { v4 as uuid } from 'uuid';
 import BookmarkletError from './error';
 const Babel = require('@babel/standalone');
 
+Babel.registerPlugin('dead-code-elimination', require('babel-plugin-minify-dead-code-elimination'));
+
 enum VariableType {
   TEXT = 'text',
   PASSWORD = 'password',
@@ -112,10 +114,11 @@ export default class Gist {
   transpile(): void {
     if (this.code === undefined) return; // Code has not yet been fetched
     this.error = undefined;
-    const presets = ['typescript', ['env', { targets: { browsers: '> 0.25%, not dead' } }]];
+    const presets = ['typescript', ['env', { modules: false, targets: { browsers: '> 0.25%, not dead' } }]];
+    const plugins = ['dead-code-elimination'];
     let code = replaceVariables(this.code, this.variables);
     try {
-      code = Babel.transform(code, { presets, filename: 'bookmarklet.ts', minified: true, comments: false }).code;
+      code = Babel.transform(code, { presets, plugins, filename: 'bookmarklet.ts', minified: true, comments: false }).code;
       this.href = `javascript:(function(){${encodeURIComponent(code)}})();`;
     } catch(e) {
       this.href = null;

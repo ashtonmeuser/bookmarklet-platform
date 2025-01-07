@@ -184,7 +184,7 @@ it('should set size of gist', async () => {
   const gist = new Gist('testAuthor', 'testId');
   expect(gist.size).toBe('0 B');
   await gist.load();
-  expect(gist.size).toBe('378 B');
+  expect(gist.size).toBe('357 B');
   code = `let a = "";\n${'a = "test test test";\n'.repeat(100)}`;
   mockResponse.body = code;
   await gist.load();
@@ -196,7 +196,7 @@ it('should transpile TypeScript', async () => {
   mockResponse.body = code;
   const gist = new Gist('testAuthor', 'testId');
   await gist.load();
-  expect(gist.size).toBe('87 B');
+  expect(gist.size).toBe('66 B');
 });
 
 it('should fail transpilation', async () => {
