@@ -1,8 +1,14 @@
 .row(x-show='Object.keys(gist.variables).length')
   h3 variables
   table
-    template(x-for='[key, variable] in Object.entries(gist.variables).filter(([_, variable]) => ["text", "number", "password"].includes(variable.type))')
+    template(x-for='[key, variable] in Object.entries(gist.variables).filter(([_, variable]) => ["text", "number", "password", "boolean"].includes(variable.type))')
       tr
-        td.v-center(x-text='key')
+        td.v-center
+          label(x-bind:for='`variable-${key}`' x-text='key')
         td
-          input(x-bind:type='variable.type' x-model.unintrusive.debounce.150ms='variable.value' autocomplete="off")
+          template(x-if='variable.type === "boolean"')
+            label
+              input(x-bind:id='`variable-${key}`' type='checkbox' x-model='variable.value')
+              div
+          template(x-if='variable.type !== "boolean"')
+            input(x-bind:type='variable.type' x-bind:id='`variable-${key}`' x-model.unintrusive.debounce.150ms='variable.value' autocomplete="off")

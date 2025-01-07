@@ -130,12 +130,61 @@ button { // Buttons styled as anchors (toggle code editor)
 
 // Input
 input {
+  font-family: sans-serif;
   text-align: center;
   font-size: 1em;
   border-radius: 10px;
   border: 0;
   width: 100%;
   padding: 10px;
+}
+label:has(input[type='checkbox']) {
+  font-family: sans-serif;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  display: inline-flex;
+  justify-content: space-evenly;
+  width: 100%;
+  font-size: 1em;
+  border-radius: 10px;
+  border: 0;
+  width: 100%;
+  &:focus-within {
+    outline: blue auto 1px;
+    outline: -webkit-focus-ring-color auto 1px;
+  }
+  input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    &:checked + div {
+      left: 50%;
+    }
+  }
+  div {
+    position: absolute;
+    z-index: -1;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background-color: #0001;
+  }
+  &::before, &::after {
+    position: relative;
+    content: 'true';
+    flex: 1;
+    z-index: -2;
+    background-color: white;
+    padding: 10px;
+    text-align: center;
+  }
+  &::after {
+    content: 'false';
+  }
 }
 
 // Header, footer

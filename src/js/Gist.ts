@@ -8,12 +8,13 @@ enum VariableType {
   TEXT = 'text',
   PASSWORD = 'password',
   NUMBER = 'number',
+  BOOLEAN = 'boolean',
   AUTHOR = 'author',
   ID = 'id',
   UUID = 'uuid',
 };
 
-type Variable = { type: VariableType, value: string | number| null };
+type Variable = { type: VariableType, value: string | number | boolean | null };
 type VariableMap = { [key: string]: Variable };
 
 async function fetch(url: string): Promise<string> {
@@ -27,8 +28,11 @@ async function fetch(url: string): Promise<string> {
   }
 }
 
-function isVariableType(value: string): value is VariableType {
-  return Object.values(VariableType).includes(value as VariableType);
+function getVariableType(type?: string): VariableType {
+  if (!type) return VariableType.TEXT;
+  const isVariableType = (value: string): value is VariableType => Object.values(VariableType).includes(value as VariableType);
+  const lower = type.toLowerCase();
+  return isVariableType(lower) ? lower : VariableType.TEXT
 }
 
 function extractProperty(code: string, property: string): string | undefined {
@@ -41,12 +45,9 @@ function extractVariables(code: string): VariableMap {
   const matches = code.matchAll(/\/\/[\s\t]*bookmarklet[-_]var(?:\((\w+)\))?[\s\t]*[:=][\s\t]*([a-z_$][\w$]*)[\s\t]*$/gim);
   return Array.from(matches).reduce((acc: VariableMap, match: RegExpExecArray): VariableMap => {
     const key = match[2];
-    const type = match[1]?.toLowerCase();
+    const type = getVariableType(match[1]);
     if (!(key in acc)) {
-      acc[key] = {
-        type: isVariableType(type) ? type : VariableType.TEXT,
-        value: null,
-      }
+      acc[key] = { type, value: null };
     }
     return acc;
   }, {});
@@ -138,17 +139,19 @@ export default class Gist {
     for (const [key, variable] of Object.entries(update)) {
       if (this.variables[key]?.type === variable.type) continue; // Variable exists
 
-      // Apply some defaults
-      if (variable.type === VariableType.AUTHOR) variable.value = this.author;
+      // Apply non-null defaults
+      if (variable.type === VariableType.BOOLEAN) variable.value = false;
+      else if (variable.type === VariableType.AUTHOR) variable.value = this.author;
       else if (variable.type === VariableType.ID) variable.value = this.id;
       else if (variable.type === VariableType.UUID) variable.value = uuid();
 
       // Insert or overwrite variable proxy
       this.variables[key] = new Proxy(variable, {
-        set: (target, key: string, value: string | number) => {
+        set: (target, key: string, value: string | number | boolean) => {
           if (key !== 'value') return false;
           if (target.type === VariableType.NUMBER) target.value = value === '' ? null : Number.isNaN(Number(value)) ? null : Number(value);
-          else target.value = String(value);
+          else if (target.type === VariableType.BOOLEAN) target.value = Boolean(value);
+          else if (target.type == VariableType.TEXT || target.type == VariableType.PASSWORD) target.value = String(value);
           this.transpile(); // Kick off transpilation when variables change
           return true;
         },

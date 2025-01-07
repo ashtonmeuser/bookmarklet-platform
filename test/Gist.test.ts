@@ -102,6 +102,20 @@ it('should parse gist number variables', async () => {
   expect(gist.variables[key0].value).toBe(null);
 });
 
+it('should parse gist boolean variables', async () => {
+  const key0 = 'test_key_0';
+  const code = `//bookmarklet_var(boolean): ${key0}`;
+  mockResponse.body = code;
+  const gist = new Gist('testAuthor', 'testId');
+  await gist.load();
+  expect(gist.variables[key0].type).toBe('boolean');
+  expect(gist.variables[key0].value).toBe(false);
+  gist.variables[key0].value = 'something truthy';
+  expect(gist.variables[key0].value).toBe(true);
+  gist.variables[key0].value = '';
+  expect(gist.variables[key0].value).toBe(false);
+});
+
 it('should parse gist special variables', async () => {
   const author = 'testAuthor';
   const id = 'testId';
@@ -117,6 +131,24 @@ it('should parse gist special variables', async () => {
   expect(gist.variables[keyId].type).toBe('id');
   expect(gist.variables[keyId].value).toBe(id);
   expect(gist.variables[keyUuid].type).toBe('uuid');
+  expect(gist.variables[keyUuid].value).toMatch(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/);
+});
+
+it('should fail to set gist special variables', async () => {
+  const author = 'testAuthor';
+  const id = 'testId';
+  const keyAuthor = 'test_key_author';
+  const keyId = 'test_key_id';
+  const keyUuid = 'test_key_uuid';
+  const code = `//bookmarklet_var(author): ${keyAuthor}\n//bookmarklet_var(id): ${keyId}\n//bookmarklet_var(uuid): ${keyUuid}\n`;
+  mockResponse.body = code;
+  const gist = new Gist(author, id);
+  await gist.load();
+  gist.variables[keyAuthor].value = 'some new value';
+  expect(gist.variables[keyAuthor].value).toBe(author);
+  gist.variables[keyId].value = 'some new value';
+  expect(gist.variables[keyId].value).toBe(id);
+  gist.variables[keyUuid].value = 'some new value';
   expect(gist.variables[keyUuid].value).toMatch(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/);
 });
 
@@ -151,6 +183,15 @@ it('should update gist variables', async () => {
 it('should use first gist variable definition', async () => {
   const key0 = 'test_key_0';
   const code = `//bookmarklet_var: ${key0}\n//bookmarklet_var(number): ${key0}`;
+  mockResponse.body = code;
+  const gist = new Gist('testAuthor', 'testId');
+  await gist.load();
+  expect(gist.variables[key0].type).toBe('text');
+});
+
+it('should ignore invalid variable type', async () => {
+  const key0 = 'test_key_0';
+  const code = `//bookmarklet_var(invalid): ${key0}`;
   mockResponse.body = code;
   const gist = new Gist('testAuthor', 'testId');
   await gist.load();
