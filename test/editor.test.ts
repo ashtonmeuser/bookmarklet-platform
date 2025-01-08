@@ -1,4 +1,5 @@
 import { it, expect, vi } from 'vitest';
+import './__mock__/document';
 import insertEditor from '../src/js/editor';
 
 it('should insert CodeMirror editor', () => {

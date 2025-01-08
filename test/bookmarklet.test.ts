@@ -2,6 +2,7 @@ import { it, expect } from 'vitest';
 import { mockResponse } from './__mock__/fetch';
 import './__mock__/location';
 import './__mock__/clipboard';
+import './__mock__/document';
 import Alpine from './__mock__/Alpine';
 import bookmarklet from '../src/js/bookmarklet';
 import Gist from '../src/js/Gist';
