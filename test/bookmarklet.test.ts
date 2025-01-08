@@ -1,5 +1,7 @@
 import { it, expect } from 'vitest';
 import { mockResponse } from './__mock__/fetch';
+import './__mock__/TextEncoder';
+import './__mock__/esbuild';
 import './__mock__/location';
 import './__mock__/clipboard';
 import './__mock__/document';

@@ -1,5 +1,7 @@
 import { vi, it, expect } from 'vitest';
 import { mockResponse } from './__mock__/fetch';
+import './__mock__/TextEncoder';
+import './__mock__/esbuild';
 import Gist from '../src/js/Gist';
 
 it('should create gist', () => {
@@ -249,7 +251,7 @@ it('should set size of gist', async () => {
   const gist = new Gist('testAuthor', 'testId');
   expect(gist.size).toBe('0 B');
   await gist.load();
-  await expect.poll(() => gist.size).toBe('400 B');
+  await expect.poll(() => gist.size).toBe('407 B');
   code = `let a = "";\n${'a = "test test test";\n'.repeat(100)}`;
   mockResponse.body = code;
   await gist.load();
@@ -261,7 +263,7 @@ it('should transpile TypeScript', async () => {
   mockResponse.body = code;
   const gist = new Gist('testAuthor', 'testId');
   await gist.load();
-  await expect.poll(() => gist.size).toBe('109 B');
+  await expect.poll(() => gist.size).toBe('114 B');
 });
 
 it('should include banner', async () => {
