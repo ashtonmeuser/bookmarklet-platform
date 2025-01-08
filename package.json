@@ -16,7 +16,7 @@
   "devDependencies": {
     "@parcel/transformer-pug": "^2.13.3",
     "@vitest/coverage-v8": "^2.1.8",
-    "concurrently": "^9.1.1",
+    "concurrently": "^9.1.2",
     "parcel": "^2.13.3",
     "process": "^0.11.10",
     "serve": "^14.2.4",
