@@ -1,4 +1,4 @@
-import { it, expect } from 'vitest';
+import { vi, it, expect } from 'vitest';
 import { mockResponse } from './__mock__/fetch';
 import Gist from '../src/js/Gist';
 
@@ -9,6 +9,18 @@ it('should create gist', () => {
   expect(gist).toBeInstanceOf(Gist);
   expect(gist.author).toBe(author);
   expect(gist.id).toBe(id);
+  expect(gist.url).toBe('https://gist.github.com/testAuthor/testId/');
+});
+
+it('should create gist with optional properties', () => {
+  const author = 'testAuthor';
+  const id = 'testId';
+  const version = '0123456789012345678901234567890123456789';
+  const file = 'test.js';
+  const gist = new Gist(author, id, version, file);
+  expect(gist.version).toBe(version);
+  expect(gist.file).toBe(file);
+  expect(gist.url).toBe('https://gist.github.com/testAuthor/testId/0123456789012345678901234567890123456789');
 });
 
 it('should fail to create gist', () => {
@@ -26,11 +38,11 @@ it('should fetch gist code', async () => {
 });
 
 it('should URI encode gist code', async () => {
-  const code = 'const test = "@#$"';
+  const code = 'const test = "@#$";\nconsole.log(test);';
   mockResponse.body = code;
   const gist = new Gist('testAuthor', 'testId');
   await gist.load();
-  expect(gist.href).toMatch(/%40%23%24/);
+  await expect.poll(() => gist.href).toMatch(/%40%23%24/);
 });
 
 it('should parse gist properties', async () => {
@@ -203,10 +215,22 @@ it('should skip syncing variables', async () => {
   gist.syncVariables();
 });
 
-it('should skip transpilation', async () => {
-  mockResponse.code = 500;
+it('should skip transpiling before loading', async () => {
   const gist = new Gist('testAuthor', 'testId');
   gist.transpile();
+  expect(gist.href).toBeNull();
+});
+
+it('should skip transpiling duplicate code', async () => {
+  const code = 'console.log("test");';
+  mockResponse.body = code;
+  const gist = new Gist('testAuthor', 'testId');
+  const spy = vi.spyOn(gist, 'transpile');
+  await gist.load();
+  expect(spy).toHaveBeenCalledOnce();
+  mockResponse.body = code; // Use the same code
+  await gist.load();
+  expect(spy).toHaveBeenCalledOnce();
 });
 
 it('should fail to fetch gist code', async () => {
@@ -225,11 +249,11 @@ it('should set size of gist', async () => {
   const gist = new Gist('testAuthor', 'testId');
   expect(gist.size).toBe('0 B');
   await gist.load();
-  expect(gist.size).toBe('357 B');
+  await expect.poll(() => gist.size).toBe('357 B');
   code = `let a = "";\n${'a = "test test test";\n'.repeat(100)}`;
   mockResponse.body = code;
   await gist.load();
-  expect(gist.size).toBe('3.1 kB');
+  await expect.poll(() => gist.size).toBe('3.1 kB');
 });
 
 it('should transpile TypeScript', async () => {
@@ -237,13 +261,14 @@ it('should transpile TypeScript', async () => {
   mockResponse.body = code;
   const gist = new Gist('testAuthor', 'testId');
   await gist.load();
-  expect(gist.size).toBe('66 B');
+  await expect.poll(() => gist.size).toBe('66 B');
 });
 
 it('should fail transpilation', async () => {
   mockResponse.body = 'const test = "';
   const gist = new Gist('testAuthor', 'testId');
-  await expect(gist.load).rejects.toThrow();
+  await gist.load();
+  await expect.poll(() => gist.error).toBeInstanceOf(Error);
 });
 
 it('should fail to set type of gist variable', async () => {

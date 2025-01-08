@@ -72,7 +72,7 @@ it('should set javascript href', async () => {
   mockResponse.body = code;
   const data = await Alpine.init(bookmarklet);
   expect(data.gist?.author).toBe(author);
-  expect(data.gist?.href).toMatch(/javascript:/);
+  await expect.poll(() => data.gist?.href).toMatch(/javascript:/);
 });
 
 it('should copy javascript href', async () => {
@@ -82,6 +82,7 @@ it('should copy javascript href', async () => {
   const code = 'const test = 1234;';
   mockResponse.body = code;
   const data = await Alpine.init(bookmarklet);
+  await expect.poll(() => data.gist?.href).toMatch(/javascript:/);
   data.copy();
   expect(global.navigator.clipboard.writeText).toHaveBeenCalled();
 });
@@ -91,16 +92,16 @@ it('should vary href based on variables', async () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
   window.location.href = `https://bookmarkl.ink/${author}/${id}`;
-  const code = `//bookmarklet_var: ${key0}`;
+  const code = `//bookmarklet_var: ${key0}\nconsole.log(${key0});`;
   mockResponse.body = code;
   const data = await Alpine.init(bookmarklet);
   expect(data.gist).toBeInstanceOf(Gist);
   const gist = data.gist as Gist;
-  expect(gist.href).toMatch(/javascript:/);
+  await expect.poll(() => gist.href).toMatch(/javascript:/);
   expect(gist.variables[key0].value).toBe(null);
   const old = gist.href;
   gist.variables[key0].value = 'test_value_0';
-  expect(gist.href).not.toBe(old);
+  await expect.poll(() => gist.href).not.toBe(old);
 });
 
 it('should default to editing', async () => {
@@ -131,5 +132,5 @@ it('should fail to transpile bookmarklet', async () => {
   mockResponse.body = code;
   const data = await Alpine.init(bookmarklet, { $refs: {} });
   expect(data.error).toBeNull();
-  expect(data.gist?.error).toBeInstanceOf(Error);
+  await expect.poll(() => data.gist?.error).toBeInstanceOf(Error);
 });

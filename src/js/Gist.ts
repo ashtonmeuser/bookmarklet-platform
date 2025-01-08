@@ -65,13 +65,13 @@ function replaceVariables(code: string, variables: VariableMap) {
 export default class Gist {
   author: string;
   id: string;
-  title: string;
+  title: string = 'bookmarklet';
   about: string | undefined;
   version: string | undefined;
   file: string | undefined;
-  variables: VariableMap;
+  variables: VariableMap = {};
   _code: string | undefined; // Can't be private due to Alpine's Proxy usage
-  href: string | null;
+  href: string | null = null;
   error: Error | undefined;
 
   constructor(author: string, id: string, version?: string, file?: string) {
@@ -80,8 +80,6 @@ export default class Gist {
     this.id = id;
     this.version = version;
     this.file = file;
-    this.title = 'bookmarklet';
-    this.variables = {};
   }
 
   get size(): string {
@@ -101,18 +99,19 @@ export default class Gist {
   }
 
   set code(code: string) {
+    if (this._code === code) return; // No action needed
     this._code = code;
     this.title = extractProperty(code, 'title') || 'bookmarklet';
     this.about = extractProperty(code, 'about');
     this.syncVariables();
-    this.transpile();
+    this.transpile(); // Kick off transpilation when code changes
   }
 
   async load(): Promise<void> {
     this.code = await fetch(`https://gist.githubusercontent.com/${this.author}/${this.id}/raw/${this.version || ''}/${this.file || ''}`);
   }
 
-  transpile(): void {
+  async transpile(): Promise<void> {
     if (this.code === undefined) return; // Code has not yet been fetched
     this.error = undefined;
     const presets = ['typescript', ['env', { modules: false, targets: { browsers: '> 0.25%, not dead' } }]];
