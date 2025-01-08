@@ -16,10 +16,11 @@ type Variable = { type: VariableType, value: string | number | boolean | null };
 type VariableMap = { [key: string]: Variable };
 
 const ESBUILD_INITIALIZE = esbuild.initialize({ wasmURL: 'https://unpkg.com/esbuild-wasm/esbuild.wasm' });
-const ESBUILD_CONFIG: esbuild.TransformOptions = {
+const ESBUILD_CONFIG: esbuild.BuildOptions = {
+  bundle: true,
+  target: ['es2017'],
   minify: true,
   format: 'iife',
-  loader: 'ts',
 };
 
 async function fetch(url: string): Promise<string> {
@@ -121,8 +122,8 @@ export default class Gist {
     this.error = undefined;
     let code = replaceVariables(this.code, this.variables);
     try {
-      code = (await esbuild.transform(code, ESBUILD_CONFIG)).code;
-      this.href = `javascript:${this.banner}${encodeURIComponent(code)}`;
+      const result = await esbuild.build({ ...ESBUILD_CONFIG, stdin: { contents: code, loader: 'ts', sourcefile: 'bookmarklet' } });
+      this.href = `javascript:${this.banner}${encodeURIComponent(result.outputFiles![0].text)}`;
     } catch(e) {
       this.href = null;
       this.error = e;
