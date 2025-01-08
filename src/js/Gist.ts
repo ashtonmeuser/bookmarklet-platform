@@ -57,7 +57,7 @@ function replaceVariables(code: string, variables: VariableMap) {
   const escape = (s) => s.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
   for (const [key, variable] of Object.entries(variables)) {
     const r = new RegExp(`^.*//[\\s\\t]*bookmarklet[-_]var(?:\\((\\w+)\\))?[\\s\\t]*[:=][\\s\\t]*${escape(key)}[\\s\\t]*$`, 'im');
-    code = code.replace(r, `const ${key} = ${JSON.stringify(variable.value)};\n`);
+    code = code.replace(r, `const ${key} = ${JSON.stringify(variable.value)};`);
   }
   return code;
 }
