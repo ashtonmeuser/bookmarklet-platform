@@ -1,4 +1,4 @@
 Object.defineProperty(global, 'location', {
   writable: true,
-  value: { href: '' },
+  value: { href: '', hash: '' },
 });

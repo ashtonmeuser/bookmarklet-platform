@@ -12,6 +12,7 @@ it('should start with defaults', async () => {
   expect(data).toHaveProperty('init');
   expect(data.gist).toBeNull();
   expect(data.error).toBeInstanceOf(Error);
+  expect(data.edit).toBe(false);
 });
 
 it('should set author and ID', async () => {
@@ -99,6 +100,15 @@ it('should vary href based on variables', async () => {
   const old = gist.href;
   gist.variables[key0].value = 'test_value_0';
   expect(gist.href).not.toBe(old);
+});
+
+it('should default to editing', async () => {
+  const author = 'testAuthor';
+  const id = '01234567890123456789012345678901';
+  window.location.href = `https://bookmarkl.ink/${author}/${id}`;
+  window.location.hash = '#edit';
+  const data = await Alpine.init(bookmarklet);
+  expect(data.edit).toBe(true);
 });
 
 it('should fail to load bookmarklet', async () => {
