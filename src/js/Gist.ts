@@ -1,8 +1,6 @@
 import { v4 as uuid } from 'uuid';
+import * as esbuild from 'esbuild-wasm';
 import BookmarkletError from './error';
-const Babel = require('@babel/standalone');
-
-Babel.registerPlugin('dead-code-elimination', require('babel-plugin-minify-dead-code-elimination'));
 
 enum VariableType {
   TEXT = 'text',
@@ -16,6 +14,13 @@ enum VariableType {
 
 type Variable = { type: VariableType, value: string | number | boolean | null };
 type VariableMap = { [key: string]: Variable };
+
+const ESBUILD_INITIALIZE = esbuild.initialize({ wasmURL: 'https://unpkg.com/esbuild-wasm/esbuild.wasm' });
+const ESBUILD_CONFIG: esbuild.TransformOptions = {
+  minify: true,
+  format: 'iife',
+  loader: 'ts',
+};
 
 async function fetch(url: string): Promise<string> {
   try {
@@ -112,13 +117,12 @@ export default class Gist {
 
   async transpile(): Promise<void> {
     if (this.code === undefined) return; // Code has not yet been fetched
+    await ESBUILD_INITIALIZE; // Ensure esbuild is initialized
     this.error = undefined;
-    const presets = ['typescript', ['env', { modules: false, targets: { browsers: '> 0.25%, not dead' } }]];
-    const plugins = ['dead-code-elimination'];
     let code = replaceVariables(this.code, this.variables);
     try {
-      code = Babel.transform(code, { presets, plugins, filename: 'bookmarklet.ts', minified: true, comments: false }).code;
-      this.href = `javascript:${this.banner}(function(){${encodeURIComponent(code)}})();`;
+      code = (await esbuild.transform(code, ESBUILD_CONFIG)).code;
+      this.href = `javascript:${this.banner}${encodeURIComponent(code)}`;
     } catch(e) {
       this.href = null;
       this.error = e;
