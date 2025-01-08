@@ -1,26 +1,19 @@
-// Variables
-@max-width: 530px;
-@body-background-color: #F5F5F5;
-@button-color: #FFF;
-@error-color: #EA4848;
-@button-background-color: #5F9EA0;
-@button-hover-background-color: #7EB1B3;
-@disabled-button-color: #BBB;
-@link-color: #000;
-@link-hover-color: #666;
-@code-background-color: #DDD;
-@transition-duration: 0.2s;
-@mobile-screen: ~'only screen and (max-width: 420px)';
-@has-mouse: ~'(any-hover: hover)';
-
-// Mixins
-.animated(@property: all; @easing: ease) {
-  transition-property: @property;
-  transition-duration: @transition-duration;
-  transition-timing-function: @easing;
+/* Variables */
+:root {
+  --max-width: 530px;
+  --body-background-color: #F5F5F5;
+  --button-color: #FFF;
+  --error-color: #EA4848;
+  --button-background-color: #5F9EA0;
+  --button-hover-background-color: #7EB1B3;
+  --disabled-button-color: #BBB;
+  --link-color: #000;
+  --link-hover-color: #666;
+  --code-background-color: #DDD;
+  --transition-duration: 0.2s;
 }
 
-// Fonts
+/* Fonts */
 @font-face {
   font-family: 'Damion';
   font-style: normal;
@@ -28,7 +21,7 @@
   src: local(''), url('assets/damion-v10.woff2') format('woff2'), url('assets/damion-v10.woff') format('woff');
 }
 
-// Layout
+/* Layout */
 html {
   box-sizing: border-box;
   * {
@@ -42,7 +35,7 @@ body {
   margin: 0;
   min-height: 100vh;
   text-align: center;
-  background-color: @body-background-color;
+  background-color: var(--body-background-color);
 }
 main {
   display: flex;
@@ -53,7 +46,7 @@ main {
   padding: 20px;
   & > * {
     width: 100%;
-    max-width: @max-width;
+    max-width: var(--max-width);
   }
 }
 p {
@@ -76,18 +69,18 @@ p {
   padding-top: 10px;
 }
 
-// Buttons, links
+/* Buttons, links */
 .button-title {
   font-size: 1.5em;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-a.button { // Anchors styled as buttons (required for bookmarklet)
-  .animated(background-color);
-  background-color: @button-background-color;
+a.button { /* Anchors styled as buttons (required for bookmarklet) */
+  transition: background-color var(--transition-duration) ease;
+  background-color: var(--button-background-color);
   border-radius: 10px;
-  color: @button-color;
+  color: var(--button-color);
   padding: 20px;
   text-decoration: none;
   display: block;
@@ -95,26 +88,26 @@ a.button { // Anchors styled as buttons (required for bookmarklet)
   text-overflow: ellipsis;
   overflow: hidden;
   &:hover {
-    @media @has-mouse {
-      background-color: @button-hover-background-color;
+    @media (any-hover: hover) {
+      background-color: var(--button-hover-background-color);
     }
   }
   &:not([href]) {
-    background-color: @disabled-button-color;
+    background-color: var(--disabled-button-color);
     &:hover {
       cursor: not-allowed;
     }
   }
 }
-a:not(.button) { // Typical anchors
-  .animated(color);
-  color: @link-color;
+a:not(.button) { /* Typical anchors */
+  transition: color var(--transition-duration) ease;
+  color: var(--link-color);
   text-decoration: underline;
   &:hover {
-    color: @link-hover-color;
+    color: var(--link-hover-color);
   }
 }
-button { // Buttons styled as anchors (toggle code editor)
+button { /* Buttons styled as anchors (toggle code editor) */
   background: none !important;
   border: none;
   padding: 0 !important;
@@ -124,11 +117,11 @@ button { // Buttons styled as anchors (toggle code editor)
   cursor: pointer;
   color: inherit;
   &:hover {
-    color: @link-hover-color;
+    color: var(--link-hover-color);
   }
 }
 
-// Input
+/* Input */
 input {
   font-family: sans-serif;
   text-align: center;
@@ -151,7 +144,6 @@ label:has(input[type='checkbox']) {
   border: 0;
   width: 100%;
   &:focus-within {
-    outline: blue auto 1px;
     outline: -webkit-focus-ring-color auto 1px;
   }
   input {
@@ -167,7 +159,7 @@ label:has(input[type='checkbox']) {
     position: absolute;
     z-index: -1;
     backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px) !important; /* Forces autoprefixer to include both */
     left: 0;
     width: 50%;
     height: 100%;
@@ -185,13 +177,16 @@ label:has(input[type='checkbox']) {
   &::after {
     content: 'false';
   }
+  &:has(input:checked)::after, &:has(input:not(:checked))::before {
+    color: #bbb;
+  }
 }
 
-// Header, footer
+/* Header, footer */
 header {
   margin-bottom: 30px;
   h1 {
-    @media @mobile-screen {
+    @media only screen and (max-width: 420px) {
       font-size: 3em;
     }
     font-family: 'Damion', cursive;
@@ -214,8 +209,8 @@ footer {
   margin-top: 30px;
 }
 
-// Bookmarklet
-#div-bookmarklet-subtitle:after { // Use pseudo-elements to avoid anchor title including subtitle
+/* Bookmarklet */
+#div-bookmarklet-subtitle:after { /* Use pseudo-elements to avoid anchor title including subtitle */
   content: 'drag to bookmarks to save'
 }
 h3 {
@@ -250,7 +245,7 @@ table {
   }
 }
 
-// Errors
+/* Errors */
 pre {
   text-align: justify;
   margin: 0;
@@ -270,9 +265,9 @@ pre {
   }
 }
 
-// Text styles
+/* Text styles */
 .code {
-  background-color: @code-background-color;
+  background-color: var(--code-background-color);
 }
 .v-center {
   vertical-align: middle;
