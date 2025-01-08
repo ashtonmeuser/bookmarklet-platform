@@ -20,7 +20,9 @@ const ESBUILD_CONFIG: esbuild.BuildOptions = {
   bundle: true,
   target: ['es2017'],
   minify: true,
-  format: 'iife',
+  supported: { 'inline-script': true },
+  plugins: [resolverPlugin()],
+  write: false, // Prevents tests writing to FS
 };
 
 async function fetch(url: string): Promise<string> {
