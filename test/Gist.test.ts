@@ -9,7 +9,7 @@ it('should create gist', () => {
   expect(gist).toBeInstanceOf(Gist);
   expect(gist.author).toBe(author);
   expect(gist.id).toBe(id);
-  expect(gist.url).toBe('https://gist.github.com/testAuthor/testId/');
+  expect(gist.url).toBe('https://gist.github.com/testAuthor/testId');
 });
 
 it('should create gist with optional properties', () => {

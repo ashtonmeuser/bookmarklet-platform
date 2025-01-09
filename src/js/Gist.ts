@@ -63,12 +63,14 @@ function replaceVariables(code: string, variables: VariableMap) {
 }
 
 export default class Gist {
-  author: string;
-  id: string;
+  readonly author: string;
+  readonly id: string;
+  readonly version: string | undefined;
+  readonly file: string | undefined;
+  readonly url: string;
+  readonly banner: string;
   title: string = 'bookmarklet';
   about: string | undefined;
-  version: string | undefined;
-  file: string | undefined;
   variables: VariableMap = {};
   _code: string | undefined; // Can't be private due to Alpine's Proxy usage
   href: string | null = null;
@@ -80,6 +82,8 @@ export default class Gist {
     this.id = id;
     this.version = version;
     this.file = file;
+    this.url = `https://gist.github.com/${this.author}/${this.id}${this.version ? `/${this.version}` : ''}`;
+    this.banner = `/*https://bookmarkl.ink/${this.author}/${this.id}${this.version ? `/${this.version}` : ''}${this.file ? `/${this.file}` : ''}*/`
   }
 
   get size(): string {
@@ -88,10 +92,6 @@ export default class Gist {
     const size = new Blob([this.href]).size;
     const i = Math.floor(Math.log(size) / Math.log(1024));
     return `${(size / 1024 ** i).toFixed(i > 0 ? 1 : 0)} ${suffixes[i]}`;
-  }
-
-  get url(): string {
-    return `https://gist.github.com/${this.author}/${this.id}/${this.version || ''}`;
   }
 
   get code(): string | undefined {
