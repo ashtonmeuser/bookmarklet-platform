@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import * as esbuild from 'esbuild-wasm';
 import BookmarkletError from './error';
+import { config, transpile } from './bundle';
 
 enum VariableType {
   TEXT = 'text',
@@ -14,16 +15,6 @@ enum VariableType {
 
 type Variable = { type: VariableType, value: string | number | boolean | null };
 type VariableMap = { [key: string]: Variable };
-
-const ESBUILD_INITIALIZE = esbuild.initialize({ wasmURL: 'https://unpkg.com/esbuild-wasm/esbuild.wasm' });
-const ESBUILD_CONFIG: esbuild.BuildOptions = {
-  bundle: true,
-  target: ['es2017'],
-  minify: true,
-  supported: { 'inline-script': true },
-  plugins: [resolverPlugin()],
-  write: false, // Prevents tests writing to FS
-};
 
 async function fetch(url: string): Promise<string> {
   try {
@@ -74,8 +65,10 @@ export default class Gist {
   readonly id: string;
   readonly version: string | undefined;
   readonly file: string | undefined;
+  readonly path: string;
   readonly url: string;
   readonly banner: string;
+  readonly config: esbuild.BuildOptions;
   title: string = 'bookmarklet';
   about: string | undefined;
   variables: VariableMap = {};
@@ -89,8 +82,10 @@ export default class Gist {
     this.id = id;
     this.version = version;
     this.file = file;
+    this.path = `${this.author}/${this.id}/raw${this.version ? `/${this.version}` : ''}/${this.file || ''}`;
     this.url = `https://gist.github.com/${this.author}/${this.id}${this.version ? `/${this.version}` : ''}`;
     this.banner = `/*https://bookmarkl.ink/${this.author}/${this.id}${this.version ? `/${this.version}` : ''}${this.file ? `/${this.file}` : ''}*/`;
+    this.config = config('bookmarklet', `https://cdn.bookmarkl.ink/${this.path}`);
   }
 
   get size(): string {
@@ -115,17 +110,16 @@ export default class Gist {
   }
 
   async load(): Promise<void> {
-    this.code = await fetch(`https://gist.githubusercontent.com/${this.author}/${this.id}/raw/${this.version || ''}/${this.file || ''}`);
+    this.code = await fetch(`https://gist.githubusercontent.com/${this.path}`);
   }
 
   async transpile(): Promise<void> {
     if (this.code === undefined) return; // Code has not yet been fetched
-    await ESBUILD_INITIALIZE; // Ensure esbuild is initialized
     this.error = undefined;
     let code = replaceVariables(this.code, this.variables);
     try {
-      const result = await esbuild.build({ ...ESBUILD_CONFIG, stdin: { contents: code, loader: 'ts', sourcefile: 'bookmarklet' } });
-      this.href = `javascript:${this.banner}${encodeURIComponent(result.outputFiles![0].text)}`;
+      code = await transpile(this.config, code);
+      this.href = `javascript:${this.banner}${encodeURIComponent(code)}`;
     } catch(e) {
       this.href = null;
       this.error = e;
