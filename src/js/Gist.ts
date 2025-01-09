@@ -119,7 +119,7 @@ export default class Gist {
     let code = replaceVariables(this.code, this.variables);
     try {
       code = Babel.transform(code, { presets, plugins, filename: 'bookmarklet.ts', minified: true, comments: false }).code;
-      this.href = `javascript:(function(){${encodeURIComponent(code)}})();`;
+      this.href = `javascript:${this.banner}(function(){${encodeURIComponent(code)}})();`;
     } catch(e) {
       this.href = null;
       this.error = e;
