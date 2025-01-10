@@ -7,14 +7,20 @@
   "license": "MIT",
   "scripts": {
     "dev": "concurrently -k 'parcel watch src/**.pug' 'serve -d -c serve.json'",
-    "prebuild": "rm -rf dist/* .parcel-cache",
-    "build": "parcel build 'src/*.pug' --no-source-maps",
     "test": "vitest run --environment jsdom --coverage",
-    "presync": "npm run build",
-    "sync": "aws s3 sync dist s3://bookmarkl.ink --delete"
+    "prebuild:app": "rm -rf dist/* .parcel-cache",
+    "build:app": "parcel build 'src/*.pug' --no-source-maps",
+    "build:router": "esbuild src/js/router.ts --bundle --format=esm --minify --outfile=index.mjs && zip -m router.zip index.mjs",
+    "build": "npm run build:app && npm run build:router",
+    "presync:app": "npm run build:app",
+    "presync:router": "npm run build:router",
+    "sync:app": "aws s3 sync dist s3://bookmarkl.ink --delete",
+    "sync:router": "aws lambda update-function-code --region us-east-1 --function-name bookmarklink --zip-file fileb://router.zip",
+    "sync": "npm run sync:app && npm run sync:router"
   },
   "devDependencies": {
     "@parcel/transformer-pug": "^2.13.3",
+    "@types/aws-lambda": "^8.10.147",
     "@vitest/coverage-v8": "^2.1.8",
     "concurrently": "^9.1.2",
     "parcel": "^2.13.3",
