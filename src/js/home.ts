@@ -4,7 +4,7 @@ import { parseGistUrl } from './parseUrl';
 type Data = {
   gistUrl: string;
   bookmarkletUrl: string | null;
-  valid: boolean,
+  valid: boolean;
   init: () => void;
 }
 

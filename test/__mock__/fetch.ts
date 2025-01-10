@@ -12,7 +12,7 @@ function reset(): void {
   mockResponse.body = undefined;
 }
 
-Object.assign(global, {
+Object.assign(globalThis, {
   fetch: vi.fn(() => {
     if (mockResponse.code === null) return Promise.reject().finally(reset);
     const text = mockResponse.body || '';
