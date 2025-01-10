@@ -1,4 +1,4 @@
-Object.defineProperty(global, 'location', {
+Object.defineProperty(globalThis, 'location', {
   writable: true,
   value: { href: '', hash: '' },
 });

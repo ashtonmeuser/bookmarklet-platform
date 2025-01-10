@@ -7,7 +7,7 @@ import insertEditor from './editor';
 type Data = {
   gist: Gist | null;
   error: BookmarkletError | null;
-  edit: boolean,
+  edit: boolean;
   copy: () => void;
   init: () => void;
 }
