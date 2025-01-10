@@ -2,7 +2,7 @@
   "public": "dist",
   "rewrites": [
     {
-      "source": "/(.+)",
+      "source": "/:author/:id/**",
       "destination": "/bookmarklet.html"
     }
   ]
