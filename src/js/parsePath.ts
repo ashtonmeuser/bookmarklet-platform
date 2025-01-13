@@ -15,7 +15,7 @@ const safeUrl = (url: string): URL => {
   }
 };
 
-const parseUrl = (urlString: string, pathPattern: RegExp, hostPattern?: RegExp): UrlProperties => {
+const parsePath = (urlString: string, pathPattern: RegExp, hostPattern?: RegExp): UrlProperties => {
   const url = safeUrl(urlString);
   if (hostPattern && !hostPattern.test(url.hostname)) throw new BookmarkletError(400, 'invalid hostname');
   const matches = url.pathname.match(pathPattern);
@@ -29,14 +29,14 @@ const parseUrl = (urlString: string, pathPattern: RegExp, hostPattern?: RegExp):
   };
 };
 
-export const parseGistUrl = (urlString: string): UrlProperties => {
+export const parseGistPath = (urlString: string): UrlProperties => {
   // Should match raw and GitHub URLs; see https://regexr.com/86bok
   const pathPattern = /^\/(\w+(?:[\w-]*\w)?)\/([a-f0-9]{32})(?:\/raw)?(?:\/([a-f0-9]{40})?)?(?:\/(.+?)?)?\/?$/;
   const hostPattern = /^gist\.github(?:usercontent)?\.com$/;
-  return parseUrl(urlString, pathPattern, hostPattern);
+  return parsePath(urlString, pathPattern, hostPattern);
 };
 
-export const parseBookmarkletUrl = (urlString: string): UrlProperties => {
+export const parseBookmarkletPath = (urlString: string): UrlProperties => {
   const pathPattern = /^\/(\w+(?:[\w-]*\w)?)\/([a-f0-9]{32})(?:\/([a-f0-9]{40})?)?(?:\/(.+?)?)?\/?$/;
-  return parseUrl(urlString, pathPattern);
+  return parsePath(urlString, pathPattern);
 };
