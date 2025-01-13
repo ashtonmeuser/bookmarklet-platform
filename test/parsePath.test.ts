@@ -142,11 +142,11 @@ it('should fail invalid bookmarklet ID', () => {
   }).toThrow('invalid path');
 });
 
-it('should fail to parse invalid URL', () => {
+it('should fail to parse invalid URL path', () => {
   const url = '';
   expect(() => {
     parseGistPath(url);
-  }).toThrow('invalid url');
+  }).toThrow('invalid path');
 });
 
 it('should fail to parse invalid hostname', () => {
