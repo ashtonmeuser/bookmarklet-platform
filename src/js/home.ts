@@ -1,5 +1,5 @@
 import Alpine from 'alpinejs';
-import { parseGistUrl } from './parseUrl';
+import { parseGistPath } from './parsePath';
 
 type Data = {
   gistUrl: string;
@@ -13,7 +13,7 @@ const data = (): Data => ({
   gistUrl: '',
   get bookmarkletUrl() {
     try {
-      const props = parseGistUrl(this.gistUrl);
+      const props = parseGistPath(this.gistUrl);
       return `/${props.author}/${props.id}/${props.version || ''}/${props.file || ''}`.replace(/\/+$/, '');
     } catch (error) {
       return null;

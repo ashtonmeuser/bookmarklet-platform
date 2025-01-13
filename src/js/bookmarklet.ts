@@ -1,6 +1,6 @@
 import Alpine from 'alpinejs';
 import Gist from './Gist';
-import { parseBookmarkletUrl } from './parseUrl';
+import { parseBookmarkletPath } from './parsePath';
 import BookmarkletError from './error';
 import insertEditor from './editor';
 
@@ -21,7 +21,7 @@ const data = (): Data => ({
   },
   async init() {
     try {
-      const params = parseBookmarkletUrl(globalThis.location.href);
+      const params = parseBookmarkletPath(globalThis.location.href);
       this.gist = new Gist(params.author, params.id, params.version, params.file);
       await this.gist.load();
       document.title = `bookmarkl.ink · ${this.gist.title}`;
