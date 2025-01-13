@@ -19,7 +19,7 @@ it('should start with defaults', async () => {
 it('should set author and ID', async () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
-  window.location.href = `https://bookmarkl.ink/${author}/${id}`;
+  window.location.assign(`https://bookmarkl.ink/${author}/${id}`);
   const data = await Alpine.init(bookmarklet);
   expect(data.gist?.author).toBe(author);
   expect(data.gist?.id).toBe(id);
@@ -29,7 +29,7 @@ it('should set version', async () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
   const version = '0123456789012345678901234567890123456789';
-  window.location.href = `https://bookmarkl.ink/${author}/${id}/${version}`;
+  window.location.assign(`https://bookmarkl.ink/${author}/${id}/${version}`);
   const data = await Alpine.init(bookmarklet);
   expect(data.gist?.version).toBe(version);
 });
@@ -38,7 +38,7 @@ it('should set version', async () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
   const file = 'test.js';
-  window.location.href = `https://bookmarkl.ink/${author}/${id}//${file}`;
+  window.location.assign(`https://bookmarkl.ink/${author}/${id}//${file}`);
   const data = await Alpine.init(bookmarklet);
   expect(data.gist?.file).toBe(file);
 });
@@ -46,7 +46,7 @@ it('should set version', async () => {
 it('should set gist URL', async () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
-  window.location.href = `https://bookmarkl.ink/${author}/${id}`;
+  window.location.assign(`https://bookmarkl.ink/${author}/${id}`);
   const data = await Alpine.init(bookmarklet);
   expect(data.gist?.url).toMatch(/gist\.github\.com/);
 });
@@ -54,7 +54,7 @@ it('should set gist URL', async () => {
 it('should set title and about', async () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
-  window.location.href = `https://bookmarkl.ink/${author}/${id}`;
+  window.location.assign(`https://bookmarkl.ink/${author}/${id}`);
   const title = 'testTitle';
   const about = 'testAbout';
   const code = `//bookmarklet_title:${title}\n//bookmarklet_about:${about}`;
@@ -67,7 +67,7 @@ it('should set title and about', async () => {
 it('should set javascript href', async () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
-  window.location.href = `https://bookmarkl.ink/${author}/${id}`;
+  window.location.assign(`https://bookmarkl.ink/${author}/${id}`);
   const code = 'const test = 1234;';
   mockResponse.body = code;
   const data = await Alpine.init(bookmarklet);
@@ -78,7 +78,7 @@ it('should set javascript href', async () => {
 it('should copy javascript href', async () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
-  window.location.href = `https://bookmarkl.ink/${author}/${id}`;
+  window.location.assign(`https://bookmarkl.ink/${author}/${id}`);
   const code = 'const test = 1234;';
   mockResponse.body = code;
   const data = await Alpine.init(bookmarklet);
@@ -91,7 +91,7 @@ it('should vary href based on variables', async () => {
   const key0 = 'test_key_0';
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
-  window.location.href = `https://bookmarkl.ink/${author}/${id}`;
+  window.location.assign(`https://bookmarkl.ink/${author}/${id}`);
   const code = `//bookmarklet_var: ${key0}\nconsole.log(${key0});`;
   mockResponse.body = code;
   const data = await Alpine.init(bookmarklet);
@@ -107,7 +107,7 @@ it('should vary href based on variables', async () => {
 it('should default to editing', async () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
-  window.location.href = `https://bookmarkl.ink/${author}/${id}`;
+  window.location.assign(`https://bookmarkl.ink/${author}/${id}`);
   window.location.hash = '#edit';
   const data = await Alpine.init(bookmarklet);
   expect(data.edit).toBe(true);
@@ -117,7 +117,7 @@ it('should fail to load bookmarklet', async () => {
   mockResponse.code = 500;
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
-  window.location.href = `https://bookmarkl.ink/${author}/${id}`;
+  window.location.assign(`https://bookmarkl.ink/${author}/${id}`);
   const data = await Alpine.init(bookmarklet);
   expect(data.error).toBeInstanceOf(BookmarkletError);
   expect(data.error?.code).toBe(500);
@@ -127,7 +127,7 @@ it('should fail to load bookmarklet', async () => {
 it('should fail to transpile bookmarklet', async () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
-  window.location.href = `https://bookmarkl.ink/${author}/${id}`;
+  window.location.assign(`https://bookmarkl.ink/${author}/${id}`);
   const code = 'const test = "';
   mockResponse.body = code;
   const data = await Alpine.init(bookmarklet, { $refs: {} });
