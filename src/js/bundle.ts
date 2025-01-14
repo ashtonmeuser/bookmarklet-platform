@@ -2,6 +2,14 @@ import * as esbuild from 'esbuild-wasm';
 
 const ESBUILD_INITIALIZE = esbuild.initialize({ wasmURL: 'https://unpkg.com/esbuild-wasm/esbuild.wasm' }); // Must be resolved before transpilation
 
+type Loader = (args: esbuild.OnLoadArgs) => Promise<esbuild.OnLoadResult | undefined>;
+
+const loader = (loader?: esbuild.Loader): Loader => (async (args) => {
+  const response = await globalThis.fetch(args.path);
+  if (!response.ok) throw new Error(`Failed to fetch ${args.path}: ${response.statusText}`);
+  return { contents: await response.text(), loader };
+});
+
 // Simple esbuild plugin to resolve and bundle dependencies
 // Static imports are bundled, dynamic imports are not
 // Top-level relative static and dynamic imports are resolved relative to custom CDN to deliver gist content
@@ -20,11 +28,16 @@ const plugin = (sourcefile: string, cdn: string): esbuild.Plugin => ({
       return { path: args.path, external: true };
     });
 
-    build.onLoad({ filter: /.*/, namespace: 'static' }, async (args) => {
-      const response = await globalThis.fetch(args.path);
-      if (!response.ok) throw new Error(`Failed to fetch ${args.path}: ${response.statusText}`);
-      return { contents: await response.text() };
-    });
+    build.onLoad({ filter: /\.m?js$/, namespace: 'static' }, loader('js'));
+    build.onLoad({ filter: /\.(ts|mts|tsx)$/, namespace: 'static' }, loader('ts'));
+    build.onLoad({ filter: /\.jsx$/, namespace: 'static' }, loader('jsx'));
+    build.onLoad({ filter: /\.json$/, namespace: 'static' }, loader('json'));
+    build.onLoad({ filter: /\.css$/, namespace: 'static' }, loader('css'));
+    build.onLoad({ filter: /\.(png|jpe?g|gif)$/, namespace: 'static' }, loader('file'));
+    build.onLoad({ filter: /\.svg$/, namespace: 'static' }, loader('dataurl'));
+    build.onLoad({ filter: /\.(html|txt|md|xml|yml|dat)$/, namespace: 'static' }, loader('text'));
+    build.onLoad({ filter: /\.(bin|wasm)$/, namespace: 'static' }, loader('binary'));
+    build.onLoad({ filter: /.*/, namespace: 'static' }, loader());
   },
 });
 
