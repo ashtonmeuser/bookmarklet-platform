@@ -116,11 +116,14 @@ export default class Gist {
   async transpile(): Promise<void> {
     if (this.code === undefined) return; // Code has not yet been fetched
     this.error = undefined;
-    let code = replaceVariables(this.code, this.variables);
+    const code = this.code;
+    let bundled = replaceVariables(code, this.variables);
     try {
-      code = await transpile(this.config, code);
-      this.href = `javascript:${this.banner}${encodeURIComponent(code)}`;
+      bundled = await transpile(this.config, bundled);
+      if (code !== this.code) return; // Update only if code wasn't overwritten
+      this.href = `javascript:${this.banner}${encodeURIComponent(bundled)}`;
     } catch(e) {
+      if (code !== this.code) return; // Update only if code wasn't overwritten
       this.href = null;
       this.error = e;
     }
