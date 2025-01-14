@@ -34,7 +34,17 @@ it('should set URL with file', async () => {
   const file = 'test.js';
   const data = await Alpine.init(home);
   data.gistUrl = `https://gist.github.com/${author}/${id}/${file}`;
-  expect(data.bookmarkletUrl).toBe(`/${author}/${id}//${file}`);
+  expect(data.bookmarkletUrl).toBe(`/${author}/${id}/${file}`);
+});
+
+it('should set URL with version and file', async () => {
+  const author = 'testAuthor';
+  const id = '01234567890123456789012345678901';
+  const version = '0123456789012345678901234567890123456789';
+  const file = 'test.js';
+  const data = await Alpine.init(home);
+  data.gistUrl = `https://gist.github.com/${author}/${id}/${version}/${file}`;
+  expect(data.bookmarkletUrl).toBe(`/${author}/${id}/${version}/${file}`);
 });
 
 it('should have init method', async () => {
