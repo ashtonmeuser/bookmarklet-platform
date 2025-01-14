@@ -14,7 +14,7 @@ const data = (): Data => ({
   get bookmarkletUrl() {
     try {
       const props = parseGistPath(this.gistUrl);
-      return `/${props.author}/${props.id}/${props.version || ''}/${props.file || ''}`.replace(/\/+$/, '');
+      return `/${props.author}/${props.id}${props.version ? `/${props.version}` : ''}${props.file ? `/${props.file}` : ''}`;
     } catch (error) {
       return null;
     }

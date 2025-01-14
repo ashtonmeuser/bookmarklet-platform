@@ -21,8 +21,8 @@ const data = (): Data => ({
   },
   async init() {
     try {
-      const params = parseBookmarkletPath(globalThis.location.href);
-      this.gist = new Gist(params.author, params.id, params.version, params.file);
+      const props = parseBookmarkletPath(globalThis.location.pathname);
+      this.gist = new Gist(props.author, props.id, props.version, props.file);
       await this.gist.load();
       document.title = `bookmarkl.ink · ${this.gist.title}`;
       insertEditor(this.$refs.editor, this.gist.code, (code: string) => { this.gist.code = code; });

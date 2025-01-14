@@ -23,8 +23,7 @@ async function fetch(url: string): Promise<string> {
     if (!response.ok) throw new BookmarkletError(response.status, 'failed to fetch javascript code');
     return response.text();
   } catch(e) {
-    if (e instanceof BookmarkletError) throw e;
-    else throw new BookmarkletError(500, 'failed to fetch javascript code');
+    throw e instanceof BookmarkletError ? e : new BookmarkletError(500, 'failed to fetch javascript code');
   }
 }
 
@@ -83,7 +82,7 @@ export default class Gist {
     this.version = version;
     this.file = file;
     this.url = `https://gist.github.com/${this.author}/${this.id}${this.version ? `/${this.version}` : ''}`;
-    this.banner = `/*https://bookmarkl.ink/${this.author}/${this.id}${this.version ? `/${this.version}` : ''}${this.file ? `/${this.file}` : ''}*/`
+    this.banner = `/*https://bookmarkl.ink/${this.author}/${this.id}${this.version ? `/${this.version}` : ''}${this.file ? `/${this.file}` : ''}*/`;
   }
 
   get size(): string {
