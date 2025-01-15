@@ -1,7 +1,6 @@
 import { v4 as uuid } from 'uuid';
-import * as esbuild from 'esbuild-wasm';
 import BookmarkletError from './error';
-import { config, transpile } from './bundle';
+import { Bundler, OutdatedBundleError } from './Bundler';
 
 enum VariableType {
   TEXT = 'text',
@@ -51,13 +50,14 @@ function extractVariables(code: string): VariableMap {
   }, {});
 }
 
-function replaceVariables(code: string, variables: VariableMap) {
-  const escape = (s) => s.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
-  for (const [key, variable] of Object.entries(variables)) {
-    const r = new RegExp(`^.*//[\\s\\t]*bookmarklet[-_]var(?:\\((\\w+)\\))?[\\s\\t]*[:=][\\s\\t]*${escape(key)}[\\s\\t]*$`, 'im');
-    code = code.replace(r, `const ${key} = ${JSON.stringify(variable.value)};`);
-  }
-  return code;
+function defineVariables(variables: VariableMap): { [key: string]: string } {
+  return Object.fromEntries(Object.entries(variables).map(([key, variable]) => {
+    return [key, JSON.stringify(variable.value)];
+  }));
+}
+
+function replaceVariables(code: string): string {
+  return code.replace(/^.*\/\/[\s\t]*bookmarklet[-_]var(?:\((\w+)\))?[\s\t]*[:=][\s\t]*([a-z_$][\w$]*)[\s\t]*$/gim, '');
 }
 
 export default class Gist {
@@ -68,7 +68,7 @@ export default class Gist {
   readonly path: string;
   readonly url: string;
   readonly banner: string;
-  readonly config: esbuild.BuildOptions;
+  readonly bundler: Bundler;
   title: string = 'bookmarklet';
   about: string | undefined;
   variables: VariableMap = {};
@@ -85,7 +85,7 @@ export default class Gist {
     this.path = `${this.author}/${this.id}/raw${this.version ? `/${this.version}` : ''}/${this.file || ''}`;
     this.url = `https://gist.github.com/${this.author}/${this.id}${this.version ? `/${this.version}` : ''}`;
     this.banner = `/*https://bookmarkl.ink/${this.author}/${this.id}${this.version ? `/${this.version}` : ''}${this.file ? `/${this.file}` : ''}*/`;
-    this.config = config('bookmarklet', `https://cdn.bookmarkl.ink/${this.path}`);
+    this.bundler = new Bundler({ sourcefile: 'bookmarklet', cdn: `https://cdn.bookmarkl.ink/${this.path}` })
   }
 
   get size(): string {
@@ -116,14 +116,11 @@ export default class Gist {
   async transpile(): Promise<void> {
     if (this.code === undefined) return; // Code has not yet been fetched
     this.error = undefined;
-    const code = this.code;
-    let bundled = replaceVariables(code, this.variables);
     try {
-      bundled = await transpile(this.config, bundled);
-      if (code !== this.code) return; // Update only if code wasn't overwritten
-      this.href = `javascript:${this.banner}${encodeURIComponent(bundled)}`;
+      const result = await this.bundler.build(replaceVariables(this.code), defineVariables(this.variables));
+      this.href = `javascript:${this.banner}${encodeURIComponent(result)}`;
     } catch(e) {
-      if (code !== this.code) return; // Update only if code wasn't overwritten
+      if (e instanceof OutdatedBundleError) return;
       this.href = null;
       this.error = e;
     }
