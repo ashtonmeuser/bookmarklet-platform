@@ -20,6 +20,7 @@ Object.assign(globalThis, {
       ok: mockResponse.code === undefined || (mockResponse.code >= 200 && mockResponse.code < 300),
       status: mockResponse.code,
       text: () => Promise.resolve(text),
+      arrayBuffer: () => Promise.resolve(new TextEncoder().encode(text)),
     }).finally(reset);
   }),
 });
