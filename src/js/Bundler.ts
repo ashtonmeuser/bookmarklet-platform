@@ -11,7 +11,7 @@ const loader = (loader?: esbuild.Loader, transformer?: Transformer): Loader => (
   const response = await globalThis.fetch(args.path);
   if (!response.ok) throw new Error(`failed to fetch ${args.path}`);
   const contents = new Uint8Array(await response.arrayBuffer());
-  const result = { contents, loader };
+  const result = { contents, loader: args.with.loader as esbuild.Loader || loader };
   return transformer ? transformer(result) : result;
 });
 
@@ -40,12 +40,11 @@ const plugin = (options?: BundlerOptions): esbuild.Plugin => ({
     });
 
     build.onLoad({ filter: /\.m?js$/, namespace: 'static' }, loader('js'));
-    build.onLoad({ filter: /\.(tsx?|mts)$/, namespace: 'static' }, loader('ts'));
-    build.onLoad({ filter: /\.jsx$/, namespace: 'static' }, loader('jsx'));
+    build.onLoad({ filter: /\.(ts|mts)$/, namespace: 'static' }, loader('ts'));
+    build.onLoad({ filter: /\.(jsx|tsx)$/, namespace: 'static' }, loader('jsx'));
     build.onLoad({ filter: /\.json$/, namespace: 'static' }, loader('json'));
     build.onLoad({ filter: /\.css$/, namespace: 'static' }, loader('text', transformerCss));
-    build.onLoad({ filter: /\.(png|jpe?g|gif)$/, namespace: 'static' }, loader('file'));
-    build.onLoad({ filter: /\.svg$/, namespace: 'static' }, loader('dataurl'));
+    build.onLoad({ filter: /\.(png|jpe?g|gif|svg)$/, namespace: 'static' }, loader('dataurl'));
     build.onLoad({ filter: /\.(html|txt|md|xml|yml|dat)$/, namespace: 'static' }, loader('text'));
     build.onLoad({ filter: /\.(bin|wasm)$/, namespace: 'static' }, loader('binary'));
     build.onLoad({ filter: /.*/, namespace: 'static' }, loader());
