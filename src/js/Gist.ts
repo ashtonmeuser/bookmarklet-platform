@@ -72,9 +72,9 @@ export default class Gist {
   title: string = 'bookmarklet';
   about: string | undefined;
   variables: VariableMap = {};
-  _code: string | undefined; // Can't be private due to Alpine's Proxy usage
   href: string | null = null;
   error: Error | undefined;
+  private _code: string | undefined; // Can't be #private due to Alpine's Proxy usage
 
   constructor(author: string, id: string, version?: string, file?: string) {
     if (!author || !id) throw new Error('invalid author or id');

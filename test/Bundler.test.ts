@@ -54,6 +54,14 @@ it('should resolve relative dynamic import', async () => {
   expect(result).toContain('await import("https://cdn.co/test.js")');
 });
 
+it('should inline minified CSS', async () => {
+  const bundler = new Bundler();
+  mockResponse.body = 'body {\n  color: red;\n}';
+  const code = 'import css from "https://cdn.co/test.css";\nconsole.log(css);';
+  const result = await bundler.build(code);
+  expect(result).toContain('body{color:red}');
+});
+
 it('should fail to resolve remote static import', async () => {
   const bundler = new Bundler();
   mockResponse.code = 500;
