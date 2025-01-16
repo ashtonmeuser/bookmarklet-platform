@@ -1,8 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import BookmarkletError from './error';
-const Babel = require('@babel/standalone');
-
-Babel.registerPlugin('dead-code-elimination', require('babel-plugin-minify-dead-code-elimination'));
+import { Bundler, OutdatedBundleError } from './Bundler';
 
 enum VariableType {
   TEXT = 'text',
@@ -52,13 +50,14 @@ function extractVariables(code: string): VariableMap {
   }, {});
 }
 
-function replaceVariables(code: string, variables: VariableMap) {
-  const escape = (s) => s.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
-  for (const [key, variable] of Object.entries(variables)) {
-    const r = new RegExp(`^.*//[\\s\\t]*bookmarklet[-_]var(?:\\((\\w+)\\))?[\\s\\t]*[:=][\\s\\t]*${escape(key)}[\\s\\t]*$`, 'im');
-    code = code.replace(r, `const ${key} = ${JSON.stringify(variable.value)};`);
-  }
-  return code;
+function defineVariables(variables: VariableMap): { [key: string]: string } {
+  return Object.fromEntries(Object.entries(variables).map(([key, variable]) => {
+    return [key, JSON.stringify(variable.value)];
+  }));
+}
+
+function replaceVariables(code: string): string {
+  return code.replace(/^.*\/\/[\s\t]*bookmarklet[-_]var(?:\((\w+)\))?[\s\t]*[:=][\s\t]*([a-z_$][\w$]*)[\s\t]*$/gim, '');
 }
 
 export default class Gist {
@@ -66,14 +65,16 @@ export default class Gist {
   readonly id: string;
   readonly version: string | undefined;
   readonly file: string | undefined;
+  readonly path: string;
   readonly url: string;
   readonly banner: string;
+  readonly bundler: Bundler;
   title: string = 'bookmarklet';
   about: string | undefined;
   variables: VariableMap = {};
-  _code: string | undefined; // Can't be private due to Alpine's Proxy usage
   href: string | null = null;
   error: Error | undefined;
+  private _code: string | undefined; // Can't be #private due to Alpine's Proxy usage
 
   constructor(author: string, id: string, version?: string, file?: string) {
     if (!author || !id) throw new Error('invalid author or id');
@@ -81,8 +82,10 @@ export default class Gist {
     this.id = id;
     this.version = version;
     this.file = file;
+    this.path = `${this.author}/${this.id}/raw${this.version ? `/${this.version}` : ''}/${this.file || ''}`;
     this.url = `https://gist.github.com/${this.author}/${this.id}${this.version ? `/${this.version}` : ''}`;
     this.banner = `/*https://bookmarkl.ink/${this.author}/${this.id}${this.version ? `/${this.version}` : ''}${this.file ? `/${this.file}` : ''}*/`;
+    this.bundler = new Bundler({ sourcefile: 'bookmarklet', cdn: `https://cdn.bookmarkl.ink/${this.path}` })
   }
 
   get size(): string {
@@ -107,19 +110,17 @@ export default class Gist {
   }
 
   async load(): Promise<void> {
-    this.code = await fetch(`https://gist.githubusercontent.com/${this.author}/${this.id}/raw/${this.version || ''}/${this.file || ''}`);
+    this.code = await fetch(`https://gist.githubusercontent.com/${this.path}`);
   }
 
   async transpile(): Promise<void> {
     if (this.code === undefined) return; // Code has not yet been fetched
     this.error = undefined;
-    const presets = ['typescript', ['env', { modules: false, targets: { browsers: '> 0.25%, not dead' } }]];
-    const plugins = ['dead-code-elimination'];
-    let code = replaceVariables(this.code, this.variables);
     try {
-      code = Babel.transform(code, { presets, plugins, filename: 'bookmarklet.ts', minified: true, comments: false }).code;
-      this.href = `javascript:${this.banner}(function(){${encodeURIComponent(code)}})();`;
+      const result = await this.bundler.build(replaceVariables(this.code), defineVariables(this.variables));
+      this.href = `javascript:${this.banner}${encodeURIComponent(result)}`;
     } catch(e) {
+      if (e instanceof OutdatedBundleError) return;
       this.href = null;
       this.error = e;
     }
