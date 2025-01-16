@@ -19,36 +19,37 @@ it('should bundle code', async () => {
 it('should resolve remote static import', async () => {
   const bundler = new Bundler();
   mockResponse.body = 'console.log("hello")';
-  const code = 'import "https://cdn.co/test.js";';
+  const code = 'import "https://test.co/test.js";';
   const result = await bundler.build(code);
   expect(result).toBe('(()=>{console.log("hello");})();\n');
 });
 
 it('should resolve relative static import', async () => {
-  const bundler = new Bundler({ cdn: 'https://cdn.co' });
+  const bundler = new Bundler({ cdn: { static: 'https://cdn.co' } });
   mockResponse.body = 'console.log("hello")';
   const code = 'import "./test.js";';
   const result = await bundler.build(code);
+  expect(globalThis.fetch).toHaveBeenCalledWith('https://cdn.co/test.js');
   expect(result).toBe('(()=>{console.log("hello");})();\n');
 });
 
 it('should resolve nested static import', async () => {
   const bundler = new Bundler();
   mockResponse.body = 'import "./test.js";';
-  const code = 'import "https://cdn.co/test.js";';
+  const code = 'import "https://test.co/test.js";';
   const result = await bundler.build(code);
   expect(result).toBe('(()=>{})();\n');
 });
 
 it('should resolve remote dynamic import', async () => {
-  const bundler = new Bundler({ cdn: 'https://cdn.co' });
-  const code = '(async () => { await import("https://cdn.co/test.js"); })();';
+  const bundler = new Bundler();
+  const code = '(async () => { await import("https://test.co/test.js"); })();';
   const result = await bundler.build(code);
-  expect(result).toContain('await import("https://cdn.co/test.js")');
+  expect(result).toContain('await import("https://test.co/test.js")');
 });
 
 it('should resolve relative dynamic import', async () => {
-  const bundler = new Bundler({ cdn: 'https://cdn.co' });
+  const bundler = new Bundler({ cdn: { dynamic: 'https://cdn.co' } });
   const code = '(async () => { await import("./test.js"); })();';
   const result = await bundler.build(code);
   expect(result).toContain('await import("https://cdn.co/test.js")');

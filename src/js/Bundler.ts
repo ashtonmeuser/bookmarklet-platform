@@ -4,7 +4,7 @@ const ESBUILD_INITIALIZE = esbuild.initialize({ wasmURL: 'https://unpkg.com/esbu
 
 type Loader = (args: esbuild.OnLoadArgs) => Promise<esbuild.OnLoadResult | undefined>;
 type Transformer = (result: esbuild.OnLoadResult) => Promise<esbuild.OnLoadResult | undefined>;
-type BundlerOptions = { sourcefile?: string, cdn?: string };
+type BundlerOptions = { sourcefile?: string, cdn?: { static?: string, dynamic?: string } };
 export class OutdatedBundleError extends Error {}
 
 const loader = (loader?: esbuild.Loader, transformer?: Transformer): Loader => (async (args) => {
@@ -29,9 +29,9 @@ const plugin = (options?: BundlerOptions): esbuild.Plugin => ({
     const sourcefile = options?.sourcefile || '<stdin>';
 
     build.onResolve({ filter: /^\.?\.?\// }, (args) => {
-      const url = new URL(args.path, args.importer === sourcefile ? options?.cdn : args.importer).toString();
-      if (args.kind === 'import-statement') return { path: url, namespace: 'static' };
-      if (args.kind === 'dynamic-import') return { path: url, external: true };
+      const url = (cdn?: string): string => new URL(args.path, args.importer === sourcefile ? cdn : args.importer).toString();
+      if (args.kind === 'import-statement') return { path: url(options?.cdn?.static), namespace: 'static' };
+      if (args.kind === 'dynamic-import') return { path: url(options?.cdn?.dynamic), external: true };
     });
 
     build.onResolve({ filter: /^https?:\/\// }, (args) => {

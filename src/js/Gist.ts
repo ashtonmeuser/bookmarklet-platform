@@ -85,7 +85,7 @@ export default class Gist {
     this.path = `${this.author}/${this.id}/raw${this.version ? `/${this.version}` : ''}/${this.file || ''}`;
     this.url = `https://gist.github.com/${this.author}/${this.id}${this.version ? `/${this.version}` : ''}`;
     this.banner = `/*https://bookmarkl.ink/${this.author}/${this.id}${this.version ? `/${this.version}` : ''}${this.file ? `/${this.file}` : ''}*/`;
-    this.bundler = new Bundler({ sourcefile: 'bookmarklet', cdn: `https://cdn.bookmarkl.ink/${this.path}` })
+    this.bundler = new Bundler({ sourcefile: 'bookmarklet', cdn: { static: `https://gist.githubusercontent.com/${this.path}`, dynamic: `https://cdn.bookmarkl.ink/${this.path}` } })
   }
 
   get size(): string {
