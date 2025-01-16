@@ -236,11 +236,11 @@ it('should skip transpiling duplicate code', async () => {
 it('should fail to fetch gist code', async () => {
   mockResponse.code = 500; // Server error
   const gist = new Gist('testAuthor', 'testId');
-  let request = gist.load();
-  await expect(request).rejects.toThrow();
+  let promise = gist.load();
+  await expect(promise).rejects.toThrow();
   mockResponse.code = null; // Network error
-  request = gist.load();
-  await expect(request).rejects.toThrow();
+  promise = gist.load();
+  await expect(promise).rejects.toThrow();
 });
 
 it('should set size of gist', async () => {

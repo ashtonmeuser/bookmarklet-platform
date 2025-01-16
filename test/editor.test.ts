@@ -5,7 +5,7 @@ import insertEditor from '../src/js/editor';
 it('should insert CodeMirror editor', () => {
   const element = document.createElement('div');
   const code = '// Test';
-  const callback = vi.fn(() => {});
+  const callback = vi.fn();
   const editor = insertEditor(element, code, callback);
   editor.dispatch({
     changes: [{ from: 0, to: code.length, insert: '// Updated' }],
