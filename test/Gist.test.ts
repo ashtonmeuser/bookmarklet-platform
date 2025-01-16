@@ -33,7 +33,7 @@ it('should fail to create gist', () => {
 it('should fetch gist code', async () => {
   const gist = new Gist('testAuthor', 'testId');
   await gist.load();
-  expect(global.fetch).toHaveBeenCalled();
+  expect(globalThis.fetch).toHaveBeenCalled();
   expect(gist.code).toBe('');
 });
 

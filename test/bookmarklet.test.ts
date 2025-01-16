@@ -84,7 +84,7 @@ it('should copy javascript href', async () => {
   const data = await Alpine.init(bookmarklet);
   await expect.poll(() => data.gist?.href).toMatch(/javascript:/);
   data.copy();
-  expect(global.navigator.clipboard.writeText).toHaveBeenCalled();
+  expect(globalThis.navigator.clipboard.writeText).toHaveBeenCalled();
 });
 
 it('should vary href based on variables', async () => {
