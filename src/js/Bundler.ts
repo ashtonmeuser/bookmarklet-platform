@@ -1,6 +1,6 @@
 import * as esbuild from 'esbuild-wasm';
 
-const ESBUILD_INITIALIZE = esbuild.initialize({ wasmURL: 'https://unpkg.com/esbuild-wasm/esbuild.wasm' }); // Must be resolved before transpilation
+const ESBUILD_INITIALIZE = esbuild.initialize({ wasmURL: 'https://esm.sh/esbuild-wasm@0.24.2/esbuild.wasm' }); // Must be resolved before transpilation
 
 type Loader = (args: esbuild.OnLoadArgs) => Promise<esbuild.OnLoadResult | undefined>;
 type Transformer = (result: esbuild.OnLoadResult) => Promise<esbuild.OnLoadResult | undefined>;
