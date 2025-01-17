@@ -1,6 +1,6 @@
 # Bookmarklet Platform
 
-A platform for distributing JavaScript gists as bookmarklets. Observable in the wild [here](https://bookmarkl.ink).
+A platform for building and distributing JavaScript gists as bookmarklets. Observable in the wild [here](https://bookmarkl.ink).
 
 ## Background
 
@@ -52,9 +52,21 @@ By default, variables are all strings, i.e. text inputs. You can force the input
 
 There also exist special values that can be injected into a bookmarklet. You can access the gist author and ID via `// bookmarklet-var(author): [VARIABLE_NAME]` and `// bookmarklet-var(id): [VARIABLE_NAME]`, respectively. You can access a Universally Unique Identifier (UUID v4) via `// bookmarklet-var(uuid): [VARIABLE_NAME]`.
 
+The following variable types are supported.
+
+Type | Description
+-- | --
+`text` | Text input field injected as a string
+`password` | Password input field (i.e., censored) injected as a string
+`number` | Numeric input field injected as a number
+`boolean` | Checkbox input field injected as a boolean
+`author` | Author ID injected as a string; not editable
+`id` | Gist ID injected as a string; not editable
+`uuid` | UUID injected as a string at build time; not editable
+
 ## Examples
 
-Several example gists can be found [here](https://gist.github.com/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/). For the sake of completeness, these examples are highlighted bellow.
+Several example gists can be found [here](https://gist.github.com/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/). For the sake of completeness, these examples (and more) are highlighted bellow.
 
 Gist | Bookmarkl.ink | Description
 --|--|--
@@ -63,6 +75,7 @@ Gist | Bookmarkl.ink | Description
 [focus.js](https://gist.github.com/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/#file-focus-js) | [img--](https://bookmarkl.ink/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/focus.js) | Dims images until mouse hover.
 [qr.js](https://gist.github.com/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/#file-qr-js) | [QR Code](https://bookmarkl.ink/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/qr.js) | Creates a QR that links to the web page currently being viewed.
 [variables.js](https://gist.github.com/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/#file-variables-js) | [Test Variables](https://bookmarkl.ink/ashtonmeuser/21427841853c9f2292c8f7d7af0079ea/variables.js) | Showcases a bookmarklet requiring variables. These variables can be edited directly in Bookmarkl.ink and are then compiled into the bookmarklet code.
+[_import.ts](https://gist.github.com/ashtonmeuser/39e0cb3f2472cb8980726fb6c7d6d349) | [ESM Imports](https://bookmarkl.ink/ashtonmeuser/39e0cb3f2472cb8980726fb6c7d6d349) | Showcases importing remote and relative ESM modules. Also demonstrates bundling of different content types as well as specification of a custom loader.
 
 ## Design
 
@@ -104,7 +117,9 @@ Theoretically, any valid JavaScript snippet should be able to run in a browser w
 
 Bookmarklets are saved in the same way as standard bookmarks. That means that when clicked, the bookmark(let) address is inserted into the URL bar and evaluated. In the case of a standard bookmark, this results in the browser navigating to the saved HTTP address. Bookmarklets rely on the fact that browsers evaluate addresses prepended with `javascript:` differently. Instead of navigating to an address, the JavaScript is executed on the current window.
 
-Because writers of JavaScript gists will often use features of JavaScript that are not supported by older browsers, a [transpilation](https://en.wikipedia.org/wiki/Source-to-source_compiler) step should occur. [Babel](https://babeljs.io) is used to perform this transpilation. Additionally, in order to shorten the length of the source code stored in a bookmarklet, the code is minified by Babel.
+Before transpilation and minification, dependencies are bundled. See [Bundling](#bundling) for more details.
+
+Because writers of JavaScript gists will often use features of JavaScript that are not supported by older browsers, a [transpilation](https://en.wikipedia.org/wiki/Source-to-source_compiler) step should occur. [esbuild](https://esbuild.github.io) is used to perform this transpilation. Additionally, in order to shorten the length of the source code stored in a bookmarklet, the code is minified.
 
 In order to properly store the bookmarklet in a bookmark, the transpiled, minified, source code is [URI encoded](https://www.w3schools.com/tags/ref_urlencode.ASP).
 
@@ -119,6 +134,27 @@ javascript:(function () {
   ...
 })();
 ```
+
+### Bundling
+
+To enable reuse of modules, bookmarkl.ink bundles dependencies using [esbuild](https://esbuild.github.io). This fetches dependencies, inlines them into the output JavaScript, and performs optimizations including dead code elimination.
+
+Only [static imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) are bundled. [Dynamic imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) remain unchanged and can be used to import modules at runtime rather than during bundling.
+
+The following content types are supported by default.
+
+Type | Extension | Behaviour
+--|--|--
+JS | `.js`, `.mjs` | JavaScript content is inlined, bundled, and minified using esbuild's [JS loader](https://esbuild.github.io/content-types/#javascript).
+TS | `.ts`, `.mts` | TypeScript content is inlined, bundled, and minified using esbuild's [TS loader](https://esbuild.github.io/content-types/#typescript).
+JSX | `.jsx`, `.tsx` | JSX/TSX XML elements become JavaScript function calls using esbuild's [JSX loader](https://esbuild.github.io/content-types/#jsx).
+JSON | `.json` | JSON content is parsed into a JavaScript object and inlined using esbuild's [JSON loader](https://esbuild.github.io/content-types/#json).
+CSS | `.css` | CSS content is loaded, minified using esbuild's [CSS loader](https://esbuild.github.io/content-types/#css), and inlined as a JavaScript string using esbuild's [Text loader](https://esbuild.github.io/content-types/#text).
+Image | `.png`, `.jpg`, `.jpeg`, `.gif`, `.svg` | Image data is loaded, encoded as Base64, and inlined as a data URL string using esbuild's [Data URL loader](https://esbuild.github.io/content-types/#data-url).
+Text | `.html`, `.txt`, `.md`, `.xml`, `.yml`, `.dat` | Text file content is loaded and inlined as a JavaScript string using esbuild's [Text loader](https://esbuild.github.io/content-types/#text).
+Binary | `.bin`, `.wasm` | Binary data is loaded, encoded as Base64, and decoded into a `Uint8Array` at runtime using esbuild's [Binary loader](https://esbuild.github.io/content-types/#binary).
+
+The default loader can be overridden using the `loader` property of [import attributes](https://github.com/tc39/proposal-import-attributes) e.g. `import base64 from 'https://placehold.co/10x10.png' with { loader: 'base64' };`.
 
 ## Development
 
