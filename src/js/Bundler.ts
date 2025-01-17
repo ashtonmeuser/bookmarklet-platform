@@ -47,7 +47,7 @@ const plugin = (options?: BundlerOptions): esbuild.Plugin => ({
     build.onLoad({ filter: /\.(png|jpe?g|gif|svg)$/, namespace: 'static' }, loader('dataurl'));
     build.onLoad({ filter: /\.(html|txt|md|xml|yml|dat)$/, namespace: 'static' }, loader('text'));
     build.onLoad({ filter: /\.(bin|wasm)$/, namespace: 'static' }, loader('binary'));
-    build.onLoad({ filter: /.*/, namespace: 'static' }, loader());
+    build.onLoad({ filter: /.*/, namespace: 'static' }, loader('ts'));
   },
 });
 
