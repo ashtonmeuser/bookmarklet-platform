@@ -105,7 +105,7 @@ export default class Gist {
     this._code = code;
     this.title = extractProperty(code, 'title') || 'bookmarklet';
     this.about = extractProperty(code, 'about');
-    this.syncVariables();
+    this._syncVariables();
     this.transpile(); // Kick off transpilation when code changes
   }
 
@@ -126,7 +126,7 @@ export default class Gist {
     }
   }
 
-  syncVariables(): void {
+  private _syncVariables(): void {
     if (this.code === undefined) return;
 
     const update = extractVariables(this.code);

@@ -214,7 +214,8 @@ it('should ignore invalid variable type', async () => {
 
 it('should skip syncing variables', async () => {
   const gist = new Gist('testAuthor', 'testId');
-  gist.syncVariables();
+  // @ts-expect-error
+  gist._syncVariables();
 });
 
 it('should skip transpiling before loading', async () => {
