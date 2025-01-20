@@ -8,6 +8,7 @@ import './__mock__/document';
 import Alpine from './__mock__/Alpine';
 import bookmarklet from '../src/js/bookmarklet';
 import Gist from '../src/js/Gist';
+import Playground from '../src/js/Playground';
 import BookmarkletError from '../src/js/error';
 
 it('should start with defaults', async () => {
@@ -113,6 +114,14 @@ it('should default to editing', async () => {
   window.location.hash = '#edit';
   const data = await Alpine.init(bookmarklet);
   expect(data.edit).toBe(true);
+});
+
+it('should load playground', async () => {
+  window.location.assign(`https://bookmarkl.ink/playground`);
+  const data = await Alpine.init(bookmarklet);
+  expect(data.edit).toBe(true);
+  expect(data.gist).toBeInstanceOf(Playground);
+  expect(data.gist?.title).toBe('playground');
 });
 
 it('should fail to load bookmarklet', async () => {

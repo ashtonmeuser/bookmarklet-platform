@@ -4,6 +4,10 @@
     {
       "source": "/:author/:id/**",
       "destination": "/bookmarklet.html"
+    },
+    {
+      "source": "/playground",
+      "destination": "/bookmarklet.html"
     }
   ]
 }

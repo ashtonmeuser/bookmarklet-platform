@@ -1,5 +1,6 @@
 import Alpine from 'alpinejs';
 import Gist from './Gist';
+import Playground from './Playground';
 import { parseBookmarkletPath } from './parsePath';
 import BookmarkletError from './error';
 import insertEditor from './editor';
@@ -21,8 +22,13 @@ const data = (): Data => ({
   },
   async init() {
     try {
-      const props = parseBookmarkletPath(globalThis.location.pathname);
-      this.gist = new Gist(props.author, props.id, props.version, props.file);
+      if (/^\/playground\/?$/.test(globalThis.location.pathname)) {
+        this.edit = true;
+        this.gist = new Playground();
+      } else {
+        const props = parseBookmarkletPath(globalThis.location.pathname);
+        this.gist = new Gist(props.author, props.id, props.version, props.file);
+      }
       await this.gist.load();
       document.title = `bookmarkl.ink · ${this.gist.title}`;
       insertEditor(this.$refs.editor, this.gist.code, (code: string) => { this.gist.code = code; });
