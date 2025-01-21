@@ -25,11 +25,10 @@ it('should create gist with optional properties', () => {
   expect(gist.url).toBe('https://gist.github.com/testAuthor/testId/0123456789012345678901234567890123456789');
 });
 
-it('should fail to create gist', () => {
-  expect(() => {
-    // @ts-expect-error
-    new Gist(null, null);
-  }).toThrow('invalid author or id');
+it('should create gist', () => {
+  // @ts-expect-error
+  const gist = new Gist(null, null); // Falsy author and ID values used to throw
+  expect(gist).toBeInstanceOf(Gist);
 });
 
 it('should fetch gist code', async () => {

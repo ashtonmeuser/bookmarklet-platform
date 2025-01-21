@@ -1,15 +1,11 @@
 import Gist from './Gist';
 
 export default class Playground extends Gist {
-  readonly author: string;
-  readonly id: string;
   readonly url: string;
   readonly banner: string;
 
   constructor() {
-    super('_', '_');
-    this.author = '';
-    this.id = '';
+    super('', '');
     this.title = 'playground';
     this.url = '';
     this.banner = '/*https://bookmarkl.ink*/';

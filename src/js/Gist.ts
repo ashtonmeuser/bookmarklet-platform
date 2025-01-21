@@ -77,7 +77,6 @@ export default class Gist {
   private _code: string | undefined; // Can't be #private due to Alpine's Proxy usage
 
   constructor(author: string, id: string, version?: string, file?: string) {
-    if (!author || !id) throw new Error('invalid author or id');
     this.author = author;
     this.id = id;
     this.version = version;
