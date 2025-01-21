@@ -6,7 +6,7 @@ A platform for building and distributing JavaScript gists as bookmarklets. Obser
 
 ### Bookmarklets
 
-According to [Wikipedia](https://en.wikipedia.org/wiki/Bookmarklet), bookmarklets are described as follows.
+[Wikipedia](https://en.wikipedia.org/wiki/Bookmarklet) describes bookmarklets are described as follows:
 
 > A bookmarklet is a bookmark stored in a web browser that contains JavaScript commands that add new features to the browser.
 
