@@ -11,7 +11,7 @@ const loader = (loader?: esbuild.Loader, transformer?: Transformer): Loader => (
   const response = await globalThis.fetch(args.path);
   if (!response.ok) throw new Error(`failed to fetch ${args.path}`);
   const contents = new Uint8Array(await response.arrayBuffer());
-  const result = { contents, loader: args.with.loader as esbuild.Loader || loader };
+  const result = { contents, loader: args.with.loader as esbuild.Loader ?? loader };
   return transformer ? transformer(result) : result;
 });
 
@@ -26,7 +26,7 @@ const transformerCss: Transformer = async (result) => {
 const plugin = (options?: BundlerOptions): esbuild.Plugin => ({
   name: 'bundler-plugin',
   setup(build) {
-    const sourcefile = options?.sourcefile || '<stdin>';
+    const sourcefile = options?.sourcefile ?? '<stdin>';
 
     build.onResolve({ filter: /^\.?\.?\// }, (args) => {
       const url = (cdn?: string): string => new URL(args.path, args.importer === sourcefile ? cdn : args.importer).toString();
