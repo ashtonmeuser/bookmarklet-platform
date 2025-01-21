@@ -135,16 +135,13 @@ it('should parse gist special variables', async () => {
   const keyAuthor = 'test_key_author';
   const keyId = 'test_key_id';
   const keyUuid = 'test_key_uuid';
-  const code = `//bookmarklet_var(author): ${keyAuthor}\n//bookmarklet_var(id): ${keyId}\n//bookmarklet_var(uuid): ${keyUuid}\n`;
+  const code = `//bookmarklet_var(author): ${keyAuthor}\n//bookmarklet_var(id): ${keyId}\n//bookmarklet_var(uuid): ${keyUuid}\nconsole.log(${keyAuthor}, ${keyId}, ${keyUuid});`;
   mockResponse.body = code;
   const gist = new Gist(author, id);
   await gist.load();
-  expect(gist.variables[keyAuthor].type).toBe('author');
-  expect(gist.variables[keyAuthor].value).toBe(author);
-  expect(gist.variables[keyId].type).toBe('id');
-  expect(gist.variables[keyId].value).toBe(id);
-  expect(gist.variables[keyUuid].type).toBe('uuid');
-  expect(gist.variables[keyUuid].value).toMatch(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/);
+  await expect.poll(() => gist.href).toMatch(/testAuthor/);
+  await expect.poll(() => gist.href).toMatch(/testId/);
+  await expect.poll(() => gist.href).toMatch(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/);
 });
 
 it('should fail to set gist special variables', async () => {
@@ -157,12 +154,9 @@ it('should fail to set gist special variables', async () => {
   mockResponse.body = code;
   const gist = new Gist(author, id);
   await gist.load();
-  gist.variables[keyAuthor].value = 'some new value';
-  expect(gist.variables[keyAuthor].value).toBe(author);
-  gist.variables[keyId].value = 'some new value';
-  expect(gist.variables[keyId].value).toBe(id);
-  gist.variables[keyUuid].value = 'some new value';
-  expect(gist.variables[keyUuid].value).toMatch(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/);
+  expect(() => gist.variables[keyAuthor].value = 'some new value').toThrow();
+  expect(() => gist.variables[keyId].value = 'some new value').toThrow();
+  expect(() => gist.variables[keyUuid].value = 'some new value').toThrow();
 });
 
 it('should parse gist variables types regardless of casing', async () => {

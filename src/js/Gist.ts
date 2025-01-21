@@ -71,10 +71,10 @@ export default class Gist {
   readonly bundler: Bundler;
   title: string = 'bookmarklet';
   about: string | undefined;
-  variables: VariableMap = {};
   href: string | null = null;
   error: Error | undefined;
-  private _code: string | undefined; // Can't be #private due to Alpine's Proxy usage
+  private _variables: VariableMap = {};
+  private _code: string | undefined;
 
   constructor(author: string, id: string, version?: string, file?: string) {
     this.author = author;
@@ -108,6 +108,10 @@ export default class Gist {
     this.transpile(); // Kick off transpilation when code changes
   }
 
+  get variables(): VariableMap {
+    return Object.fromEntries(Object.entries(this._variables).filter(([_, variable]) => ["text", "number", "password", "boolean"].includes(variable.type)));
+  }
+
   async load(): Promise<void> {
     this.code = await fetch(`https://gist.githubusercontent.com/${this.path}`);
   }
@@ -116,7 +120,7 @@ export default class Gist {
     if (this.code === undefined) return; // Code has not yet been fetched
     this.error = undefined;
     try {
-      const result = await this.bundler.build(replaceVariables(this.code), defineVariables(this.variables));
+      const result = await this.bundler.build(replaceVariables(this.code), defineVariables(this._variables));
       this.href = `javascript:${this.banner}${encodeURIComponent(result)}`;
     } catch(e) {
       if (e instanceof OutdatedBundleError) return;
@@ -130,12 +134,12 @@ export default class Gist {
 
     const update = extractVariables(this.code);
 
-    for (const key of Object.keys(this.variables)) {
-      if (!(key in update)) delete this.variables[key]; // Remove variable
+    for (const key of Object.keys(this._variables)) {
+      if (!(key in update)) delete this._variables[key]; // Remove variable
     }
 
     for (const [key, variable] of Object.entries(update)) {
-      if (this.variables[key]?.type === variable.type) continue; // Variable exists
+      if (this._variables[key]?.type === variable.type) continue; // Variable exists
 
       // Apply non-null defaults
       if (variable.type === VariableType.BOOLEAN) variable.value = false;
@@ -144,7 +148,7 @@ export default class Gist {
       else if (variable.type === VariableType.UUID) variable.value = uuid();
 
       // Insert or overwrite variable proxy
-      this.variables[key] = new Proxy(variable, {
+      this._variables[key] = new Proxy(variable, {
         set: (target, key: string, value: string | number | boolean) => {
           if (key !== 'value') return false;
           if (target.type === VariableType.NUMBER) target.value = value === '' ? null : Number.isNaN(Number(value)) ? null : Number(value);

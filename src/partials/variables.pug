@@ -1,7 +1,7 @@
 .row(x-show='Object.keys(gist.variables).length')
   h3 variables
   table
-    template(x-for='[key, variable] in Object.entries(gist.variables).filter(([_, variable]) => ["text", "number", "password", "boolean"].includes(variable.type))')
+    template(x-for='[key, variable] in Object.entries(gist.variables)')
       tr
         td.v-center
           label(:for='`variable-${key}`' x-text='key')
