@@ -22,7 +22,7 @@ export default class Playground extends Gist {
 // import * as cheerio from 'https://esm.sh/cheerio';
 // console.log(cheerio.load('<ul id="fruits">...</ul>').html());
 
-const message = \`Hello, \${name ?? 'World'}!\`;
+const message = \`Hello, \${name || 'World'}!\`;
 console.log(message);
 alert(message);`;
   }
