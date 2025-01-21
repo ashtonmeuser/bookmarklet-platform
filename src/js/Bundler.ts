@@ -30,12 +30,12 @@ const plugin = (options?: BundlerOptions): esbuild.Plugin => ({
 
     build.onResolve({ filter: /^\.?\.?\// }, (args) => {
       const url = (cdn?: string): string => new URL(args.path, args.importer === sourcefile ? cdn : args.importer).toString();
-      if (args.kind === 'import-statement') return { path: url(options?.cdn?.static), namespace: 'static' };
+      if (args.kind === 'import-statement') return { path: url(options?.cdn?.static), namespace: 'static', sideEffects: false };
       if (args.kind === 'dynamic-import') return { path: url(options?.cdn?.dynamic), external: true };
     });
 
     build.onResolve({ filter: /^https?:\/\// }, (args) => {
-      if (args.kind === 'import-statement') return { path: args.path, namespace: 'static' };
+      if (args.kind === 'import-statement') return { path: args.path, namespace: 'static', sideEffects: false };
       if (args.kind === 'dynamic-import') return { path: args.path, external: true };
     });
 

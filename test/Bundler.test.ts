@@ -18,19 +18,19 @@ it('should bundle code', async () => {
 
 it('should resolve remote static import', async () => {
   const bundler = new Bundler();
-  mockResponse.body = 'console.log("hello")';
-  const code = 'import "https://test.co/test.js";';
+  mockResponse.body = 'export default console.log("hello");';
+  const code = 'import log from "https://test.co/test.js";\nlog();';
   const result = await bundler.build(code);
-  expect(result).toBe('(()=>{console.log("hello");})();\n');
+  expect(result).toBe('(()=>{var o=console.log("hello");o();})();\n');
 });
 
 it('should resolve relative static import', async () => {
   const bundler = new Bundler({ cdn: { static: 'https://cdn.co' } });
-  mockResponse.body = 'console.log("hello")';
-  const code = 'import "./test.js";';
+  mockResponse.body = 'export default console.log("hello");';
+  const code = 'import log from "./test.js";\nlog();';
   const result = await bundler.build(code);
   expect(globalThis.fetch).toHaveBeenCalledWith('https://cdn.co/test.js');
-  expect(result).toBe('(()=>{console.log("hello");})();\n');
+  expect(result).toBe('(()=>{var o=console.log("hello");o();})();\n');
 });
 
 it('should resolve nested static import', async () => {
@@ -53,6 +53,14 @@ it('should resolve relative dynamic import', async () => {
   const code = '(async () => { await import("./test.js"); })();';
   const result = await bundler.build(code);
   expect(result).toContain('await import("https://cdn.co/test.js")');
+});
+
+it('should discard module side effects', async () => {
+  const bundler = new Bundler();
+  mockResponse.body = 'console.log("hello");';
+  const code = 'import "https://test.co/test.js";';
+  const result = await bundler.build(code);
+  expect(result).toBe('(()=>{})();\n');
 });
 
 it('should bundle minified CSS', async () => {
