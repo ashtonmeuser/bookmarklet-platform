@@ -23,12 +23,12 @@ const parsePath = (urlString: string, base: string, pathPattern: RegExp, hostPat
 
 export const parseGistPath = (urlString: string): UrlProperties => {
   // Should match raw and GitHub URLs; see https://regexr.com/86bok
-  const pathPattern = /^\/(\w+(?:[\w-]*\w)?)\/([a-f0-9]{32})(?:\/raw)?(?:\/([a-f0-9]{40})?)?(?:\/(.+?)?)?\/?$/;
+  const pathPattern = /^\/(\w+(?:[\w-]*\w)?)\/([a-f0-9]{32}|\d{7})(?:\/raw)?(?:\/([a-f0-9]{40})?)?(?:\/(.+?)?)?\/?$/;
   const hostPattern = /^gist\.github(?:usercontent)?\.com$/;
   return parsePath(urlString, 'https://gist.github.com', pathPattern, hostPattern);
 };
 
 export const parseBookmarkletPath = (urlString: string): UrlProperties => {
-  const pathPattern = /^\/(\w+(?:[\w-]*\w)?)\/([a-f0-9]{32})(?:\/([a-f0-9]{40})?)?(?:\/(.+?)?)?\/?$/;
+  const pathPattern = /^\/(\w+(?:[\w-]*\w)?)\/([a-f0-9]{32}|\d{7})(?:\/([a-f0-9]{40})?)?(?:\/(.+?)?)?\/?$/;
   return parsePath(urlString, 'https://bookmarkl.ink', pathPattern);
 };

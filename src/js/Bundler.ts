@@ -63,6 +63,7 @@ export class Bundler {
       plugins: [plugin(options)], // Resolve imports
       write: false, // Prevents tests writing to FS
       stdin: { contents: '', loader: 'ts', sourcefile: options?.sourcefile }, // Load from in-memory buffer instead of FS
+      logLevel: 'silent', // Prevent console logging errors
     };
   }
 

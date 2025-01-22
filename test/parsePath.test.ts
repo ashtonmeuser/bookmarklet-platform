@@ -19,6 +19,15 @@ it('should parse bookmarklet URL with trailing slash', () => {
   expect(parsed.id).toBe(id);
 });
 
+it('should parse bookmarklet URL with numeric ID', () => {
+  const author = 'testAuthor';
+  const id = '0123456';
+  const url = `https://bookmarkl.ink/${author}/${id}/`;
+  const parsed = parseBookmarkletPath(url);
+  expect(parsed.author).toBe(author);
+  expect(parsed.id).toBe(id);
+});
+
 it('should parse bookmarklet version', () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
@@ -79,6 +88,15 @@ it('should parse githubusercontent.com URL', () => {
   const author = 'testAuthor';
   const id = '01234567890123456789012345678901';
   const url = `https://gist.githubusercontent.com/${author}/${id}`;
+  const parsed = parseGistPath(url);
+  expect(parsed.author).toBe(author);
+  expect(parsed.id).toBe(id);
+});
+
+it('should parse numeric ID', () => {
+  const author = 'testAuthor';
+  const id = '0123456';
+  const url = `https://gist.githubusercontent.com/${author}/${id}/`;
   const parsed = parseGistPath(url);
   expect(parsed.author).toBe(author);
   expect(parsed.id).toBe(id);
