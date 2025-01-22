@@ -21,7 +21,7 @@
   "devDependencies": {
     "@parcel/transformer-pug": "^2.13.3",
     "@types/aws-lambda": "^8.10.147",
-    "@vitest/coverage-v8": "^3.0.0",
+    "@vitest/coverage-v8": "^3.0.3",
     "buffer": "^6.0.3",
     "concurrently": "^9.1.2",
     "jsdom": "^26.0.0",
@@ -29,7 +29,7 @@
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "serve": "^14.2.4",
-    "vitest": "^3.0.0"
+    "vitest": "^3.0.3"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.2",
