@@ -73,8 +73,13 @@ export class Bundler {
     this.config.stdin!.contents = code;
     const token = Symbol();
     this._latest = token;
-    const result = await esbuild.build(this.config);
-    if (this._latest != token) throw new OutdatedBundleError();
-    return result.outputFiles![0].text;
+    try {
+      const result = await esbuild.build(this.config);
+      if (this._latest != token) throw new OutdatedBundleError();
+      return result.outputFiles![0].text;
+    } catch(e) {
+      if (this._latest != token) throw new OutdatedBundleError();
+      throw e;
+    }
   };
 }
