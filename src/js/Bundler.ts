@@ -59,7 +59,8 @@ export class Bundler {
     this.config = {
       bundle: true, // Bundle dependencies
       target: ['esnext'], // Alternatively, es2017
-      minify: true, // Tree shake, minify
+      minifyWhitespace: true,
+      minifySyntax: true,
       plugins: [plugin(options)], // Resolve imports
       write: false, // Prevents tests writing to FS
       stdin: { contents: '', loader: 'ts', sourcefile: options?.sourcefile }, // Load from in-memory buffer instead of FS
